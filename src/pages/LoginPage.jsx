@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const LoginPage = () => {
+const LoginPage = ({ setIsAuth }) => {
   const [isRegister, setIsRegister] = useState(false);
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState('');
@@ -43,11 +43,11 @@ const LoginPage = () => {
       setMessage(result.message);
 
       if (result.success) {
-        // Save token in localStorage if returned from backend
         if (result.token) {
           localStorage.setItem('token', result.token);
+          setIsAuth(true); // <-- Update auth state in App
         }
-        navigate('/'); // Redirect to home page
+        navigate('/home'); // Navigate to home page
       }
     } catch (error) {
       setMessage('Network error. Please try again.');
@@ -65,20 +65,59 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {isRegister && (
             <>
-              <input type="text" name="name" placeholder="Full Name" onChange={updateForm} className="w-full p-2 border rounded" />
-              <input type="email" name="email" placeholder="Email" onChange={updateForm} className="w-full p-2 border rounded" />
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                onChange={updateForm}
+                className="w-full p-2 border rounded"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={updateForm}
+                className="w-full p-2 border rounded"
+              />
             </>
           )}
-          <input type="text" name="username" placeholder="Username" onChange={updateForm} required className="w-full p-2 border rounded" />
-          <input type="password" name="password" placeholder="Password" onChange={updateForm} required className="w-full p-2 border rounded" />
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            onChange={updateForm}
+            required
+            className="w-full p-2 border rounded"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={updateForm}
+            required
+            className="w-full p-2 border rounded"
+          />
           {isRegister && (
-            <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={updateForm} className="w-full p-2 border rounded" />
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              onChange={updateForm}
+              className="w-full p-2 border rounded"
+            />
           )}
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
+          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+            Submit
+          </button>
         </form>
         <p className="mt-4">
-          <button onClick={() => setIsRegister(!isRegister)} className="text-blue-600 underline">
-            {isRegister ? 'Already have an account? Login here' : "Don't have an account? Register here"}
+          <button
+            onClick={() => setIsRegister(!isRegister)}
+            className="text-blue-600 underline"
+          >
+            {isRegister
+              ? 'Already have an account? Login here'
+              : "Don't have an account? Register here"}
           </button>
         </p>
         <p className="mt-2 text-red-500">{message}</p>

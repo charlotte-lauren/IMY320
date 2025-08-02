@@ -6,14 +6,42 @@ function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+  // Initial check for token when component mounts
   useEffect(() => {
     setIsLoggedIn(!!localStorage.getItem('token'));
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    navigate('/login');
+  // Add this new useEffect to listen for storage changes (token changes)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem('token'));
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // Cleanup listener when component unmounts
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    console.log("Logging out")
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      localStorage.removeItem('token');
+      setIsLoggedIn(false);
+      console.log("Navigating back to splash")
+      navigate('/'); // Redirect to splash page
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
@@ -29,12 +57,12 @@ function Navbar() {
         {isLoggedIn ? (
           <div className="user-menu">
             <Link to="/profile" className="icon-button">👤</Link>
-            <button onClick={handleLogout} className="logout-btn">Logout</button>
+            <button onClick={(handleLogout)} className="logout-btn">Logout</button>
           </div>
         ) : (
           <div className="auth-buttons">
             <Link to="/login" className="auth-link">Login</Link>
-            <Link to="/register" className="auth-link">Register</Link>
+            <Link to="/login" className="auth-link">Register</Link>
           </div>
         )}
       </div>
