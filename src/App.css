@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+body{
+  overflow-x: hidden;
+  border: solid blue 3pt;
+}
+
 #root{
   width: 100%
 }

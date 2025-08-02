@@ -1,32 +1,29 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import './Navbar.css'; // Optional for styling
+import './Navbar.css';
+import logo from '../assets/LogoCBG.png'; // Adjust the path if needed
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  // Initial check for token when component mounts
   useEffect(() => {
     setIsLoggedIn(!!localStorage.getItem('token'));
   }, []);
 
-  // Add this new useEffect to listen for storage changes (token changes)
   useEffect(() => {
     const handleStorageChange = () => {
       setIsLoggedIn(!!localStorage.getItem('token'));
     };
 
     window.addEventListener('storage', handleStorageChange);
-
-    // Cleanup listener when component unmounts
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
   const handleLogout = async () => {
-    console.log("Logging out")
+    console.log("Logging out");
     try {
       await fetch('/api/auth/logout', {
         method: 'POST',
@@ -37,8 +34,8 @@ function Navbar() {
 
       localStorage.removeItem('token');
       setIsLoggedIn(false);
-      console.log("Navigating back to splash")
-      navigate('/'); // Redirect to splash page
+      console.log("Navigating back to splash");
+      navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -48,7 +45,10 @@ function Navbar() {
     <nav className="navbar">
       {/* Top Row */}
       <div className="navbar-top">
-        <Link to="/" className="logo">🪙 CurioCrow</Link>
+        <Link to="/" className="logo">
+          <img src={logo} alt="Logo" className="logo-image" />
+          <span className="logo-text">CurioCrow</span>
+        </Link>
 
         <input type="text" className="search-bar" placeholder="Search..." />
 
@@ -57,7 +57,7 @@ function Navbar() {
         {isLoggedIn ? (
           <div className="user-menu">
             <Link to="/profile" className="icon-button">👤</Link>
-            <button onClick={(handleLogout)} className="logout-btn">Logout</button>
+            <button onClick={handleLogout} className="auth-link">Logout</button>
           </div>
         ) : (
           <div className="auth-buttons">
@@ -72,8 +72,8 @@ function Navbar() {
         <Link to="/coins">Coins Directory</Link>
         <Link to="/shop">Shop</Link>
         <Link to="/sell">Sell</Link>
-        <Link to="/music">Music</Link>
         <Link to="/about">About</Link>
+        <Link to="/community">Community</Link>
       </div>
     </nav>
   );

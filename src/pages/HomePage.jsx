@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import './Home.css'
 
 const HomePage = () => (
   <div className="p-6">
