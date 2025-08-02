@@ -50,7 +50,12 @@ function Navbar() {
           <span className="logo-text">CurioCrow</span>
         </Link>
 
-        <input type="text" className="search-bar" placeholder="Search..." />
+        <div className="search-container">
+          <svg className="search-icon" viewBox="0 0 24 24">
+            <path fill="white" d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.48-5.34C15.14 5.59 12.55 3 9.5 3S3.86 5.59 3.86 8.39c0 2.8 2.59 5.39 5.64 5.39 1.61 0 3.08-.66 4.13-1.73l.27.28v.79l4.25 4.25c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L15.5 14zM9.5 13c-2.48 0-4.5-2.02-4.5-4.5S7.02 4 9.5 4 14 6.02 14 8.5 11.98 13 9.5 13z" />
+          </svg>
+          <input type="text" className="search-bar" placeholder="Search..." />
+        </div>
 
         <Link to="/cart" className="icon-button">🛒</Link>
 
