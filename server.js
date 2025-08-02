@@ -118,10 +118,10 @@ import { dirname, join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-app.use(express.static(join(__dirname, '..', 'curiocrow2', 'dist')));
+app.use(express.static(join(__dirname, '..', 'IMY320', 'dist')));
 
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, '..', 'curiocrow2', 'dist', 'index.html'));
+  res.sendFile(join(__dirname, '..', 'IMY320', 'dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
