@@ -138,3 +138,92 @@
   bottom: 60px;
   transform: rotate(25deg);
 }
+
+
+/************************* BELIEFS AND WHAT TO DO SECTIONS *************************/
+
+.about-sections {
+  padding: 4rem 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.beliefs-section {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.beliefs-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.belief-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  max-width: 300px;
+}
+
+.belief-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.belief-icon.trust {
+  background-image: url('../assets/ShieldIcon.png');
+}
+.belief-icon.curiosity {
+  background-image: url('../assets/IdeaIcon.png');
+}
+.belief-icon.community {
+  background-image: url('../assets/PeopleIcon.png');
+}
+
+.what-to-do-section {
+  text-align: center;
+}
+
+.what-to-do-content {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.what-to-do-icon {
+  background: url('../assets/BuyCoins.png') no-repeat center center;
+  background-size: contain;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background-color: #151b26;
+}
+
+.do-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 350px;
+}
+
+.do-card {
+  background-color: #2f5e6f;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  color: white;
+  text-align: left;
+}
+
+
+

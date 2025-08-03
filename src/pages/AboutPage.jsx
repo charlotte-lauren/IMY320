@@ -50,36 +50,68 @@ const AboutPage = () => (
         <img src={feather3} className="feather feather3" alt="feather" />
       </section>
 
-      <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-2">Our Beliefs</h2>
-        <ul className="list-disc ml-6 space-y-3">
-          <li>
-            <strong>Trust First:</strong> We believe collecting should be safe and secure. That’s why we’re building community-driven tools and
-            verified listings you can rely on.
-          </li>
-          <li>
-            <strong>Fueling Curiosity:</strong> Coins are more than metal—they’re pieces of history, culture, and craftsmanship. We want to
-            spark curiosity and help people learn through their collections.
-          </li>
-          <li>
-            <strong>Community-Led:</strong> The best part of collecting is sharing it. CurioCrow is made for and by the collecting community.
-          </li>
-        </ul>
-      </section>
+      <section className="about-sections">
+        <div className="beliefs-section">
+          <h2>Our Beliefs</h2>
+          <div className="beliefs-cards">
+            <div className="belief-card">
+              <div className="belief-icon trust" />
+              <h3>Trust First</h3>
+              <p>
+                We believe collecting should be safe and secure. That’s why
+                we’re building community-driven tools and verified listings
+                you can rely on.
+              </p>
+            </div>
+            <div className="belief-card">
+              <div className="belief-icon curiosity" />
+              <h3>Fuelling Curiosity</h3>
+              <p>
+                Coins are more than metal — they’re pieces of history,
+                culture, and craftsmanship. We want to spark curiosity and
+                help people learn through their collections.
+              </p>
+            </div>
+            <div className="belief-card">
+              <div className="belief-icon community" />
+              <h3>Community-Led</h3>
+              <p>
+                The best part of collecting is sharing it. CurioCrow is made
+                for and by the collecting community.
+              </p>
+            </div>
+          </div>
+        </div>
 
-      <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-2">What To Do</h2>
-        <ul className="list-disc ml-6 space-y-2">
-          <li>
-            <strong>Buy coins:</strong> From our range of coin collectables and from trusted collectors in our community.
-          </li>
-          <li>
-            <strong>Sell coins:</strong> To expand CurioCrow’s treasury, and help give fellow collectors a mint they’ve been dying for!
-          </li>
-          <li>
-            <strong>Connect:</strong> With other collectors, share stories, and explore the world of numismatics.
-          </li>
-        </ul>
+        <div className="what-to-do-section">
+          <h2>What To Do</h2>
+          <div className="what-to-do-content">
+            <div className="what-to-do-icon" />
+            <div className="do-cards">
+              <div className="do-card">
+                <h3>Buy coins</h3>
+                <p>
+                  From our range of coin collectables and from trusted
+                  collectors in our community
+                </p>
+              </div>
+              <div className="do-card">
+                <h3>Sell coins</h3>
+                <p>
+                  To expand CurioCrow’s treasury, and help give fellow
+                  collectors a mint they have been dying for!
+                </p>
+              </div>
+              <div className="do-card">
+                <h3>Connect</h3>
+                <p>
+                  With other collectors, share stories, and explore the
+                  world of numismatics
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="text-center mt-14">
