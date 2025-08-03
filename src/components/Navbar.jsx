@@ -45,7 +45,7 @@ function Navbar() {
     <nav className="navbar">
       {/* Top Row */}
       <div className="navbar-top">
-        <Link to="/" className="logo">
+        <Link to="/home" className="logo">
           <img src={logo} alt="Logo" className="logo-image" />
           <span className="logo-text">CurioCrow</span>
         </Link>

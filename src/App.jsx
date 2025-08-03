@@ -5,6 +5,7 @@ import Login from './pages/LoginPage';
 import Home from './pages/HomePage';
 import About from './pages/AboutPage';
 import Navbar from './components/Navbar';
+import UnderConstructionPage from './pages/UnderConstructionPage';
 
 // A layout wrapper with optional navbar
 const Layout = ({ children }) => (
@@ -68,8 +69,7 @@ function App() {
           }
         />
 
-        {/* Catch-all redirects to splash */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<UnderConstructionPage />} />
       </Routes>
     </Router>
   );

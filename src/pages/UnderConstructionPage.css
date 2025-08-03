@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap');
+
+.under-construction {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  background: linear-gradient(to bottom, #1A1F2B, #0e0f14);
+  color: #f0e6d6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* center all content vertically */
+  align-items: center;
+  text-align: center;
+  height: 100vh;            /* fixed viewport height */
+  padding: 2rem;
+  width: 100vw;
+  box-sizing: border-box;   /* include padding in height */
+  position: relative;       /* for footer positioning */
+}
+
+.const-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #b87332;
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: #7c9fad;
+  margin-bottom: 2rem;
+}
+
+.crow-icon {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+  color: #7c9fad;
+}
+
+.construction-note {
+  max-width: 600px;
+  font-size: 1rem;
+  line-height: 1.6;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border: 1px solid #305f72;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  background-color: #305f72;
+  color: #f0e6d6;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.back-button:hover {
+  background-color: #7c9fad;
+}
+
+footer {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  width: 100%;
+  font-size: 0.8rem;
+  color: #777;
+}
