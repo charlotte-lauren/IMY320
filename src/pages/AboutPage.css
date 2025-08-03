@@ -88,7 +88,7 @@
 }
 
 .crows-card {
-  background: #141922;
+  background: #1A1F2B;
   color: white;
   text-align: left;
 }
@@ -151,6 +151,7 @@
 .beliefs-section {
   text-align: center;
   margin-bottom: 4rem;
+  color: #1A1F2B;
 }
 
 .beliefs-cards {
@@ -170,11 +171,13 @@
 }
 
 .belief-icon {
-  width: 48px;
-  height: 48px;
+  width: 100px;
+  height: 100px;
   margin: 0 auto 1rem;
   background-size: contain;
   background-repeat: no-repeat;
+  border-radius: 50%;
+  background-color: #151b26;
 }
 
 .belief-icon.trust {
@@ -191,6 +194,10 @@
   text-align: center;
 }
 
+.what-to-do-section h2{
+    color: #1A1F2B;
+}
+
 .what-to-do-content {
   display: flex;
   flex-direction: row;
@@ -201,13 +208,21 @@
   flex-wrap: wrap;
 }
 
-.what-to-do-icon {
-  background: url('../assets/BuyCoins.png') no-repeat center center;
-  background-size: contain;
-  width: 260px;
-  height: 260px;
+.what-to-do-circle {
+  /* background: url('../assets/BuyCoins.png') no-repeat center center;
+  background-size: contain; */
+  width: 400px;
+  height: 400px;
   border-radius: 50%;
-  background-color: #151b26;
+  background-color: #1A1F2B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-img{
+    width: 250px;
+  object-fit: contain;
 }
 
 .do-cards {

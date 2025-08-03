@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./AboutPage.css";
 
+import BuyCoins from '../assets/BuyCoins.png';
 import crowImg from '../assets/Crow.png';
 import feather1 from '../assets/WhiteFeather.png';
 import feather2 from '../assets/BlueFeather.png';
@@ -86,7 +87,10 @@ const AboutPage = () => (
         <div className="what-to-do-section">
           <h2>What To Do</h2>
           <div className="what-to-do-content">
-            <div className="what-to-do-icon" />
+            <div className="what-to-do-circle">
+              <img src={BuyCoins} alt={'Hands swapping coins'} className="icon-img" />
+            </div>
+            
             <div className="do-cards">
               <div className="do-card">
                 <h3>Buy coins</h3>
