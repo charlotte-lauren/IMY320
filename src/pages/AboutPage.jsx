@@ -1,11 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./AboutPage.css";
+
+const backgroundUrl = "../assets/AboutUsHeader.png";
 
 const AboutPage = () => (
   <div className="px-6 py-12 max-w-5xl mx-auto text-gray-800">
-      <header className="text-center mb-12">
+      {/* <header className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-2">About CurioCrow</h1>
         <p className="text-xl text-gray-600 italic">Crows know value — so do we.</p>
+      </header> */}
+      <header className="about-header">
+        <div className="background-image"/>
+        <div className="overlay" />
+        <div className="header-content">
+          <h1 className="title">About CurioCrow</h1>
+          <p className="subtitle">Crows know value — so do we.</p>
+        </div>
       </header>
 
       <section className="mb-10">

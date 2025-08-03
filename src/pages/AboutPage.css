@@ -1,0 +1,84 @@
+.about-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #333;
+  font-family: sans-serif;
+}
+
+.about-header {
+  position: relative;
+  height: 320px;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 3rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Parallax background image */
+.background-image {
+  background-image: url('../assets/AboutUsHeader.png');
+  background-attachment: fixed;     /* Makes parallax effect */
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  filter: blur(2px);
+  transform: scale(1.1);  /* Slight zoom to avoid edge blur */
+  z-index: 0;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+/* Centered header text */
+.header-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+.header-content h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.header-content .subtitle {
+  font-size: 1.2rem;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
