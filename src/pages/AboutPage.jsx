@@ -10,14 +10,15 @@ const AboutPage = () => (
         <h1 className="text-4xl font-bold mb-2">About CurioCrow</h1>
         <p className="text-xl text-gray-600 italic">Crows know value — so do we.</p>
       </header> */}
-      <header className="about-header">
-        <div className="background-image"/>
-        <div className="overlay" />
-        <div className="header-content">
-          <h1 className="title">About CurioCrow</h1>
-          <p className="subtitle">Crows know value — so do we.</p>
-        </div>
-      </header>
+      <div className="parallax-bg">
+        <header className="about-header">
+          <div className="overlay" />
+          <div className="header-content">
+            <h1 className="title">About CurioCrow</h1>
+            <p className="subtitle">Crows know value — so do we.</p>
+          </div>
+        </header>
+      </div>
 
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-2">Our Mission</h2>

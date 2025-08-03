@@ -1,38 +1,21 @@
-.about-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 2rem;
-  color: #333;
-  font-family: sans-serif;
+.parallax-bg {
+  background-image: url('../assets/AboutUsHeader.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 320px;
+  position: relative;
 }
 
 .about-header {
   position: relative;
-  height: 320px;
+  height: 100%;
   width: 100%;
-  overflow: hidden;
-  margin-bottom: 3rem;
-  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-}
-
-/* Parallax background image */
-.background-image {
-  background-image: url('../assets/AboutUsHeader.png');
-  background-attachment: fixed;     /* Makes parallax effect */
-  background-size: cover;
-  background-position: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  filter: blur(2px);
-  transform: scale(1.1);  /* Slight zoom to avoid edge blur */
-  z-index: 0;
+  overflow: hidden;
 }
 
 .overlay {
@@ -42,37 +25,28 @@
   left: 0;
   height: 100%;
   width: 100%;
+  z-index: 0;
 }
 
 .header-content {
   position: relative;
   z-index: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: white;
-}
-
-/* Centered header text */
-.header-content {
-  position: relative;
-  z-index: 2;
   color: white;
 }
 
 .header-content h1 {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   margin: 0;
+  text-shadow: 0 3px 7px rgba(0, 0, 0, 0.8); /* Soft black shadow */
 }
 
 .header-content .subtitle {
   font-size: 1.2rem;
   font-style: italic;
   margin-top: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* Lighter for smaller text */
 }
+
 
 .section {
   margin-bottom: 2rem;
