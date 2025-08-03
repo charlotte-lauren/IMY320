@@ -1,11 +1,8 @@
-# IMY320
+### IMY320
 
-Here's the content formatted for a **README.md** file:
-
-```markdown
 # CurioCrow Website
 
-CurioCrow is a web application focused on [brief description of your site, e.g., coin collecting and crow-inspired curiosities].
+CurioCrow is a web application focused on providing an interface for coin collectors to buy coin collectables, sell coins and connect with fellow collectors.
 
 ## Project Structure
 
