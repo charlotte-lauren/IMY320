@@ -1,3 +1,5 @@
+/************************* HEADER SECTION *************************/
+
 .parallax-bg {
   background-image: url('../assets/AboutUsHeader.png');
   background-size: cover;
@@ -55,4 +57,84 @@
 .section h2 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
+}
+
+
+/************************* OUR MISSION AND WHO ARE THE CROWS SECTIONS *************************/
+
+.about-section {
+  position: relative;
+  padding: 100px 20px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+.card {
+  max-width: 600px;
+  padding: 30px 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.mission-card {
+  background: white;
+  text-align: left;
+  color: #1A1F2B;
+}
+
+.crows-card {
+  background: #141922;
+  color: white;
+  text-align: left;
+}
+
+.card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+/* Crow image overlay */
+.crow-img {
+  position: absolute;
+  bottom: -20px;
+  left: 40px;
+  width: 100px;
+  z-index: 2;
+}
+
+/* Feathers */
+.feather {
+  position: absolute;
+  width: 50px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.feather1 {
+  right: 60px;
+  top: 400px;
+  transform: rotate(20deg);
+}
+
+.feather2 {
+  right: 30px;
+  top: 500px;
+  transform: rotate(-15deg);
+}
+
+.feather3 {
+  right: 80px;
+  bottom: 60px;
+  transform: rotate(25deg);
 }

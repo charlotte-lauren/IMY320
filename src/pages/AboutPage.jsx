@@ -2,14 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./AboutPage.css";
 
-const backgroundUrl = "../assets/AboutUsHeader.png";
+import crowImg from '../assets/Crow.png';
+import feather1 from '../assets/WhiteFeather.png';
+import feather2 from '../assets/BlueFeather.png';
+import feather3 from '../assets/DarkFeather.png';
 
 const AboutPage = () => (
   <div className="px-6 py-12 max-w-5xl mx-auto text-gray-800">
-      {/* <header className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-2">About CurioCrow</h1>
-        <p className="text-xl text-gray-600 italic">Crows know value — so do we.</p>
-      </header> */}
       <div className="parallax-bg">
         <header className="about-header">
           <div className="overlay" />
@@ -20,25 +19,35 @@ const AboutPage = () => (
         </header>
       </div>
 
-      <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-2">Our Mission</h2>
-        <p>
-          At <strong>CurioCrow</strong>, our goal is to create a trusted and engaging space for coin collectors of all experience levels.
-          Whether you're just starting out or have been collecting for years, we’re building a platform where you can buy & sell coins
-          and dive into the community with fellow collectors — all in one place.
-        </p>
-      </section>
+      <section className="about-section">
+        <div className="card mission-card">
+          <h2>Our Mission</h2>
+          <p>
+            At CurioCrow, our goal is to create a trusted and engaging space for coin collectors of all experience levels.
+          </p>
+          <p>
+            Whether you're just starting out or have been collecting for years, we’re building a platform where you can buy & sell coins and dive into the community with fellow collectors – all in one place.
+          </p>
+          <img src={crowImg} alt="Crow" className="crow-img" />
+        </div>
 
-      <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-2">Who We Are</h2>
-        <p>
-          We’re a team of three university students who share a passion for collecting shiny things. What started as a personal hobby
-          quickly turned into an idea we wanted to share with others — so we created <strong>CurioCrow</strong>.
-        </p>
-        <p className="mt-3">
-          We’ve spent countless hours digging through local shops, researching rare mints, and swapping stories with fellow collectors.
-          Now, we’re turning that passion into a platform that brings the coin-collecting community together.
-        </p>
+        <div className="card crows-card">
+          <h2>Who Are The Crows</h2>
+          <p>
+            We’re a team of three university students who share a passion for collecting shiny things – much like Crows.
+          </p>
+          <p>
+            What started as a personal hobby quickly turned into an idea we wanted to share with others – so we created CurioCrow.
+          </p>
+          <p>
+            Now, we’re turning that passion into a platform that brings the coin-collecting community together.
+          </p>
+        </div>
+
+        {/* Decorative feathers */}
+        <img src={feather1} className="feather feather1" alt="feather" />
+        <img src={feather2} className="feather feather2" alt="feather" />
+        <img src={feather3} className="feather feather3" alt="feather" />
       </section>
 
       <section className="mb-10">
