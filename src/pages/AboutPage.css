@@ -152,7 +152,15 @@
   width: 50px;
   opacity: 0.9;
   pointer-events: none;
+  /* animation: floatSide 3s ease-in-out infinite; */
 }
+
+/* Side-to-side floating */
+/* @keyframes floatSide {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(10px); }
+  100% { transform: translateX(0); }
+} */
 
 .feather1 {
   right: 700px;
@@ -243,10 +251,14 @@
   background-repeat: no-repeat;
   border-radius: 50%;
   background-color: #151b26;
+  transition: transform 0.3s ease;
+  animation: floatWiggle 4s ease-in-out infinite;
+  display: inline-block;
 }
 
 .belief-icon.trust {
   background-image: url('../assets/ShieldIcon.png');
+  /* background-color: #1A1F2B; */
 }
 .belief-icon.curiosity {
   background-image: url('../assets/IdeaIcon.png');
@@ -254,6 +266,40 @@
 .belief-icon.community {
   background-image: url('../assets/PeopleIcon.png');
 }
+
+@keyframes floatWiggle {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(3px) rotate(1deg);
+  }
+  50% {
+    transform: translateX(0) rotate(-1deg);
+  }
+  75% {
+    transform: translateX(-3px) rotate(1deg);
+  }
+}
+
+/* Hover effect */
+.belief-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Initial scale */
+.scale-on-scroll {
+  transform: scale(0.8);
+  opacity: 0.5;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+/* Class to apply when in view */
+.scale-on-scroll.in-view {
+  transform: scale(1);
+  opacity: 1;
+}
+
 
 .what-to-do-section {
   text-align: center;
@@ -286,6 +332,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: wiggle 2s ease-in-out infinite;
+  /* display: inline-block; */
 }
 
 .icon-img{
@@ -298,6 +346,12 @@
   flex-direction: column;
   gap: 1.2rem;
   max-width: 350px;
+    /* display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  gap: 1.2rem;
+  max-width: 700px;
+  position: relative; */
 }
 
 .do-card {
@@ -306,6 +360,31 @@
   border-radius: 10px;
   color: white;
   text-align: left;
+}
+
+
+.Sell-card {
+  /* grid-column: 1 / span 2;
+  grid-row: 2;
+  margin-left: 20%;
+  max-width: 60%;    */
+  margin-left: 2rem; 
+}
+
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1deg);
+  }
+  50% {
+    transform: rotate(-1deg);
+  }
+  75% {
+    transform: rotate(1deg);
+  }
 }
 
 /************************* BROWSE COLLECTIONS SECTIONS *************************/

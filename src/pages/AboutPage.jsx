@@ -12,6 +12,21 @@ const handleClick = () => {
   alert('Redirect to Coins Directory page');
 };
 
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("in-view");
+    } else {
+      entry.target.classList.remove("in-view");
+    }
+  });
+});
+
+document.querySelectorAll(".scale-on-scroll").forEach(icon => {
+  observer.observe(icon);
+});
+
+
 const AboutPage = () => (
   <div className='homePage'>
       <div className="parallax-bg">
@@ -60,7 +75,7 @@ const AboutPage = () => (
           <h2>Our Beliefs</h2>
           <div className="beliefs-cards">
             <div className="belief-card">
-              <div className="belief-icon trust" />
+              <div className="belief-icon trust scale-on-scroll" />
               <h3>Trust First</h3>
               <p>
                 We believe collecting should be safe and secure. That’s why
@@ -69,7 +84,7 @@ const AboutPage = () => (
               </p>
             </div>
             <div className="belief-card">
-              <div className="belief-icon curiosity" />
+              <div className="belief-icon curiosity scale-on-scroll" />
               <h3>Fuelling Curiosity</h3>
               <p>
                 Coins are more than metal — they’re pieces of history,
@@ -78,7 +93,7 @@ const AboutPage = () => (
               </p>
             </div>
             <div className="belief-card">
-              <div className="belief-icon community" />
+              <div className="belief-icon community scale-on-scroll" />
               <h3>Community-Led</h3>
               <p>
                 The best part of collecting is sharing it. CurioCrow is made
@@ -96,21 +111,21 @@ const AboutPage = () => (
             </div>
             
             <div className="do-cards">
-              <div className="do-card">
+              <div className="do-card Buy-card">
                 <h3>Buy coins</h3>
                 <p>
                   From our range of coin collectables and from trusted
                   collectors in our community
                 </p>
               </div>
-              <div className="do-card">
+              <div className="do-card Sell-card">
                 <h3>Sell coins</h3>
                 <p>
                   To expand CurioCrow’s treasury, and help give fellow
                   collectors a mint they have been dying for!
                 </p>
               </div>
-              <div className="do-card">
+              <div className="do-card Connect-card">
                 <h3>Connect</h3>
                 <p>
                   With other collectors, share stories, and explore the

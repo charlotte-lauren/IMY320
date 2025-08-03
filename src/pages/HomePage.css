@@ -22,7 +22,7 @@
 }
 
 .hero {
-    background: url('https://images.unsplash.com/photo-1551033406-c1d19e6b39b1?auto=format&fit=crop&w=1400&q=80') no-repeat center/cover;
+    background: url('../assets/AboutUsHeader.png') no-repeat center/cover;
     color: white;
     text-align: center;
     padding: 6rem 1rem;
@@ -48,11 +48,13 @@
     font-size: 3rem;
     margin-bottom: 1rem;
     font-weight: 700;
+    text-shadow: 0 3px 7px rgba(0, 0, 0, 0.8); /* Soft black shadow */
 }
 
 .hero-content p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* Lighter for smaller text */
 }
 
 .hero-content .btn {
