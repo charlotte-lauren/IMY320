@@ -240,5 +240,35 @@
   text-align: left;
 }
 
+/************************* BROWSE COLLECTIONS SECTIONS *************************/
 
+section.Explore-section {
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-bottom: 4rem;
+    background-color: #f9f9f9;
+    color: #1A1F2B;
+}
+
+section.Explore-section h2 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+section.Explore-section button {
+    background: #b87332;
+    border: none;
+    color: white;
+    padding: 1rem 3.5rem;
+    font-size: 1.2rem;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 1rem;
+}
+
+section.Explore-section button:hover {
+    background: #925d24;
+}
 

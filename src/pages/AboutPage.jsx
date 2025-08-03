@@ -8,6 +8,10 @@ import feather1 from '../assets/WhiteFeather.png';
 import feather2 from '../assets/BlueFeather.png';
 import feather3 from '../assets/DarkFeather.png';
 
+const handleClick = () => {
+  alert('Redirect to Coins Directory page');
+};
+
 const AboutPage = () => (
   <div className="px-6 py-12 max-w-5xl mx-auto text-gray-800">
       <div className="parallax-bg">
@@ -118,12 +122,14 @@ const AboutPage = () => (
         </div>
       </section>
 
-      <section className="text-center mt-14">
-        <p className="text-lg font-medium mb-4">
-          Whether you're here to build a collection, learn something new, or pass on a prized piece —
+      <section className="Explore-section">
+        <h2>Start Your Collection</h2>
+        <p>
+          Whether you're here to build a collection, learn something new, or pass on a prized piece
           <br />
-          <span className="text-indigo-700 font-semibold">CurioCrow is your starting point.</span>
+          <span className="text-italic"> - CurioCrow is your starting point.</span>
         </p>
+        <button onClick={handleClick}>Explore Our Collections</button>
         {/* <Link
           to="/collections"
           className="inline-block bg-indigo-600 text-white py-2 px-6 rounded-full hover:bg-indigo-700 transition"
