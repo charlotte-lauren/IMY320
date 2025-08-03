@@ -7,13 +7,14 @@ const styles = `
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #1A1F2B;
-    color: #ffffff;
+    color: #1A1F2B;
   }
 
   .container {
     display: flex;
-    height: 100vh;
+    height: 100%;
     width: 100vw;
+    padding-bottom: 30px;
   }
 
   .left-panel {
@@ -32,6 +33,7 @@ const styles = `
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
   }
 
   .form-box {
@@ -44,13 +46,13 @@ const styles = `
     box-sizing: border-box;
   }
 
-  .logo {
+  .logo-login {
     display: flex;
     justify-content: center;
     margin-bottom: -40px;
   }
 
-  .logo img {
+  .logo-login img {
     max-width: 120px;
     height: auto;
   }
@@ -285,7 +287,7 @@ const LoginPage = ({ setIsAuth }) => {
     <div className="container">
       <div className="right-panel">
         <form className="form-box" onSubmit={handleSubmit} noValidate>
-          <div className="logo">
+          <div className="logo-login">
             <img src={logo} alt="Logo" />
           </div>
 
