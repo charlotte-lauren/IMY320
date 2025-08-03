@@ -1,0 +1,417 @@
+* {
+    box-sizing: border-box;
+}
+
+.homePage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+    color: #222;
+}
+
+.homePage a {
+    color: #b87332; /* Coppery gold */
+    text-decoration: none;
+}
+
+.homePage a:hover {
+    text-decoration: underline;
+}
+
+.hero {
+    background: url('https://images.unsplash.com/photo-1551033406-c1d19e6b39b1?auto=format&fit=crop&w=1400&q=80') no-repeat center/cover;
+    color: white;
+    text-align: center;
+    padding: 6rem 1rem;
+    position: relative;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 31, 43, 0.7);
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.hero-content .btn {
+    background: #b87332;
+    padding: 0.8rem 2rem;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    color: white;
+    margin-right: 1rem;
+    transition: background 0.3s ease;
+}
+
+.hero-content .btn.secondary {
+    background: transparent;
+    border: 2px solid #b87332;
+    color: white;
+}
+
+.hero-content .btn:hover {
+    background: #925d24;
+}
+
+.hero-content .btn.secondary:hover {
+    background: #b87332;
+    color: white;
+}
+
+.mainClass {
+    flex: 1;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+section.featured {
+    margin-bottom: 3rem;
+}
+
+section.featured h2 {
+    margin-bottom: 1rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap: 1rem;
+}
+
+.featured {
+  margin-bottom: 3rem;
+}
+
+.featured-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pause-btn {
+  background: #b87332;
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.pause-btn:hover {
+  background: #925d24;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE/Edge */
+}
+
+.carousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-btn {
+  background: rgba(124, 159, 173, 0.4); /* 7c9fad with 40% opacity */
+  border: none;
+  color: #88a4ae;
+  font-size: 0.5rem;   /* smaller font size */
+  width: 10px;         /* smaller width */
+  height: 320px;        /* smaller height */
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-btn:hover {
+  background: rgba(124, 159, 173, 0.8); /* more opaque on hover */
+  color: #305f72; /* a bit darker text on hover */
+}
+
+.nav-btn.left {
+  margin-right: 8px;
+}
+
+.nav-btn.right {
+  margin-left: 8px;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE/Edge */
+  flex: 1;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.coin-card {
+  min-width: 220px;
+  max-width: 220px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  margin-right: 1rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.coin-card:hover {
+  transform: scale(1.05);
+}
+
+.coin-img {
+  height: 140px;
+  object-fit: cover;
+  width: 100%;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.coin-info {
+  padding: 0.8rem 1rem;
+}
+
+.coin-info h3 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.1rem;
+}
+
+.coin-info p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.coin-price {
+  margin-top: 0.5rem;
+  font-weight: 700;
+  color: #b87332;
+  font-size: 1rem;
+}
+
+.shop-card {
+  background: #1a1f2b;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.shop-card:hover {
+  background: #2d3348;
+}
+
+.shop-card .coin-info h3 {
+  color: #f5f5f5;
+}
+
+.shop-card .coin-price {
+  color: #b87332;
+}
+
+.coin-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.coin-card:hover {
+    transform: scale(1.05);
+}
+
+.coin-img {
+    height: 180px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.coin-info {
+    padding: 0.8rem 1rem;
+}
+
+.coin-info h3 {
+    margin: 0 0 0.3rem 0;
+    font-size: 1.1rem;
+}
+
+.coin-info p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.coin-price {
+    margin-top: 0.5rem;
+    font-weight: 700;
+    color: #b87332;
+    font-size: 1rem;
+}
+
+section.categories {
+    margin-bottom: 3rem;
+}
+
+section.categories h2 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.category-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.category-card {
+    flex: 1 1 150px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.category-card:hover {
+    background-color: #f0e6d2;
+}
+
+.category-card img {
+    width: 60px;
+    margin-bottom: 0.5rem;
+}
+
+.category-card p {
+    margin: 0;
+    font-weight: 600;
+    color: #1a1f2b;
+}
+
+section.community {
+    background: #1a1f2b;
+    color: white;
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    margin-bottom: 3rem;
+}
+
+section.community h2 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.community-content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+section.sell-cta {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+section.sell-cta h2 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+section.sell-cta button {
+    background: #b87332;
+    border: none;
+    color: white;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+section.sell-cta button:hover {
+    background: #925d24;
+}
+
+.homeFooter {
+    flex-shrink: 0;
+    background: #305f72;
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    position: relative;
+    margin-bottom: -20px;
+}
+
+.homeFooter a {
+    color: #f0e6d2;
+    margin: 0 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .featured-grid {
+    grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+    }
+    .hero-content h1 {
+    font-size: 2rem;
+    }
+}
