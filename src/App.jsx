@@ -8,9 +8,9 @@ import Navbar from './components/Navbar';
 import UnderConstructionPage from './pages/UnderConstructionPage';
 
 // A layout wrapper with optional navbar
-const Layout = ({ children }) => (
+const Layout = ({ children, setIsAuth }) => (
   <>
-    <Navbar />
+    <Navbar setIsAuth={setIsAuth} />
     <div className="page-content">{children}</div>
   </>
 );
@@ -51,7 +51,7 @@ function App() {
           path="/home"
           element={
             isAuth ? (
-              <Layout>
+              <Layout setIsAuth={setIsAuth}>
                 <Home />
               </Layout>
             ) : (
@@ -63,7 +63,7 @@ function App() {
         <Route
           path="/about"
           element={
-            <Layout>
+            <Layout setIsAuth={setIsAuth}>
               <About />
             </Layout>
           }

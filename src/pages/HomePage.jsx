@@ -93,7 +93,7 @@ const HomePage = () => {
           <div className="featured-header">
             <h2>Featured Coins</h2>
             <button onClick={() => setIsPaused(!isPaused)} className="pause-btn">
-              {isPaused ? 'Play' : 'Pause'}
+              {isPaused ? '▶' : '⏸'}
             </button>
           </div>
 
@@ -170,10 +170,10 @@ const HomePage = () => {
 
       <footer className='homeFooter'>
         &copy; 2025 Curiocrow &nbsp;|&nbsp;
-        <a href="#">About</a>&nbsp;|&nbsp;
-        <a href="#">Contact</a>&nbsp;|&nbsp;
-        <a href="#">FAQ</a>&nbsp;|&nbsp;
-        <a href="#">Privacy Policy</a>
+        <Link to="/about">About</Link>&nbsp;|&nbsp;
+        <Link to="/contact">Contact</Link>&nbsp;|&nbsp;
+        <Link to="/faq">FAQ</Link>&nbsp;|&nbsp;
+        <Link to="/privacy">Privacy Policy</Link>
       </footer>
     </div>
   );

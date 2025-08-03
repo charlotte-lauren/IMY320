@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import './Navbar.css';
 import logo from '../assets/LogoCBG.png'; // Adjust the path if needed
 
-function Navbar() {
+function Navbar({ setIsAuth }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     setIsLoggedIn(!!localStorage.getItem('token'));
@@ -34,6 +35,7 @@ function Navbar() {
 
       localStorage.removeItem('token');
       setIsLoggedIn(false);
+      setIsAuth(false);
       console.log("Navigating back to splash");
       navigate('/');
     } catch (error) {
@@ -61,8 +63,20 @@ function Navbar() {
 
         {isLoggedIn ? (
           <div className="user-menu">
-            <Link to="/profile" className="icon-button">👤</Link>
-            <button onClick={handleLogout} className="auth-link">Logout</button>
+            <div className="user-dropdown">
+              <img
+                src="/path/to/profile-image.png" // Replace with actual path
+                alt="Profile"
+                className="profile-icon"
+                onClick={() => setShowDropdown(prev => !prev)}
+              />
+              {showDropdown && (
+                <div className="dropdown-menu">
+                  <Link to="/profile" className="dropdown-item">Profile</Link>
+                  <button onClick={handleLogout} className="dropdown-item">Logout</button>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <div className="auth-buttons">
@@ -70,6 +84,7 @@ function Navbar() {
             <Link to="/login" className="auth-link">Register</Link>
           </div>
         )}
+
       </div>
 
       {/* Bottom Row */}

@@ -142,3 +142,43 @@ body {
 .navbar a.active {
   color: white;
 }
+
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-icon {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid white;
+  object-fit: cover;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: #1A1F2B;
+  border: 1px solid #305F72;
+  border-radius: 8px;
+  padding: 10px;
+  z-index: 10;
+  min-width: 120px;
+}
+
+.dropdown-item {
+  display: block;
+  color: white;
+  width: 100%;
+  padding: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+  background-color: #305F72;
+}

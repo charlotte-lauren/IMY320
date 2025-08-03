@@ -118,7 +118,7 @@ section.featured h2 {
 }
 
 .pause-btn {
-  background: #b87332;
+  background: #7c9fad20;
   color: white;
   border: none;
   padding: 0.4rem 1rem;
@@ -129,7 +129,9 @@ section.featured h2 {
 }
 
 .pause-btn:hover {
-  background: #925d24;
+  background: white;
+  border: solid #925d24 1pt;
+  color: #925d24;
 }
 
 .carousel {
@@ -151,7 +153,7 @@ section.featured h2 {
 }
 
 .nav-btn {
-  background: rgba(124, 159, 173, 0.4); /* 7c9fad with 40% opacity */
+  background: rgba(124, 159, 173, 0.2); /* 7c9fad with 40% opacity */
   border: none;
   color: #88a4ae;
   font-size: 0.5rem;   /* smaller font size */
