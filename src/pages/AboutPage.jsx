@@ -13,7 +13,7 @@ const handleClick = () => {
 };
 
 const AboutPage = () => (
-  <div className="px-6 py-12 max-w-5xl mx-auto text-gray-800">
+  <div className='homePage'>
       <div className="parallax-bg">
         <header className="about-header">
           <div className="overlay" />
@@ -120,9 +120,14 @@ const AboutPage = () => (
             </div>
           </div>
         </div>
+
+        {/* Decorative feathers */}
+        <img src={feather2} className="feather feather2-2-2" alt="feather" />
+        <img src={feather3} className="feather feather3-3-3" alt="feather" />
       </section>
 
       <section className="Explore-section">
+        
         <h2>Start Your Collection</h2>
         <p>
           Whether you're here to build a collection, learn something new, or pass on a prized piece
@@ -136,7 +141,20 @@ const AboutPage = () => (
         >
           Explore Our Collections →
         </Link> */}
+
+        {/* Decorative feathers */}
+        <img src={feather2} className="feather feather2-2" alt="feather" />
+        <img src={feather3} className="feather feather3-3" alt="feather" />
       </section>
+
+      <footer className='homeFooter'>
+        &copy; 2025 Curiocrow &nbsp;|&nbsp;
+        <Link to="/about">About</Link>&nbsp;|&nbsp;
+        <Link to="/contact">Contact</Link>&nbsp;|&nbsp;
+        <Link to="/faq">FAQ</Link>&nbsp;|&nbsp;
+        <Link to="/privacy">Privacy Policy</Link>
+      </footer>
+
   </div>
 );
 
