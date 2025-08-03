@@ -40,14 +40,14 @@ const SplashPage = () => (
 
     <section className="purpose-section container" aria-label="Our Purpose">
       <div className="purpose-text">
+        <h1>Our Purpose</h1>
         <p>We stand by the fact that coin collecting is broader than others imagine.</p>
         <p>Our team is working hard to provide a platform centered around collecting coins and connecting within the <strong>coin community</strong>.</p>
       </div>
       <div className="purpose-cta">
+        <p>Find out more...</p>
         <button className="btn-secondary" type="button" aria-label="About CurioCrow">About CurioCrow</button>
-        <svg viewBox="0 0 64 64" aria-hidden="true" role="img" fill="currentColor">
-          <path d="M10 54s32-20 38-34-22 12-22 12-12-10-16-4 0 14 0 14z" />
-        </svg>
+    
       </div>
     </section>
 
