@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/LogoNBG.png';
 
+const coinEmoji = '🪙';
+
 const styles = `
   body {
     margin: 0;
@@ -213,6 +215,36 @@ const styles = `
     background-color: #5C7D8A !important;
     color: white !important;
   }
+
+  .coin-tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.coin-tooltip .tooltip-text {
+  visibility: hidden;
+  width: 220px;
+  background-color: #1A1F2B;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* position above */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+}
+
+.coin-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
 `;
 
 const LoginPage = ({ setIsAuth }) => {
@@ -220,10 +252,11 @@ const LoginPage = ({ setIsAuth }) => {
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState('');
   const [staySignedIn, setStaySignedIn] = useState(false);
+  const [passwordScore, setPasswordScore] = useState(0);
+  const [confirmScore, setConfirmScore] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Inject styles only once
   useEffect(() => {
     if (!document.getElementById('login-page-styles')) {
       const styleTag = document.createElement('style');
@@ -237,6 +270,23 @@ const LoginPage = ({ setIsAuth }) => {
     const params = new URLSearchParams(location.search);
     setIsRegister(params.get('mode') === 'register');
   }, [location.search]);
+
+  useEffect(() => {
+    if (isRegister) {
+      const score = getPasswordScore(formData.password || '');
+      setPasswordScore(score);
+      setConfirmScore(formData.password === formData.confirmPassword ? score : 0);
+    }
+  }, [formData.password, formData.confirmPassword, isRegister]);
+
+  const getPasswordScore = (password) => {
+    let score = 0;
+    if (/[A-Z]/.test(password)) score++; // Capital letter
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++; // Special char
+    if (/[0-9]/.test(password)) score++; // Number
+    if (password.length > 8) score++; // Length > 8
+    return score;
+  };
 
   const updateForm = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -298,83 +348,58 @@ const LoginPage = ({ setIsAuth }) => {
             <>
               <div className="form-group">
                 <label htmlFor="name">Full Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name || ''}
-                  onChange={updateForm}
-                  required
-                />
+                <input type="text" id="name" name="name" value={formData.name || ''} onChange={updateForm} required />
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email || ''}
-                  onChange={updateForm}
-                  required
-                />
+                <input type="email" id="email" name="email" value={formData.email || ''} onChange={updateForm} required />
               </div>
             </>
           )}
 
           <div className="form-group">
             <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username || ''}
-              onChange={updateForm}
-              required
-            />
+            <input type="text" id="username" name="username" value={formData.username || ''} onChange={updateForm} required />
           </div>
 
           <div className="form-group">
             <div className="password-row">
               <label htmlFor="password">Password</label>
+              {isRegister && (
+                <div className="coin-tooltip">
+                  <span className="coin-count">{coinEmoji.repeat(passwordScore)}</span>
+                  <div className="tooltip-text">
+                    Earn coins for: 1 uppercase letter, 1 special character, 1 number, and length &gt; 8
+                  </div>
+                </div>
+              )}
               {!isRegister && (
                 <div className="forgot-password">
                   <a href="#">Forgot Password?</a>
                 </div>
               )}
             </div>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password || ''}
-              onChange={updateForm}
-              required
-            />
+            <input type="password" id="password" name="password" value={formData.password || ''} onChange={updateForm} required />
           </div>
 
           {isRegister && (
             <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword || ''}
-                onChange={updateForm}
-                required
-              />
+              <div className="password-row">
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <div className="coin-tooltip">
+                  <span className="coin-count">{coinEmoji.repeat(confirmScore)}</span>
+                  <div className="tooltip-text">
+                    Coins shown only if password matches and earns same rewards
+                  </div>
+                </div>
+              </div>
+              <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword || ''} onChange={updateForm} required />
             </div>
           )}
 
           {!isRegister && (
             <div className="stay-signed-in">
-              <input
-                type="checkbox"
-                id="stay-signed-in"
-                className="custom-checkbox"
-                checked={staySignedIn}
-                onChange={handleCheckboxChange}
-              />
+              <input type="checkbox" id="stay-signed-in" className="custom-checkbox" checked={staySignedIn} onChange={handleCheckboxChange} />
               <label htmlFor="stay-signed-in">Stay signed in</label>
             </div>
           )}
@@ -386,37 +411,22 @@ const LoginPage = ({ setIsAuth }) => {
               {isRegister ? (
                 <>
                   Already have an account?{' '}
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsRegister(false);
-                    }}
-                    className="link-toggle"
-                  >
+                  <a href="#" onClick={(e) => { e.preventDefault(); setIsRegister(false); }} className="link-toggle">
                     Login here
                   </a>
                 </>
               ) : (
                 <>
                   Don't have an account?{' '}
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsRegister(true);
-                    }}
-                    className="link-toggle"
-                  >
+                  <a href="#" onClick={(e) => { e.preventDefault(); setIsRegister(true); }} className="link-toggle">
                     Register here
                   </a>
                 </>
               )}
             </p>
           </div>
-          {message && (
-            <p style={{ color: 'white', marginTop: '10px', textAlign: 'center' }}>{message}</p>
-          )}
+
+          {message && <p style={{ color: 'white', marginTop: '10px', textAlign: 'center' }}>{message}</p>}
         </form>
       </div>
     </div>
