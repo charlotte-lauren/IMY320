@@ -101,7 +101,6 @@ const styles = `
     left: 12px;
     color: black;
     font-size: 1rem;
-    pointer-events: none;
     transition: all 0.2s ease-out;
     padding: 0 4px;
     border-radius: 4px;
