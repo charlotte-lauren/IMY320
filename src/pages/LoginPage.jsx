@@ -35,6 +35,7 @@ const styles = `
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100%;
   }
 
@@ -46,12 +47,15 @@ const styles = `
     padding-top: 5px;
     border-radius: 10px;
     box-sizing: border-box;
+    margin-top: 10px;
+    padding-bottom: 5px;
   }
 
   .logo-login {
     display: flex;
     justify-content: center;
     margin-bottom: -40px;
+    margin-top: -20px;
   }
 
   .logo-login img {
@@ -77,6 +81,11 @@ const styles = `
   .floating-label {
     position: relative;
     margin-bottom: 20px;
+  }
+
+  .feedback {
+    margin-bottom: -15px;
+    margin-top: 5px;
   }
 
   .floating-label input {
@@ -316,6 +325,7 @@ const styles = `
 const LoginPage = ({ setIsAuth }) => {
   const [isRegister, setIsRegister] = useState(false);
   const [formData, setFormData] = useState({});
+  const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
   const [staySignedIn, setStaySignedIn] = useState(false);
   const [passwordScore, setPasswordScore] = useState(0);
@@ -347,15 +357,34 @@ const LoginPage = ({ setIsAuth }) => {
 
   const getPasswordScore = (password) => {
     let score = 0;
-    if (/[A-Z]/.test(password)) score++; // Capital letter
-    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++; // Special char
-    if (/[0-9]/.test(password)) score++; // Number
-    if (password.length > 8) score++; // Length > 8
+    if (/[A-Z]/.test(password)) score++;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (password.length > 8) score++;
     return score;
   };
 
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.username) newErrors.username = 'Username is required.';
+    if (!formData.password) newErrors.password = 'Password is required.';
+    if (isRegister) {
+      if (!formData.email) {
+        newErrors.email = 'Email is required.';
+      } else if (!formData.email.includes('@')) {
+        newErrors.email = "Email must contain '@'.";
+      }
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = 'Passwords do not match.';
+      }
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const updateForm = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleCheckboxChange = () => {
@@ -364,12 +393,12 @@ const LoginPage = ({ setIsAuth }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage('');
 
-    if (isRegister && formData.password !== formData.confirmPassword) {
-      setMessage('Passwords do not match');
-      return;
+    if (!validate()) return;
+    if (isRegister && !formData.name) {
+      formData.name = 'Anonymous Crow';
     }
-
     try {
       const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
       const res = await fetch(endpoint, {
@@ -378,30 +407,27 @@ const LoginPage = ({ setIsAuth }) => {
         body: JSON.stringify(formData),
       });
 
+      const result = await res.json();
+
       if (!res.ok) {
-        const errorData = await res.json();
-        setMessage(errorData.message || 'Something went wrong');
+        if (result.message?.includes('already')) {
+          setMessage(result.message + ' Try logging in instead.');
+        } else {
+          setMessage(result.message || 'Something went wrong.');
+        }
         return;
       }
 
-      const result = await res.json();
       setMessage(result.message);
 
-      if (result.success) {
-        if (result.token) {
-          localStorage.setItem('token', result.token);
-          setIsAuth(true);
-        }
+      if (result.success && result.token) {
+        localStorage.setItem('token', result.token);
+        setIsAuth(true);
         navigate('/home');
       }
     } catch {
       setMessage('Network error. Please try again.');
     }
-  };
-
-  // Google sign-in click handler (placeholder)
-  const handleGoogleSignIn = () => {
-    alert('Google sign-in not implemented');
   };
 
   return (
@@ -411,7 +437,6 @@ const LoginPage = ({ setIsAuth }) => {
           <div className="logo-login">
             <img src={logo} alt="Logo" />
           </div>
-
           <h2>Welcome</h2>
           <p className="subheading">{isRegister ? 'Register to continue' : 'Log in to continue'}</p>
 
@@ -419,27 +444,15 @@ const LoginPage = ({ setIsAuth }) => {
             <>
               <div className="floating-label">
                 <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name || ''}
-                  onChange={updateForm}
-                  placeholder="Full Name"
-                  required
-                />
-                <label htmlFor="name">Full Name</label>
-              </div>
-              <div className="floating-label">
-                <input
                   type="email"
-                  id="email"
                   name="email"
                   value={formData.email || ''}
                   onChange={updateForm}
                   placeholder="Email"
                   required
                 />
-                <label htmlFor="email">Email</label>
+                <label>Email</label>
+                {errors.email && <p className="feedback" style={{ color: 'white', fontSize: '0.8em' }}>{errors.email}</p>}
               </div>
             </>
           )}
@@ -447,35 +460,32 @@ const LoginPage = ({ setIsAuth }) => {
           <div className="floating-label">
             <input
               type="text"
-              id="username"
               name="username"
               value={formData.username || ''}
               onChange={updateForm}
               placeholder="Username"
               required
             />
-            <label htmlFor="username">Username</label>
+            <label>Username</label>
+            {errors.username && <p className="feedback" style={{ color: 'white', fontSize: '0.8em' }}>{errors.username}</p>}
           </div>
 
-          {/* Forgot Password link above password input on login */}
           {!isRegister && (
             <div className="forgot-password">
               <a href="#">Forgot Password?</a>
             </div>
           )}
 
-          {/* Password Field with floating label */}
           <div className="floating-label">
             <input
               type="password"
-              id="password"
               name="password"
               value={formData.password || ''}
               onChange={updateForm}
               placeholder="Password"
               required
             />
-            <label htmlFor="password">
+            <label>
               Password
               {isRegister && (
                 <span className="coin-tooltip">
@@ -486,21 +496,20 @@ const LoginPage = ({ setIsAuth }) => {
                 </span>
               )}
             </label>
+            {errors.password && <p className="feedback" style={{ color: 'white', fontSize: '0.8em' }}>{errors.password}</p>}
           </div>
 
-          {/* Confirm Password Field with floating label */}
           {isRegister && (
             <div className="floating-label">
               <input
                 type="password"
-                id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword || ''}
                 onChange={updateForm}
                 placeholder="Confirm Password"
                 required
               />
-              <label htmlFor="confirmPassword">
+              <label>
                 Confirm Password
                 <span className="coin-tooltip">
                   <span className="coin-count">{coinEmoji.repeat(confirmScore)}</span>
@@ -509,6 +518,9 @@ const LoginPage = ({ setIsAuth }) => {
                   </span>
                 </span>
               </label>
+              {errors.confirmPassword && (
+                <p className="feedback" style={{ color: 'white', fontSize: '0.8em' }}>{errors.confirmPassword}</p>
+              )}
             </div>
           )}
 
@@ -516,49 +528,20 @@ const LoginPage = ({ setIsAuth }) => {
             <div className="stay-signed-in">
               <input
                 type="checkbox"
-                id="stay-signed-in"
                 className="custom-checkbox"
                 checked={staySignedIn}
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="stay-signed-in">Stay signed in</label>
+              <label>Stay signed in</label>
             </div>
           )}
 
           <button type="submit">{isRegister ? 'Register' : 'Log In'}</button>
+
           <div className="or-container">OR</div>
-          {/* Google sign-in button */}
-          <button
-            type="button"
-            className="google-btn"
-            onClick={handleGoogleSignIn}
-            aria-label="Continue with Google"
-          >
-            <svg
-              className="google-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 533.5 544.3"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path
-                fill="#4285F4"
-                d="M533.5 278.4c0-17.4-1.5-34-4.4-50.2H272v95h146.9c-6.3 34-25 62.7-53.5 82v68h86.4c50.7-46.7 81.7-115.3 81.7-194.8z"
-              />
-              <path
-                fill="#34A853"
-                d="M272 544.3c72.6 0 133.7-23.9 178.3-64.9l-86.4-68c-24 16-54.7 25.5-91.9 25.5-70.7 0-130.7-47.7-152.3-111.4h-90.4v69.9c44.6 87.7 136.4 149 243 149z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M119.7 324.1c-10.7-31.5-10.7-65.5 0-97L29.3 157.3c-39.4 77.2-39.4 168.5 0 245.7l90.4-69.9z"
-              />
-              <path
-                fill="#EA4335"
-                d="M272 107.7c39.3-.6 76.9 14 105.5 41.2l79-79C408.1 24.1 345.5 0 272 0 165.5 0 73.7 61.3 29.3 157.3l90.4 69.9c21.6-63.7 81.6-111.5 152.3-111.5z"
-              />
-            </svg>
-            Continue with Google
+
+          <button type="button" className="google-btn" onClick={() => alert('Google Sign-In not implemented')}>
+            <span className="google-icon">G</span> Continue with Google
           </button>
 
           <div className="register-link">
@@ -566,28 +549,14 @@ const LoginPage = ({ setIsAuth }) => {
               {isRegister ? (
                 <>
                   Already have an account?{' '}
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsRegister(false);
-                    }}
-                    className="link-toggle"
-                  >
+                  <a href="#" onClick={(e) => { e.preventDefault(); setIsRegister(false); }}>
                     Login here
                   </a>
                 </>
               ) : (
                 <>
                   Don't have an account?{' '}
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsRegister(true);
-                    }}
-                    className="link-toggle"
-                  >
+                  <a href="#" onClick={(e) => { e.preventDefault(); setIsRegister(true); }}>
                     Register here
                   </a>
                 </>
@@ -595,9 +564,7 @@ const LoginPage = ({ setIsAuth }) => {
             </p>
           </div>
 
-          {message && (
-            <p style={{ color: 'white', marginTop: '10px', textAlign: 'center' }}>{message}</p>
-          )}
+          {message && <p style={{ color: 'white', marginTop: '10px', textAlign: 'center' }}>{message}</p>}
         </form>
       </div>
     </div>
