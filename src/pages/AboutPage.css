@@ -1,5 +1,15 @@
 /************************* HEADER SECTION *************************/
 
+.homePage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+    color: #222;
+}
+
 .parallax-bg {
   background-image: url('../assets/AboutUsHeader.png');
   background-size: cover;
@@ -55,8 +65,9 @@
 }
 
 .section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
 }
 
 
@@ -83,19 +94,41 @@
 
 .mission-card {
   background: white;
-  text-align: left;
+  text-align: justify;
   color: #1A1F2B;
+  margin-left: 20rem;
+  padding-right: 50px;
+}
+
+.mission-card h2 {
+    margin-left: 5rem;
+}
+
+.mission-card p {
+    margin-left: 5rem;
 }
 
 .crows-card {
   background: #1A1F2B;
   color: white;
-  text-align: left;
+  text-align: justify;
+  margin-right: 20rem;
+  padding-left: 50px;
+}
+
+.crows-card h2 {
+    margin-right: 5rem;
+}
+
+.crows-card p {
+    margin-right: 5rem;
 }
 
 .card h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  /* margin-bottom: 10px; */
 }
 
 .card p {
@@ -108,7 +141,7 @@
 .crow-img {
   position: absolute;
   bottom: -20px;
-  left: 40px;
+  left: 2px;
   width: 100px;
   z-index: 2;
 }
@@ -117,26 +150,51 @@
 .feather {
   position: absolute;
   width: 50px;
-  opacity: 0.6;
+  opacity: 0.9;
   pointer-events: none;
 }
 
 .feather1 {
-  right: 60px;
-  top: 400px;
-  transform: rotate(20deg);
+  right: 700px;
+  top: 720px;
+  transform: rotate(0deg);
+  z-index: 1;
 }
 
 .feather2 {
-  right: 30px;
-  top: 500px;
+  right: 450px;
+  top: 800px;
   transform: rotate(-15deg);
 }
 
 .feather3 {
-  right: 80px;
-  bottom: 60px;
+  right: 300px;
+  top: 900px;
   transform: rotate(25deg);
+}
+
+.feather2-2-2 { /* 2nd Bottom feathers */
+  left: 200px;
+  top: 2200px;
+  transform: scaleX(-1) rotate(65deg);
+}
+
+.feather3-3-3 { /* 2nd Bottom feathers */
+  left: 250px;
+  top: 2000px;
+  transform:  rotate(65deg);
+}
+
+.feather2-2 { /* Bottom feathers */
+  right: 350px;
+  bottom: -1800px;
+  transform:  rotate(-15deg);
+}
+
+.feather3-3 { /* Bottom feathers */
+  right: 250px;
+  bottom: -1950px;
+  transform:  rotate(25deg);
 }
 
 
@@ -152,6 +210,13 @@
   text-align: center;
   margin-bottom: 4rem;
   color: #1A1F2B;
+}
+
+.beliefs-section h2{
+    color: #1A1F2B;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
 }
 
 .beliefs-cards {
@@ -196,6 +261,9 @@
 
 .what-to-do-section h2{
     color: #1A1F2B;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
 }
 
 .what-to-do-content {
@@ -272,3 +340,20 @@ section.Explore-section button:hover {
     background: #925d24;
 }
 
+/************************* FOOTER SECTION *************************/
+
+.homeFooter {
+    flex-shrink: 0;
+    background: #305f72;
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    position: relative;
+    margin-bottom: -20px;
+}
+
+.homeFooter a {
+    color: #f0e6d2;
+    margin: 0 0.5rem;
+}
