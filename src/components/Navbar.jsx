@@ -1,12 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './Navbar.css';
-import logo from '../assets/LogoCBG.png'; // Adjust the path if needed
+import logo from '../assets/LogoCBG.png'; 
+import UI from '../assets/UserIcon.png'; 
 
 function Navbar({ setIsAuth }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     setIsLoggedIn(!!localStorage.getItem('token'));
@@ -65,7 +67,7 @@ function Navbar({ setIsAuth }) {
           <div className="user-menu">
             <div className="user-dropdown">
               <img
-                src="/path/to/profile-image.png" // Replace with actual path
+                src={UI}
                 alt="Profile"
                 className="profile-icon"
                 onClick={() => setShowDropdown(prev => !prev)}
@@ -89,11 +91,12 @@ function Navbar({ setIsAuth }) {
 
       {/* Bottom Row */}
       <div className="navbar-bottom">
-        <Link to="/coins">Coins Directory</Link>
-        <Link to="/shop">Shop</Link>
-        <Link to="/sell">Sell</Link>
-        <Link to="/about">About</Link>
-        <Link to="/community">Community</Link>
+        <Link to="/home" className={location.pathname === '/home' ? 'nav-link active' : 'nav-link'}>Home</Link>
+        <Link to="/coins" className={location.pathname === '/coins' ? 'nav-link active' : 'nav-link'}>Coins Directory</Link>
+        <Link to="/shop" className={location.pathname === '/shop' ? 'nav-link active' : 'nav-link'}>Shop</Link>
+        <Link to="/sell" className={location.pathname === '/sell' ? 'nav-link active' : 'nav-link'}>Sell</Link>
+        <Link to="/about" className={location.pathname === '/about' ? 'nav-link active' : 'nav-link'}>About</Link>
+        <Link to="/community" className={location.pathname === '/community' ? 'nav-link active' : 'nav-link'}>Community</Link>
       </div>
     </nav>
   );
