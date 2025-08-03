@@ -48,5 +48,3 @@ npm run server
 ```
 
 After running the server, you can open your browser and visit the local server URL (usually `http://localhost:5173` or as configured) to see the CurioCrow website in action.
-
-```
