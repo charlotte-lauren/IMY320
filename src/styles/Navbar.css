@@ -20,6 +20,13 @@ body {
 .logo-text {
   display: inline-block;
   font-size: 120%;
+  color: #F2EFED;
+}
+
+.logo-text:hover {
+  display: inline-block;
+  font-size: 120%;
+  color: #B87332;
 }
 
 .navbar {

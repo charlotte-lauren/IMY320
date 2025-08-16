@@ -31,3 +31,11 @@
     color: #F2EFED;
     padding-left: 10px;
 }
+.c-nav-name:hover{
+    color: #B87332;
+    padding-left: 10px;
+}
+
+Link {
+    text-decoration: none;
+}

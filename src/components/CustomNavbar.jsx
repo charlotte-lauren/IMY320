@@ -12,8 +12,8 @@ const CustomNavbar = () => {
         </Link>
       </div>
       <div className="c-nav-right">
-        <Link to="/login" className="btn-nav">Login</Link>
-        <Link to="/register" className="btn-nav">Register</Link>
+        <Link to="/login" className="btn">Login</Link>
+        <Link to="/register" className="btn secondary">Register</Link>
       </div>
     </nav>
   );

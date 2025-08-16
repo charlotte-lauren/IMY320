@@ -49,17 +49,74 @@ p {
   line-height: 1.5;
 }
 
+span {
+    color: #305F72;
+}
+
+/* Buttons */
 button {
   background: #B87332;
   color: #F2EFED;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
+  border: 2px solid #B87332;
+  padding: 15px 60px;
+  border-radius: 999px;
   cursor: pointer;
 }
-
 button:hover {
-  background: #df9147;
+  background: #F2EFED;
+  color: #B87332;
+  text-decoration: none;
+  border: 2px solid #B87332;
+}
+
+.btn {
+  background: #B87332;
+  color: #F2EFED;
+  border: 2px solid #B87332;
+  padding: 15px 60px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.btn:hover {
+  background: #F2EFED;
+  color: #B87332;
+  text-decoration: none;
+  border: 2px solid #B87332;
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 2px solid #B87332;
+  color: #B87332;
+  padding: 15px 60px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.btn.secondary:hover {
+  background: #7DA0AE;
+  color: #F2EFED;
+  text-decoration: none;
+  border: 2px solid #7DA0AE;
+}
+
+.btn.tertiary {
+  background: #7DA0AE;
+  border: 2px solid #7DA0AE;
+  color: #F2EFED;
+  padding: 15px 60px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.btn.tertiary:hover {
+  background: transparent;
+  color: #7DA0AE;
+  text-decoration: none;
+  border: 2px solid #7DA0AE;
+}
+
+/* Links */
+Link {
+    text-decoration: none;
 }
 
 /* Cards */

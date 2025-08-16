@@ -12,7 +12,7 @@ const SplashPage = () => (
         <h1>CurioCrow</h1>
         <h3>Crows know value — so do we.</h3>
         <p>Track, trade, and showcase the richest coins with a vibrant community of collectors!</p>
-        <button className="button" type="button">Begin Your Collection</button>
+        <button className="btn" type="button">Begin Your Collection</button>
       </header>
 
       {/* Features Section */}
@@ -41,8 +41,8 @@ const SplashPage = () => (
           <p>Our team is working hard to provide a platform centered around collecting coins and connecting within the <strong>coin community</strong>.</p>
         </div>
         <div className="purpose-cta">
-          <p>Find out more...</p>
-          <button className="btn-secondary" type="button" aria-label="About CurioCrow">About CurioCrow</button>
+          <p>Find out more</p>
+          <button className="btn tertiary" type="button" aria-label="About CurioCrow">About CurioCrow</button>
       
         </div>
       </section>
@@ -79,10 +79,10 @@ const SplashPage = () => (
 
       {/* Login Section */}
       <section className="login-register-section container" aria-label="Login or Register">
-        <h3>Become <strong>A Crow</strong> • Join <strong>The Roost</strong></h3>
+        <h3>Become <span><strong>A Crow</strong></span> • Join <span><strong>The Roost</strong></span></h3>
         <p>Ready to start collecting with curiosity? Discover the diverse treasury in store for you and grow your very own caw-llections.</p>
-        <Link to="/login" className="btn-login">Login</Link>
-        <Link to="/login" className="btn-register">Register</Link>
+        <Link to="/login" className="btn">Login</Link>
+        <Link to="/login" className="btn secondary">Register</Link>
       </section>
 
     </div>
