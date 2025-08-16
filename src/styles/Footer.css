@@ -4,6 +4,12 @@
   padding: 2rem 1rem;
   text-align: center;
   grid-row: 3; /* explicitly place in footer row of grid */
+
+    /* Curve the top edges */
+  /* border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
+  margin-top: -60px;
+  padding-top: 6rem; */
 }
 
 .footer-content {

@@ -8,21 +8,23 @@ const SplashPage = () => (
   <AppLayout useCustomNavbar={true}>
     <div className='splash'>
 
-    {/* Header - Hero Section */}
+      {/* Header - Hero Section */}
+      <div className="hero-section">
       <header className="container-s">
         <div className="hero-text">
           <h1>Welcome to CurioCrow</h1>
           {/* <h3>Crows know value — so do we.</h3> */}
           <h2 className='hero-subtitle'>Discover & Collect Rare Coins From Around the World</h2>
-          <button className="btn" type="button">Begin Your Collection</button>
+          {/* <button className="btn" type="button">Begin Your Collection</button> */}
         </div>
         <img src={heroImage} alt="Hero" className="hero-img" />
       </header>
+      </div>
 
       {/* Features Section */}
       <div className='featBackground'>
         <section className="features-section" aria-label="Feathered Features">
-          <h2>Feathered Features</h2>
+          {/* <h2>Feathered Features</h2> */}
           <div className="features-grid">
             {[
               ['Explore Rarity', 'Browse a growing archive of coins with detailed art, burn mints, dates, and provenance.'],
@@ -40,18 +42,20 @@ const SplashPage = () => (
       </div>
 
       {/* Purpose Section */}
-      <section className="purpose-section container" aria-label="Our Purpose">
-        <div className="purpose-text">
-          <h2>Our Purpose</h2>
-          <p>We stand by the fact that coin collecting is broader than others imagine.</p>
-          <p>Our team is working hard to provide a platform centered around collecting coins and connecting within the <strong>coin community</strong>.</p>
-        </div>
-        <div className="purpose-cta">
-          <p>Find out more</p>
-          <button className="btn tertiary" type="button" aria-label="About CurioCrow">About CurioCrow</button>
-      
-        </div>
-      </section>
+      <div className='purposeBackground'>
+        <section className="purpose-section container" aria-label="Our Purpose">
+          <div className="purpose-text">
+            <h2>Our Purpose</h2>
+            <p>We stand by the fact that coin collecting is broader than others imagine.</p>
+            <p>Our team is working hard to provide a platform centered around collecting coins and connecting within the <strong>coin community</strong>.</p>
+          </div>
+          <div className="purpose-cta">
+            <p>Find out more</p>
+            <button className="btn tertiary" type="button" aria-label="About CurioCrow">About CurioCrow</button>
+        
+          </div>
+        </section>
+      </div>
 
       {/* Testimonials Section */}
       <div className='testBackground'>
@@ -88,8 +92,9 @@ const SplashPage = () => (
         <h3>Become <span><strong>A Crow</strong></span> • Join <span><strong>The Roost</strong></span></h3>
         <p>Ready to start collecting with curiosity? Discover the diverse treasury in store for you and grow your very own caw-llections.</p>
         <div className="login-register-links">
-          <Link to="/login" className="btn">Login</Link>
-          <Link to="/login" className="btn secondary">Register</Link>
+          <Link to="/login" className="btn">Begin Your Collection</Link>
+          {/* <Link to="/login" className="btn">Login</Link> */}
+          {/* <Link to="/login" className="btn secondary">Register</Link> */}
         </div>
       </section>
 

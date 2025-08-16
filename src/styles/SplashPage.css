@@ -16,16 +16,40 @@
 }
 
 /* ===================== Header Section ===================== */
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+    /* Curve the bottom edges */
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+
+  /* Ensure overlap into features section */
+  margin-bottom: -60px; 
+  /* pull next section up */
+  /* padding-bottom: 6rem; */
+
+  background-color: #F2EFED; /* keep hero background solid */
+  position: relative;
+  z-index: 2;
+}
 header.container-s {
   display: flex;
   align-items: center;
   text-align: center;
   column-gap: 4rem;
-  height: 100vh;
+  height: 90vh;
   margin: 0 auto;
   margin-top: -50px;
-  padding: 2rem 6rem;
+  padding: 0rem 6rem;
   flex-direction: row;
+
+  /* Background feathers */
+  background-image: url('../assets/DarkFeather.png'), url('../assets/BlueFeather.png');
+  background-repeat: no-repeat;
+  background-position: left 5%, right 0.2% bottom;
+  background-size: 100px auto, 500px auto; /* Adjust size */
 }
 .hero-text {
   display: flex;
@@ -58,12 +82,15 @@ header.container-s {
   display: flex;
   align-items: center;
   flex-direction: column;
+  /* position: relative;
+  padding-top: -200px; */
 }
 .features-section {
   color: #F2EFED;
   width: min(1700px, 90%);
   gap: 1.5rem;
-  padding: 5rem 5rem;
+  padding: 1rem 5rem 5rem 5rem;
+  z-index: 300;
 }
 .features-section h2 {
   font-size: 2.5rem;
@@ -74,30 +101,40 @@ header.container-s {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
-  color: #1A1F2B;
+  color: #F2EFED;
 }
 .feature-card {
-  background: #F2EFED;
+  background: #1A1F2B;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.2s ease;
+  text-align: center;
 }
 /* .feature-card:hover {
   transform: translateY(-5px);
 } */
 
 /* ===================== Purpose Section ===================== */
+.purposeBackground {
+  background: #1A1F2B;
+  padding: 10rem 3rem;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
 .purpose-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   align-items: center;
+  color: #F2EFED;
 }
 .purpose-text {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  /* padding-left: 40px; */
 }
 .purpose-cta {
   display: flex;
