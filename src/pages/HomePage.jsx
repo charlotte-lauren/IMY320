@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './HomePage.css';
+import '../styles/HomePage.css';
 import RomanDen from '../assets/RomanDen.jpg';
 import SilverDoll from '../assets/SilverDol.jpg';
 import GoldSov from '../assets/GoldSov.jpg';
@@ -130,8 +130,6 @@ const HomePage = () => {
             </button>
           </div>
         </section>
-
-        {/* ... rest of your sections unchanged ... */}
 
         <section className="categories">
           <h2>Browse by Category</h2>

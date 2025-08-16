@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import './Navbar.css';
+import '../styles/Navbar.css';
 import logo from '../assets/LogoCBG.png'; 
 import UI from '../assets/UserIcon.png'; 
 
@@ -49,7 +49,7 @@ function Navbar({ setIsAuth }) {
     <nav className="navbar">
       {/* Top Row */}
       <div className="navbar-top">
-        <Link to="/home" className="logo">
+        <Link to="/" className="logo">
           <img src={logo} alt="Logo" className="logo-image" />
           <span className="logo-text">CurioCrow</span>
         </Link>

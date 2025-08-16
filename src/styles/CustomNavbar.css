@@ -1,0 +1,25 @@
+.c-navbar {
+  position: sticky;
+  top: 0;
+  background: #1A1F2B; /* Ensure background covers scrolling content */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 1000; /* Keep it above content */
+}
+.c-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.c-nav-logo {
+    display: flex;
+    align-items: center;
+    height: 72px;
+}
+.c-nav-right {
+  display: flex;
+  gap: 1rem;
+}

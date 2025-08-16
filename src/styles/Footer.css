@@ -1,0 +1,38 @@
+.footer {
+  background: #19262f;
+  color: #f1f1f1;
+  padding: 2rem 1rem;
+  text-align: center;
+  grid-row: 3; /* explicitly place in footer row of grid */
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-links,
+.footer-socials {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a,
+.footer-socials a {
+  color: #f1f1f1;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover,
+.footer-socials a:hover {
+  color: #d4842b;
+}
+
+.footer p {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}

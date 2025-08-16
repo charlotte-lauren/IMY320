@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./AboutPage.css";
+import "../styles/AboutPage.css";
 
 import BuyCoins from '../assets/BuyCoins.png';
 import crowImg from '../assets/Crow.png';

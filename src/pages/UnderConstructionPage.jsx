@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './UnderConstructionPage.css';
+import '../styles/UnderConstructionPage.css';
 
 const UnderConstructionPage = () => {
   return (

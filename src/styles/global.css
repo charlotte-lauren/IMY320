@@ -1,0 +1,69 @@
+/********************* Basic Global Styles *********************/
+
+/* -------------- Colours --------------*/
+/* Primary color => #1A1F2B */
+/* Seconday color => #305F72 */
+/* Background color => #7DA0AE */
+/* Accent color => #B87332 */
+/* Neutral color => #F2EFED */
+
+
+/* Grid layout for the entire page */
+.app-layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* navbar, content, footer */
+  min-height: 100vh; /* take full height */
+}
+
+/* Main content area */
+.content {
+  display: grid;
+  gap: 2rem; /* spacing between sections */
+  padding: 2rem;
+}
+
+/* Headings, text, buttons, etc */
+h1, h2, h3 {
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+button {
+  background: #B87332;
+  color: #F2EFED;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #df9147;
+}
+
+/* Cards */
+.card {
+  background: #F2EFED;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+
+/* Section layouts */
+.section-flex { /* Flaexbox layout for sections */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-grid { /* Grid layout for sections */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}

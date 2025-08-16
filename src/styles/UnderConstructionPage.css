@@ -64,12 +64,3 @@
 .back-button:hover {
   background-color: #7c9fad;
 }
-
-footer {
-  position: absolute;
-  bottom: 1rem;
-  left: 0;
-  width: 100%;
-  font-size: 0.8rem;
-  color: #777;
-}
