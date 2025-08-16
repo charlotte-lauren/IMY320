@@ -22,9 +22,10 @@ header.container-s {
   text-align: center;
   column-gap: 4rem;
   height: 100vh;
-  /* width: min(1700px, 100%); */
   margin: 0 auto;
+  margin-top: -50px;
   padding: 2rem 6rem;
+  flex-direction: row;
 }
 .hero-text {
   display: flex;
@@ -43,7 +44,7 @@ header.container-s {
 }
 .hero-img {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   height: auto;
   margin-top: 1rem;
   display: flex;
@@ -52,10 +53,28 @@ header.container-s {
 }
 
 /* ===================== Features Section ===================== */
+.featBackground {
+  background: #1A1F2B;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.features-section {
+  color: #F2EFED;
+  width: min(1700px, 90%);
+  gap: 1.5rem;
+  padding: 5rem 5rem;
+}
+.features-section h2 {
+  font-size: 2.5rem;
+  margin-top: 0.3rem;
+  text-align: center;
+}
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
+  color: #1A1F2B;
 }
 .feature-card {
   background: #F2EFED;
@@ -64,9 +83,9 @@ header.container-s {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.2s ease;
 }
-.feature-card:hover {
+/* .feature-card:hover {
   transform: translateY(-5px);
-}
+} */
 
 /* ===================== Purpose Section ===================== */
 .purpose-section {
@@ -99,7 +118,7 @@ header.container-s {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  border-radius: 12px;
+  border-radius: 30px;
   width: min(1200px, 90%);
 }
 .testimonials-split {
@@ -120,7 +139,7 @@ header.container-s {
 .testimonial-card {
   background: #F2EFED;
   padding: 2rem 2rem;
-  border-radius: 10px;
+  border-radius: 20px;
   flex: 1 1 calc(50% - 1rem);
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }

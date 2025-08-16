@@ -20,22 +20,24 @@ const SplashPage = () => (
       </header>
 
       {/* Features Section */}
-      <section className="features-section container" aria-label="Feathered Features">
-        <h2>Feathered Features</h2>
-        <div className="features-grid">
-          {[
-            ['Explore Rarity', 'Browse a growing archive of coins with detailed art, burn mints, dates, and provenance.'],
-            ['Track Your Treasures', 'Easily catalog your collection and add custom notes, photos, and videos.'],
-            ['Learn & Share', 'Connect with passionate collectors, share insights, and discover hidden gems.'],
-            ['Buy, Sell, Trade', 'Use our secure marketplace to grow your hoard or find the crow that got away.']
-          ].map(([title, desc], idx) => (
-            <article key={idx} className="feature-card" tabIndex="0">
-              <h3>{title}</h3>
-              <p>{desc}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <div className='featBackground'>
+        <section className="features-section" aria-label="Feathered Features">
+          <h2>Feathered Features</h2>
+          <div className="features-grid">
+            {[
+              ['Explore Rarity', 'Browse a growing archive of coins with detailed art, burn mints, dates, and provenance.'],
+              ['Track Your Treasures', 'Easily catalog your collection and add custom notes, photos, and videos.'],
+              ['Learn & Share', 'Connect with passionate collectors, share insights, and discover hidden gems.'],
+              ['Buy, Sell, Trade', 'Use our secure marketplace to grow your hoard or find the crow that got away.']
+            ].map(([title, desc], idx) => (
+              <article key={idx} className="feature-card" tabIndex="0">
+                <h3>{title}</h3>
+                <p>{desc}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
 
       {/* Purpose Section */}
       <section className="purpose-section container" aria-label="Our Purpose">
