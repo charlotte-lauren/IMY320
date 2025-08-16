@@ -54,7 +54,7 @@ const SplashPage = () => (
           <div className="testimonials-header">
             <h2>Testimonials</h2>
             <h3>What <strong>The Flock</strong> Is Saying About Us</h3>
-            <p className='whiteText'>Take a first hand glance at how our site has helped fellow collectors!</p>
+            <p>Take a first hand glance at how our site has helped fellow collectors!</p>
           </div>
 
           <div className="testimonial-cards">
@@ -81,8 +81,10 @@ const SplashPage = () => (
       <section className="login-register-section container" aria-label="Login or Register">
         <h3>Become <span><strong>A Crow</strong></span> • Join <span><strong>The Roost</strong></span></h3>
         <p>Ready to start collecting with curiosity? Discover the diverse treasury in store for you and grow your very own caw-llections.</p>
-        <Link to="/login" className="btn">Login</Link>
-        <Link to="/login" className="btn secondary">Register</Link>
+        <div className="login-register-links">
+          <Link to="/login" className="btn">Login</Link>
+          <Link to="/login" className="btn secondary">Register</Link>
+        </div>
       </section>
 
     </div>
