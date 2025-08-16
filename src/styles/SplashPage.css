@@ -16,18 +16,39 @@
 }
 
 /* ===================== Header Section ===================== */
-header.container {
+header.container-s {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  column-gap: 4rem;
+  height: 100vh;
+  /* width: min(1700px, 100%); */
+  margin: 0 auto;
+  padding: 2rem 6rem;
+}
+.hero-text {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
   gap: 1rem;
-  /* height: 100vh; */ /* Uncomment if you want the header to take full viewport height */
 }
-
+.hero-text h1{
+  font-size: 4rem;
+}
 .hero-subtitle {
-  font-size: 2.5rem;
+  /* font-size: 2rem; */
+  flex-wrap: wrap;
   color: #305F72;
+  margin-bottom: 2rem;
+}
+.hero-img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* ===================== Features Section ===================== */
@@ -65,45 +86,40 @@ header.container {
   align-items: center;
 }
 
-/* Secondary Button */
-.btn-secondary {
-  background: #7DA0AE;
-  color: #F2EFED;
-  padding: 0.75rem 1.25rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-.btn-secondary:hover {
-  background: #88abb9;
-}
-
 /* ===================== Testimonials Section ===================== */
 .testBackground {
   background: #305F72;
   padding: 5rem 3rem;
+  display: flex;
+  align-items: center;
+}
+.testimonials-section {
+  background: #7DA0AE;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border-radius: 12px;
+  width: min(1200px, 90%);
 }
 .testimonials-split {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 2rem;
-  align-items: start;
+  gap: 3rem;  
 }
 .testimonials-header {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  color: #F2EFED;
+  color: #1A1F2B;
 }
 .testimonial-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 .testimonial-card {
   background: #F2EFED;
-  padding: 1rem;
+  padding: 2rem 2rem;
   border-radius: 10px;
   flex: 1 1 calc(50% - 1rem);
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -111,7 +127,7 @@ header.container {
 .testimonial-author {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 /* ===================== Login/Register Section ===================== */

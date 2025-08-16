@@ -2,17 +2,21 @@ import { Link } from 'react-router-dom';
 import '../styles/SplashPage.css';
 import '../styles/global.css';
 import AppLayout from "../components/AppLayout";
+import heroImage from '../assets/Hero.png';
 
 const SplashPage = () => (
   <AppLayout useCustomNavbar={true}>
     <div className='splash'>
 
     {/* Header - Hero Section */}
-      <header className="container">
-        <h1>Welcome to CurioCrow</h1>
-        {/* <h3>Crows know value — so do we.</h3> */}
-        <h2 className='hero-subtitle'>Discover & Collect Rare Coins From Around the World</h2>
-        <button className="btn" type="button">Begin Your Collection</button>
+      <header className="container-s">
+        <div className="hero-text">
+          <h1>Welcome to CurioCrow</h1>
+          {/* <h3>Crows know value — so do we.</h3> */}
+          <h2 className='hero-subtitle'>Discover & Collect Rare Coins From Around the World</h2>
+          <button className="btn" type="button">Begin Your Collection</button>
+        </div>
+        <img src={heroImage} alt="Hero" className="hero-img" />
       </header>
 
       {/* Features Section */}
@@ -49,32 +53,32 @@ const SplashPage = () => (
 
       {/* Testimonials Section */}
       <div className='testBackground'>
-      <section className="testimonials-section" aria-label="Testimonials">
-        <div className="testimonials-split">
-          <div className="testimonials-header">
-            <h2>Testimonials</h2>
-            <h3>What <strong>The Flock</strong> Is Saying About Us</h3>
-            <p>Take a first hand glance at how our site has helped fellow collectors!</p>
-          </div>
+        <section className="testimonials-section container" aria-label="Testimonials">
+          <div className="testimonials-split">
+            <div className="testimonials-header">
+              <h2>Testimonials</h2>
+              <h3>What <strong>The Flock</strong> Is Saying About Us</h3>
+              <p>Take a first hand glance at how our site has helped fellow collectors!</p>
+            </div>
 
-          <div className="testimonial-cards">
-            {[
-              ['"Found my first Roman coin here!"', '@RavenRaven', '5'],
-              ['"The cataloging tool is a dream to use."', '@NumiNerd', '6'],
-              ['"Safe trades and real experts."', '@JollyJourneyman', '8'],
-              ['"Best place for collectors, hands down."', '@CrowDaddy', '9'],
-            ].map(([text, author, img], idx) => (
-              <article key={idx} className="testimonial-card" tabIndex="0">
-                <p className="testimonial-text">{text}</p>
-                <div className="testimonial-author">
-                  <img src={`https://i.pravatar.cc/24?img=${img}`} alt={`Profile of ${author}`} />
-                  <span>{author}</span>
-                </div>
-              </article>
-            ))}
+            <div className="testimonial-cards">
+              {[
+                ['"Found my first Roman coin here!"', '@RavenRaven', '5'],
+                ['"The cataloging tool is a dream to use."', '@NumiNerd', '6'],
+                ['"Safe trades and real experts."', '@JollyJourneyman', '8'],
+                ['"Best place for collectors, hands down."', '@CrowDaddy', '9'],
+              ].map(([text, author, img], idx) => (
+                <article key={idx} className="testimonial-card" tabIndex="0">
+                  <p className="testimonial-text">{text}</p>
+                  <div className="testimonial-author">
+                    <img src={`https://i.pravatar.cc/24?img=${img}`} alt={`Profile of ${author}`} />
+                    <span>{author}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       </div>
 
       {/* Login Section */}
