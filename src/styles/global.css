@@ -54,7 +54,7 @@ span {
 }
 
 /* Buttons */
-button {
+/* button {
   background: #B87332;
   color: #F2EFED;
   border: 2px solid #B87332;
@@ -67,7 +67,7 @@ button:hover {
   color: #B87332;
   text-decoration: none;
   border: 2px solid #B87332;
-}
+} */
 
 .btn {
   background: #B87332;

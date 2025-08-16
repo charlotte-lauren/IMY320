@@ -9,9 +9,9 @@ const SplashPage = () => (
 
     {/* Header - Hero Section */}
       <header className="container">
-        <h1>CurioCrow</h1>
-        <h3>Crows know value — so do we.</h3>
-        <p>Track, trade, and showcase the richest coins with a vibrant community of collectors!</p>
+        <h1>Welcome to CurioCrow</h1>
+        {/* <h3>Crows know value — so do we.</h3> */}
+        <h2 className='hero-subtitle'>Discover & Collect Rare Coins From Around the World</h2>
         <button className="btn" type="button">Begin Your Collection</button>
       </header>
 
