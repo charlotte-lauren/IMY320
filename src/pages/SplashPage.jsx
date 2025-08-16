@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import '../styles/SplashPage.css';
+import '../styles/global.css';
 import AppLayout from "../components/AppLayout";
 
 const SplashPage = () => (
@@ -9,11 +10,9 @@ const SplashPage = () => (
     {/* Header - Hero Section */}
       <header className="container">
         <h1>CurioCrow</h1>
-        <p className="subtitle">
-          Crows know value — so do we.<br />
-          Track, trade, and showcase the richest coins with a vibrant community of collectors!
-        </p>
-        <button className="btn-primary" type="button">Begin Your Collection</button>
+        <h3>Crows know value — so do we.</h3>
+        <p>Track, trade, and showcase the richest coins with a vibrant community of collectors!</p>
+        <button className="button" type="button">Begin Your Collection</button>
       </header>
 
       {/* Features Section */}
@@ -37,7 +36,7 @@ const SplashPage = () => (
       {/* Purpose Section */}
       <section className="purpose-section container" aria-label="Our Purpose">
         <div className="purpose-text">
-          <h1>Our Purpose</h1>
+          <h2>Our Purpose</h2>
           <p>We stand by the fact that coin collecting is broader than others imagine.</p>
           <p>Our team is working hard to provide a platform centered around collecting coins and connecting within the <strong>coin community</strong>.</p>
         </div>
@@ -53,12 +52,8 @@ const SplashPage = () => (
       <section className="testimonials-section" aria-label="Testimonials">
         <div className="testimonials-split">
           <div className="testimonials-header">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
-              <circle cx="32" cy="32" r="30" fill="#1b4f66" />
-              <path d="M20 44h6v-6h-6v6zm12-12h6v-6h-6v6z" fill="#d4842b" />
-            </svg>
-            <p className='whiteText'>Testimonials</p>
-            <h2>What <strong>The Flock</strong> Is Saying About Us</h2>
+            <h2>Testimonials</h2>
+            <h3>What <strong>The Flock</strong> Is Saying About Us</h3>
             <p className='whiteText'>Take a first hand glance at how our site has helped fellow collectors!</p>
           </div>
 
@@ -84,7 +79,7 @@ const SplashPage = () => (
 
       {/* Login Section */}
       <section className="login-register-section container" aria-label="Login or Register">
-        <p>Become <strong>A Crow</strong> • Join <strong>The Roost</strong></p>
+        <h3>Become <strong>A Crow</strong> • Join <strong>The Roost</strong></h3>
         <p>Ready to start collecting with curiosity? Discover the diverse treasury in store for you and grow your very own caw-llections.</p>
         <Link to="/login" className="btn-login">Login</Link>
         <Link to="/login" className="btn-register">Register</Link>

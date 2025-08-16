@@ -7,6 +7,9 @@
 /* Accent color => #B87332 */
 /* Neutral color => #F2EFED */
 
+/* -------------- Fonts --------------*/
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
+
 
 /* Grid layout for the entire page */
 .app-layout {
@@ -23,9 +26,22 @@
 }
 
 /* Headings, text, buttons, etc */
-h1, h2, h3 {
+h1 {
+    font-family: 'Cinzel', serif;
+    margin-bottom: 1rem;
+    font-size: 5.5rem;
+}
+
+h2 {
   font-family: 'Inter', sans-serif;
   margin-bottom: 1rem;
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
 p {
