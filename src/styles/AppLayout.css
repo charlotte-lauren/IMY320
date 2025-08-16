@@ -25,11 +25,16 @@
 
 /* Footer styling */
 .footer {
-  background: #19262f;
-  color: #f1f1f1;
-  padding: 2rem 1rem;
+  background: #F2EFED;
+  color: #1A1F2B;
+  padding: 3rem 1rem;
   text-align: center;
   grid-row: 3; /* explicitly place in footer row of grid */
+
+    border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
+  margin-top: -60px;
+  padding-top: 6rem;
 }
 
 .footer-content {
@@ -48,7 +53,7 @@
 
 .footer-links a,
 .footer-socials a {
-  color: #f1f1f1;
+  color: #1A1F2B;
   text-decoration: none;
   transition: color 0.2s ease;
 }
