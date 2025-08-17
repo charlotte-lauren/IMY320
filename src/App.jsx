@@ -5,6 +5,7 @@ import Login from './pages/LoginPage';
 import Home from './pages/HomePage';
 import About from './pages/AboutPage';
 import Coins from './pages/CoinsDirectory';
+import Product from './pages/ProductPage';
 import Navbar from './components/Navbar';
 import UnderConstructionPage from './pages/UnderConstructionPage';
 
@@ -67,6 +68,19 @@ function App() {
             isAuth ? (
               <Layout setIsAuth={setIsAuth}>
                 <Coins />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/product"
+          element={
+            isAuth ? (
+              <Layout setIsAuth={setIsAuth}>
+                <Product />
               </Layout>
             ) : (
               <Navigate to="/login" replace />

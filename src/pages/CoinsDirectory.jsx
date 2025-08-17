@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AppLayout from "../components/AppLayout";
-
+import { Link } from 'react-router-dom';
 import RomanDen from "../assets/RomanDen.jpg";
 import SilverDoll from "../assets/SilverDol.jpg";
 import GoldSov from "../assets/GoldSov.jpg";
@@ -99,14 +99,14 @@ const CoinsDirectory = () => {
                 <div className="coin-list">
                     {filteredCoins.map((coin, idx) => (
                         <div key={idx} className="coin-row-list">
-                        <div className="coin-info-list">
-                            <img src={coin.img} alt={coin.title} className="coin-img-list" />
-                            <div className="coin-text-list">
-                            <h3>{coin.title}</h3>
-                            <p>{coin.description}</p>
+                            <div className="coin-info-list">
+                                <img src={coin.img} alt={coin.title} className="coin-img-list" />
+                                <div className="coin-text-list">
+                                <h3>{coin.title}</h3>
+                                <p>{coin.description}</p>
+                                </div>
                             </div>
-                        </div>
-                        <button className="view-btn">VIEW</button>
+                        <Link to="/product" className="btn btn-product-view">View</Link>
                         </div>
                     ))}
 

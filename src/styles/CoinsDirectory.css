@@ -156,7 +156,7 @@
   max-width: 500px;
 }
 
-.view-btn {
+/* .view-btn {
   background: #b37341;
   border: none;
   padding: 10px 25px;
@@ -169,6 +169,10 @@
 
 .view-btn:hover {
   background: #8c552f;
+} */
+
+.btn-product-view {
+    margin-left: 6rem;
 }
 
 .load-more-wrapper {
