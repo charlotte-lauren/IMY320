@@ -6,7 +6,7 @@ import logo from '../assets/LogoNBG.png';
 
 const UnderConstructionPage = () => {
   return (
-    <AppLayout useCustomNavbar={true} useFooter={true} loginPage={false} color={true}>
+    <AppLayout useCustomNavbar={true} useFooter={true} loginPage={true} color={true}>
       <div className="under-construction">
           <div className="logo-img">
             <img src={logo} alt="Logo" />

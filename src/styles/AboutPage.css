@@ -19,6 +19,14 @@
   position: relative;
 }
 
+.parallax-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 31, 43, 0.311);
+    z-index: 0;
+}
+
 .about-header {
   position: relative;
   height: 100%;

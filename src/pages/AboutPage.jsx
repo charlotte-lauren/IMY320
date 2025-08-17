@@ -151,7 +151,7 @@ const AboutPage = () => (
           <span className="text-italic"> - CurioCrow is your starting point.</span>
         </p>
           <div className="explore-links">
-            <Link to="/sell" className="btn btn-explore">Explore Our Collections</Link>
+            <Link to="/coins" className="btn btn-explore">Explore Our Collections</Link>
           </div>
 
         {/* Decorative feathers */}

@@ -2,7 +2,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import '../styles/Navbar.css';
 import logo from '../assets/LogoCBG.png'; 
-import UI from '../assets/UserIcon.png'; 
+import UI from '../assets/UserIcon.svg';
+import cart from '../assets/Cart.png'; 
 
 function Navbar({ setIsAuth }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -63,7 +64,11 @@ function Navbar({ setIsAuth }) {
           <input type="text" className="search-bar" placeholder="Search..." />
         </div>
 
-        <Link to="/cart" className="icon-button">🛒</Link>
+        <Link to="/cart" className="icon-button"> <img
+                src={cart}
+                alt="Cart"
+                className="cart-icon"
+              /></Link>
 
         {isLoggedIn ? (
           <div className="user-menu">
@@ -77,7 +82,7 @@ function Navbar({ setIsAuth }) {
               {showDropdown && (
                 <div className="dropdown-menu">
                   <Link to="/profile" className="dropdown-item">Profile</Link>
-                  <button onClick={handleLogout} className="dropdown-item">Logout</button>
+                  <button onClick={handleLogout} className="btn dropdown-item">Logout</button>
                 </div>
               )}
             </div>
@@ -92,14 +97,14 @@ function Navbar({ setIsAuth }) {
       </div>
 
       {/* Bottom Row */}
-      {/* <div className="navbar-bottom">
+      <div className="navbar-bottom">
         <Link to="/home" className={location.pathname === '/home' ? 'nav-link active' : 'nav-link'}>Home</Link>
         <Link to="/coins" className={location.pathname === '/coins' ? 'nav-link active' : 'nav-link'}>Coins Directory</Link>
         <Link to="/shop" className={location.pathname === '/shop' ? 'nav-link active' : 'nav-link'}>Shop</Link>
         <Link to="/sell" className={location.pathname === '/sell' ? 'nav-link active' : 'nav-link'}>Sell</Link>
         <Link to="/about" className={location.pathname === '/about' ? 'nav-link active' : 'nav-link'}>About</Link>
         <Link to="/community" className={location.pathname === '/community' ? 'nav-link active' : 'nav-link'}>Community</Link>
-      </div> */}
+      </div>
     </nav>
   );
 }
