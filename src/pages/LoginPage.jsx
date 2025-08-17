@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/LogoNBG.png';
+// import CustomNavbar from "../components/CustomNavbar";
+import AppLayout from "../components/AppLayout";
 
 const coinEmoji = '🪙';
 
@@ -431,6 +433,7 @@ const LoginPage = ({ setIsAuth }) => {
   };
 
   return (
+    <AppLayout useCustomNavbar={true} useFooter={false} loginPage={true}>
     <div className="container">
       <div className="right-panel">
         <form className="form-box" onSubmit={handleSubmit} noValidate>
@@ -568,6 +571,7 @@ const LoginPage = ({ setIsAuth }) => {
         </form>
       </div>
     </div>
+    </AppLayout>
   );
 };
 

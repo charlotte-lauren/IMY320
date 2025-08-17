@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "../styles/CustomNavbar.css";
 import logo from '../assets/LogoCBG.png'; 
 
-const CustomNavbar = () => {
+const CustomNavbar = ({loginPage }) => {
   return (
     <nav className="c-navbar">
       <div className="c-nav-left">
@@ -11,10 +11,11 @@ const CustomNavbar = () => {
             <span className="c-nav-name">CurioCrow</span>
         </Link>
       </div>
+      {loginPage ? null : (
       <div className="c-nav-right">
         <Link to="/login" className="btn">Login</Link>
         <Link to="/login" className="btn secondary">Register</Link>
-      </div>
+      </div>)}
     </nav>
   );
 };

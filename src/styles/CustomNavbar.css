@@ -1,3 +1,6 @@
+/* -------------- Fonts --------------*/
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
+
 .c-navbar {
   position: sticky;
   top: 0;
@@ -30,6 +33,7 @@
 .c-nav-name{
     color: #F2EFED;
     padding-left: 10px;
+    font-family: 'Cinzel', serif;
 }
 .c-nav-name:hover{
     color: #B87332;

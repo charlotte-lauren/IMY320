@@ -1,3 +1,6 @@
+/* -------------- Fonts --------------*/
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
+
 body {
   width: 100%;
 }
@@ -21,6 +24,7 @@ body {
   display: inline-block;
   font-size: 120%;
   color: #F2EFED;
+  font-family: 'Cinzel', serif;
 }
 
 .logo-text:hover {
