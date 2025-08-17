@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/LogoNBG.png';
 // import CustomNavbar from "../components/CustomNavbar";
 import AppLayout from "../components/AppLayout";
+import '../styles/global.css';
 
 const coinEmoji = '🪙';
 
@@ -11,7 +12,7 @@ const styles = `
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #1A1F2B;
-    color: #1A1F2B;
+    color: #C8D9E2;
   }
 
   .container {
@@ -65,24 +66,30 @@ const styles = `
     height: auto;
   }
 
+  /* -------------- Fonts --------------*/
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
+
   .form-box h2 {
     margin-bottom: 5px;
     text-align: center;
-    color: black;
+    color: #F2EFED;
     font-weight: bold;
+    font-size: 3.5rem;
+    font-family: 'Cinzel', serif;
   }
 
   .form-box p.subheading {
     text-align: center;
     margin-top: 0;
     margin-bottom: 20px;
-    color: black;
+    color: #F2EFED;
   }
 
   /* Floating label styles */
   .floating-label {
     position: relative;
     margin-bottom: 20px;
+    color: #C8D9E2;
   }
 
   .feedback {
@@ -96,7 +103,7 @@ const styles = `
     border: none;
     border-radius: 10px;
     background-color: #1A1F2B50;
-    color: #000;
+    color: #C8D9E2;
     font-size: 1rem;
     text-shadow: 000;
     transition: text-shadow 0.3s ease;
@@ -110,7 +117,7 @@ const styles = `
     position: absolute;
     top: 14px;
     left: 12px;
-    color: black;
+    color: #C8D9E2;
     font-size: 1rem;
     transition: all 0.2s ease-out;
     padding: 0 4px;
@@ -174,27 +181,34 @@ const styles = `
     margin-bottom: 4px;
   }
 
-  .forgot-password {
-    font-size: 0.9em;
-    margin-bottom: 6px;
-  }
+.forgot-password {
+  font-size: 1rem;
+}
 
-  .forgot-password a {
-    color: #C8D9E2;
-    text-decoration: none;
-  }
+.forgot-password a {
+  color: #C8D9E2;
+  text-decoration: none;
+}
 
-  .forgot-password a:hover {
-    text-decoration: underline;
-    color: #B87332;
-  }
+.forgot-password a:hover {
+  text-decoration: underline;
+  color: #B87332;
+}
 
-  .stay-signed-in {
-    display: flex;
-    align-items: center;
-    margin-top: 12px;
-    color: #C8D9E2;
-  }
+.signin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.stay-signed-in {
+  display: flex;
+  align-items: center;
+  color: #C8D9E2;
+  cursor: pointer;
+}
 
   .stay-signed-in label {
     font-weight: 400;
@@ -228,20 +242,9 @@ const styles = `
     transform: rotate(45deg);
   }
 
-  .form-box button {
+  .form-box button.btn-login {
     width: 100%;
-    padding: 12px;
-    background-color: #1A1F2B;
-    color: #C8D9E2;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 16px;
-  }
-
-  .form-box button:hover {
-    background-color: #a5622d;
+    margin-top: 20px;
   }
 
   .register-link {
@@ -277,33 +280,59 @@ const styles = `
     color: white !important;
   }
 
-  /* Google button */
-  .google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    color: #444;
-    border: none;
-    padding: 10px 0;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 24px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-    transition: background-color 0.3s ease;
-    user-select: none;
-  }
+// .google-btn {
+//   background: #5C7D8A;
+//   color: #F2EFED;
+//   border: 2px solid #5C7D8A;
+//   padding: 15px 60px;
+//   border-radius: 999px;
+//   cursor: pointer;
+//   transition: transform 0.1s ease-out;
+//   width: 100%;
+// }
+// .google-btn:hover {
+//   background: #7C9FAD;
+//   color: #F2EFED;
+//   text-decoration: none;
+//   border: 2px solid #7C9FAD;
+// }
+// .google-btn:active {
+//   background: #1A1F2B;
+//   color: #F2EFED;
+//   text-decoration: none;
+//   border: 2px solid #1A1F2B;
+//   transform: scale(0.90); 
+// }
 
-  .google-btn:hover {
-    background-color: #eee;
-  }
+.google-btn {
+  background: transparent;
+  border: 2px solid #7DA0AE;
+  color: #7DA0AE;
+  padding: 15px 60px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.1s ease-out;
+  width: 100%;
+}
+.google-btn:hover {
+  background: #7DA0AE;
+  color: #F2EFED;
+  text-decoration: none;
+  border: 2px solid #7DA0AE;
+}
+.google-btn:active {
+  background: #7DA0AE;
+  color: #F2EFED;
+  text-decoration: none;
+  border: 2px solid #7DA0AE;
+  transform: scale(0.90); /* Shrinks the button to 90% of its original size */
+}
 
   .google-icon {
     height: 20px;
     width: 20px;
     margin-right: 12px;
+    color: #7DA0AE;
   }
 
   .or-container {
@@ -437,9 +466,9 @@ const LoginPage = ({ setIsAuth }) => {
     <div className="container">
       <div className="right-panel">
         <form className="form-box" onSubmit={handleSubmit} noValidate>
-          <div className="logo-login">
+          {/* <div className="logo-login">
             <img src={logo} alt="Logo" />
-          </div>
+          </div> */}
           <h2>Welcome</h2>
           <p className="subheading">{isRegister ? 'Register to continue' : 'Log in to continue'}</p>
 
@@ -472,12 +501,6 @@ const LoginPage = ({ setIsAuth }) => {
             <label>Username</label>
             {errors.username && <p className="feedback" style={{ color: 'white', fontSize: '0.8em' }}>{errors.username}</p>}
           </div>
-
-          {!isRegister && (
-            <div className="forgot-password">
-              <a href="#">Forgot Password?</a>
-            </div>
-          )}
 
           <div className="floating-label">
             <input
@@ -528,22 +551,27 @@ const LoginPage = ({ setIsAuth }) => {
           )}
 
           {!isRegister && (
-            <div className="stay-signed-in">
-              <input
-                type="checkbox"
-                className="custom-checkbox"
-                checked={staySignedIn}
-                onChange={handleCheckboxChange}
-              />
-              <label>Stay signed in</label>
+            <div className="signin-row">
+              <label className="stay-signed-in">
+                <input
+                  type="checkbox"
+                  className="custom-checkbox"
+                  checked={staySignedIn}
+                  onChange={handleCheckboxChange}
+                />
+                Stay signed in
+              </label>
+              <div className="forgot-password">
+                <a href="#">Forgot Password?</a>
+              </div>
             </div>
           )}
 
-          <button type="submit">{isRegister ? 'Register' : 'Log In'}</button>
+          <button className='btn btn-login' type="submit">{isRegister ? 'Register' : 'Log In'}</button>
 
           <div className="or-container">OR</div>
 
-          <button type="button" className="google-btn" onClick={() => alert('Google Sign-In not implemented')}>
+          <button className="google-btn" onClick={() => alert('Google Sign-In not implemented')}>
             <span className="google-icon">G</span> Continue with Google
           </button>
 
