@@ -3,6 +3,9 @@ import '../styles/SplashPage.css';
 import '../styles/global.css';
 import AppLayout from "../components/AppLayout";
 import heroImage from '../assets/Hero.png';
+import WhiteFeather from "../assets/WhiteFeather.png";
+import BlueFeather from "../assets/BlueFeather.png";
+import DarkFeather from "../assets/DarkFeather.png";
 
 const SplashPage = () => (
   <AppLayout useCustomNavbar={true}>
@@ -13,7 +16,6 @@ const SplashPage = () => (
         <header className="container-s">
           <div className="hero-text">
             <h1>Welcome to CurioCrow</h1>
-            {/* <h3>Crows know value — so do we.</h3> */}
             <h2 className='hero-subtitle'>Discover & Collect Rare Coins From Around the World</h2>
             {/* <button className="btn" type="button">Begin Your Collection</button> */}
           </div>
@@ -43,7 +45,12 @@ const SplashPage = () => (
 
       {/* Purpose Section */}
       <div className='purposeBackground'>
-        <section className="purpose-section container" aria-label="Our Purpose">
+        <section className="purpose-section container section-with-feathers" aria-label="Our Purpose">
+          {/* Feather Decorations */}
+          <div className="feather-layer" aria-hidden="true">
+            <img src={WhiteFeather} alt="" className="feather feather-left" />
+          </div>
+
           <div className="purpose-text">
             <hr/>
             <h2>Our Purpose</h2>
@@ -52,15 +59,24 @@ const SplashPage = () => (
           </div>
           <div className="purpose-cta">
             <p>Find out more</p>
-            <button className="btn tertiary" type="button" aria-label="About CurioCrow">About CurioCrow</button>
+            <Link to="/about" className="btn tertiary">About CurioCrow</Link>
         
           </div>
         </section>
       </div>
 
+      {/* Feather Decorations */}
+      {/* <div className="feather-layer" aria-hidden="true">
+        <img src={WhiteFeather} alt="" className="feather feather-left" />
+        <img src={WhiteFeather} alt="" className="feather feather-right" />
+        <img src={WhiteFeather} alt="" className="feather feather-middle-right" />
+        <img src={BlueFeather} alt="" className="feather feather-bottom-left" />
+        <img src={DarkFeather} alt="" className="feather feather-bottom-right" />
+      </div> */}
+
       {/* Testimonials Section */}
       <div className='testBackground'>
-        <section className="testimonials-section container" aria-label="Testimonials">
+        <section className="testimonials-section container section-with-feathers" aria-label="Testimonials">
           <div className="testimonials-split">
             <div className="testimonials-header">
               <h2>Testimonials</h2>
@@ -84,6 +100,12 @@ const SplashPage = () => (
                 </article>
               ))}
             </div>
+          </div>
+
+          {/* Feather Decorations */}
+          <div className="feather-layer" aria-hidden="true">
+            <img src={WhiteFeather} alt="" className="feather feather-right" />
+            <img src={WhiteFeather} alt="" className="feather feather-middle-right" />
           </div>
         </section>
       </div>

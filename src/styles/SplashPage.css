@@ -35,21 +35,41 @@
   z-index: 2;
 }
 header.container-s {
+  position: relative;
   display: flex;
   align-items: center;
   text-align: center;
-  column-gap: 4rem;
+  column-gap: 1.5rem;
   height: 90vh;
   margin: 0 auto;
   margin-top: -50px;
   padding: 0rem 6rem;
   flex-direction: row;
-
-  /* Background feathers */
-  background-image: url('../assets/DarkFeather.png'), url('../assets/BlueFeather.png');
-  background-repeat: no-repeat;
-  background-position: left 5%, right 0.2% bottom;
-  background-size: 100px auto, 500px auto; /* Adjust size */
+  overflow: hidden;
+}
+/* Dark feather (left) */
+header.container-s::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  top: 10%;
+  width: 100px;
+  height: 200px;
+  background: url('../assets/DarkFeather.png') no-repeat center/contain;
+  transform: rotate(-120deg); /* rotate individually */
+  z-index: -1; /* behind the text */
+}
+/* Blue feather (right) */
+header.container-s::after {
+  content: "";
+  position: absolute;
+  left: 75%;
+  bottom: 30%;
+  width: 500px;
+  height: 500px;
+  background: url('../assets/BlueFeather.png') no-repeat center/contain;
+  transform: rotate(60deg); /* rotate individually */
+  z-index: -2; /* behind the text */
 }
 .hero-text {
   display: flex;
@@ -146,6 +166,30 @@ hr {
   border: none;
   margin-left: 0.1rem;
 }
+/* Light feather (left) */
+.purposeBackground::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  top: 10%;
+  width: 100px;
+  height: 200px;
+  background: url('../assets/LightFeather.png') no-repeat center/contain;
+  transform: rotate(-120deg); /* rotate individually */
+  z-index: 1; /* behind the text */
+}
+/* Light feather (right) */
+.purposeBackground::after {
+  content: "";
+  position: absolute;
+  left: 75%;
+  bottom: 30%;
+  width: 500px;
+  height: 500px;
+  background: url('../assets/BlueFeather.png') no-repeat center/contain;
+  transform: rotate(60deg); /* rotate individually */
+  z-index: 1; /* behind the text */
+}
 
 /* ===================== Testimonials Section ===================== */
 .testBackground {
@@ -196,7 +240,7 @@ hr {
   /* background: #F2EFED; */
   background: #1A1F2B;
   color: #F2EFED;
-  padding: 10rem 3rem;
+  padding: 10rem 3rem 20rem 3rem;
   display: flex;
   align-items: center;
 }
@@ -229,3 +273,90 @@ hr {
     flex: 1 1 100%;
   }
 }
+
+/* ===================== Feather Placements ===================== */
+
+/* Section container */
+.section-with-feathers {
+  position: relative; /* feathers will anchor here */
+}
+
+/* Feathers layer */
+.feather-layer {
+  position: absolute; /* relative to section */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* behind content */
+  pointer-events: none;
+}
+
+.feather {
+  position: absolute;
+  opacity: 0.8;
+  /* Let width control scaling */
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+}
+
+.feather-left {
+  right: 1%;
+  top: 35%;
+  transform: rotate(250deg);
+  width: 500px;
+}
+
+
+
+
+
+
+
+/* .feather-layer {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.feather {
+  position: absolute;
+  max-width: min(20vw, 200px);
+  opacity: 0.8;
+}
+
+.feather-left {
+  left: 2%;
+  top: 15%;
+  transform: rotate(-20deg);
+}
+
+.feather-right {
+  right: 3%;
+  top: 30%;
+  transform: rotate(20deg);
+}
+
+.feather-middle-right {
+  right: 8%;
+  top: 50%;
+  transform: rotate(10deg);
+}
+
+.feather-bottom-left {
+  left: 5%;
+  bottom: 5%;
+  transform: rotate(-15deg);
+}
+
+.feather-bottom-right {
+  right: 5%;
+  bottom: 8%;
+  transform: rotate(15deg);
+} */

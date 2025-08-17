@@ -54,22 +54,6 @@ span {
     color: #305F72;
 }
 
-/* Buttons */
-/* button {
-  background: #B87332;
-  color: #F2EFED;
-  border: 2px solid #B87332;
-  padding: 15px 60px;
-  border-radius: 999px;
-  cursor: pointer;
-}
-button:hover {
-  background: #F2EFED;
-  color: #B87332;
-  text-decoration: none;
-  border: 2px solid #B87332;
-} */
-
 .btn {
   background: #B87332;
   color: #F2EFED;
@@ -77,12 +61,20 @@ button:hover {
   padding: 15px 60px;
   border-radius: 999px;
   cursor: pointer;
+  transition: transform 0.1s ease-out;
 }
 .btn:hover {
   background: #eda15b;
   color: #F2EFED;
   text-decoration: none;
   border: 2px solid #eda15b;
+}
+.btn:active {
+  background: #B87332;
+  color: #F2EFED;
+  text-decoration: none;
+  border: 2px solid #B87332;
+  transform: scale(0.90); /* Shrinks the button to 90% of its original size */
 }
 
 .btn.secondary {
@@ -92,12 +84,20 @@ button:hover {
   padding: 15px 60px;
   border-radius: 999px;
   cursor: pointer;
+  transition: transform 0.1s ease-out;
 }
 .btn.secondary:hover {
   background: #7DA0AE;
   color: #F2EFED;
   text-decoration: none;
   border: 2px solid #7DA0AE;
+}
+.btn.secondary:active {
+  background: #7DA0AE;
+  color: #F2EFED;
+  text-decoration: none;
+  border: 2px solid #7DA0AE;
+  transform: scale(0.90); /* Shrinks the button to 90% of its original size */
 }
 
 .btn.tertiary {
@@ -107,12 +107,20 @@ button:hover {
   padding: 15px 60px;
   border-radius: 999px;
   cursor: pointer;
+  transition: transform 0.1s ease-out;
 }
 .btn.tertiary:hover {
   background: transparent;
   color: #7DA0AE;
   text-decoration: none;
   border: 2px solid #7DA0AE;
+}
+.btn.tertiary:active {
+  background: #7DA0AE;
+  border: 2px solid #7DA0AE;
+  color: #F2EFED;
+  text-decoration: none;
+  transform: scale(0.90); /* Shrinks the button to 90% of its original size */
 }
 
 /* Links */
