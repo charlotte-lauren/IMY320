@@ -86,8 +86,9 @@ const HomePage = () => {
           <h1>Discover & Collect Rare Coins From Around the World</h1>
           <p>Your journey to the perfect collection starts here.</p>
           <div className="hero-btns">
-            <button className="btn">Explore Marketplace</button>
-            <button className="btn tertiary">Start Collecting</button>
+            {/* <button className="btn">Explore Marketplace</button>
+            <button className="btn tertiary">Start Collecting</button> */}
+            <Link to="/coins" className="btn">Explore Marketplace</Link>
           </div>
         </div>
       </section>
