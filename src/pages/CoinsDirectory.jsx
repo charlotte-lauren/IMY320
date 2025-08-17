@@ -106,7 +106,7 @@ const CoinsDirectory = () => {
                                 <p>{coin.description}</p>
                                 </div>
                             </div>
-                        <Link to="/product" className="btn btn-product-view">View</Link>
+                        <Link to={`/product/${idx}`}  className="btn btn-product-view">View</Link>
                         </div>
                     ))}
 

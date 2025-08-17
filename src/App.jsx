@@ -76,7 +76,7 @@ function App() {
         />
 
         <Route
-          path="/product"
+          path="/product/:id"
           element={
             isAuth ? (
               <Layout setIsAuth={setIsAuth}>
