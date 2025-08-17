@@ -1,8 +1,9 @@
 .product-page {
   background: #305F72;
   color: #1A1F2B;
-  height: auto;
+  height: 100%;
   width: 100%;
+  padding: 4rem 0rem;
 }
 
 .product-page-section {
@@ -11,14 +12,15 @@
     border-radius: 20px;
     padding: 3rem;
     margin: 4rem auto;
+    position: relative;
 }
 
 .back-link {
   display: inline-block;
-  margin-bottom: 1rem;
   text-decoration: none;
   color: #333;
   font-size: 0.9rem;
+  /* margin-bottom: 2rem; */
 }
 
 .coin-title {
@@ -31,6 +33,8 @@
 .product-content {
   display: flex;
   gap: 2rem;
+  align-items: flex-start; /* keep image and details aligned at top */
+  padding: 4rem 1rem 2rem 1rem;
 }
 
 .coin-image img {
@@ -39,8 +43,20 @@
   box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
 }
 
+/* make details a vertical flex container */
 .coin-details {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* push buttons to bottom */
+  min-height: 400px; /* ensures some space so buttons stay at bottom */
+}
+
+.coin-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: left; /* no longer centered */
 }
 
 .coin-attributes {
@@ -60,8 +76,10 @@
 }
 
 .buttons {
+  margin-top: auto; /* pushes buttons to bottom */
   display: flex;
   gap: 1rem;
+  justify-content: flex-end;
 }
 
 button {

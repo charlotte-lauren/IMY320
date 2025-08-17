@@ -48,30 +48,30 @@ const ProductPage = () => {
         <div className="product-page-section">
             <Link to="/coins" className="btn tertiary">← Back</Link>
 
-            <h1 className="coin-title">{coin.title}</h1>
-
             <div className="product-content">
-            <div className="coin-image">
-                <img src={coin.img} alt={coin.title} />
-            </div>
-
-            <div className="coin-details">
-                <p>{coin.description}</p>
-                <p><strong>Price:</strong> {coin.price}</p>
-
-                <div className="coin-attributes">
-                <div className="attribute"><strong>Country:</strong> {coin.country}</div>
-                <div className="attribute"><strong>Metal:</strong> {coin.metal}</div>
-                <div className="attribute"><strong>Era:</strong> {coin.era}</div>
-                <div className="attribute"><strong>Weight:</strong> {coin.weight}</div>
-                <div className="attribute"><strong>Diameter:</strong> {coin.diameter}</div>
+                <div className="coin-image">
+                    <img src={coin.img} alt={coin.title} />
                 </div>
 
-                <div className="buttons">
-                <button className="btn add-to-collection">Add to Collection</button>
-                <button className="btn add-to-wishlist">Add to Wishlist</button>
+                <div className="coin-details">
+                    <h1 className="coin-title">{coin.title}</h1>
+
+                    <p>{coin.description}</p>
+                    <p><strong>Price:</strong> {coin.price}</p>
+
+                    <div className="coin-attributes">
+                    <div className="attribute"><strong>Country:</strong> {coin.country}</div>
+                    <div className="attribute"><strong>Metal:</strong> {coin.metal}</div>
+                    <div className="attribute"><strong>Era:</strong> {coin.era}</div>
+                    <div className="attribute"><strong>Weight:</strong> {coin.weight}</div>
+                    <div className="attribute"><strong>Diameter:</strong> {coin.diameter}</div>
+                    </div>
+
+                    <div className="buttons">
+                        <button className="btn add-to-collection">Add to Collection</button>
+                        <button className="btn add-to-wishlist">Add to Wishlist</button>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
       </div>
