@@ -1,8 +1,16 @@
 .product-page {
-  background: #F2EFED;
-  padding: 2rem;
-  border-radius: 8px;
+  background: #305F72;
   color: #1A1F2B;
+  height: auto;
+  width: 100%;
+}
+
+.product-page-section {
+    background: #F2EFED;
+    max-width: 1400px;
+    border-radius: 20px;
+    padding: 3rem;
+    margin: 4rem auto;
 }
 
 .back-link {
@@ -40,11 +48,12 @@
   flex-wrap: wrap;
   gap: 1rem;
   margin: 1rem 0;
-  color: #F2EFED;
+  color: #1A1F2B;
 }
 
 .attribute {
-  background: #7DA0AE;
+  background: transparent;
+  border: 2px solid #1A1F2B;
   padding: 0.5rem 2rem;
   border-radius: 999px;
   font-size: 0.9rem;
