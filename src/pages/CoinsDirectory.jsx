@@ -60,6 +60,13 @@ const CoinsDirectory = () => {
     });
   };
 
+  const slugify = (text) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-") // replace spaces & non-alphanumerics with "-"
+    .replace(/(^-|-$)+/g, "");   // trim leading/trailing dashes
+
+
   return (
     <AppLayout useCustomNavbar={false} useFooter={true} loginPage={false} color={true}>
       <div className="catalogue-page">
@@ -106,7 +113,7 @@ const CoinsDirectory = () => {
                                 <p>{coin.description}</p>
                                 </div>
                             </div>
-                        <Link to={`/product/${idx}`}  className="btn btn-product-view">View</Link>
+                        <Link to={`/product/${slugify(coin.title)}`}  className="btn btn-product-view">View</Link>
                         </div>
                     ))}
 

@@ -1,7 +1,8 @@
 .product-page {
-  background: #f8f8f8;
+  background: #F2EFED;
   padding: 2rem;
   border-radius: 8px;
+  color: #1A1F2B;
 }
 
 .back-link {
@@ -39,12 +40,13 @@
   flex-wrap: wrap;
   gap: 1rem;
   margin: 1rem 0;
+  color: #F2EFED;
 }
 
 .attribute {
-  background: #e9ecef;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+  background: #7DA0AE;
+  padding: 0.5rem 2rem;
+  border-radius: 999px;
   font-size: 0.9rem;
 }
 
@@ -62,7 +64,7 @@ button {
 
 .add-to-collection {
   background: #a86032;
-  color: white;
+  /* color: #1A1F2B; */
 }
 
 .add-to-wishlist {

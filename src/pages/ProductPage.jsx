@@ -10,8 +10,14 @@ import Sycee from "../assets/ChineseSycee.jpeg";
 import CanMaple from "../assets/CanadaMaple.jpg";
 import "../styles/ProductPage.css";
 
+const slugify = (text) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
+
 const ProductPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // id is actually the slug now
 
   const coins = [
     { title: "Ancient Roman Denarius", subtitle: "Circa 50 BC, Rome", description: "A rare Roman silver coin used during the Republic era.", price: "$1,200", img: RomanDen, country: "Rome", era: "Ancient", metal: "Silver", theme: "Empire", weight: "3.9g", diameter: "18mm" },
@@ -23,10 +29,17 @@ const ProductPage = () => {
     { title: "Canadian Maple Leaf", subtitle: "Canada, 1988", description: "A modern Canadian bullion coin featuring the maple leaf.", price: "$950", img: CanMaple, country: "Canada", era: "Modern", metal: "Gold", theme: "Nature", weight: "31.1g", diameter: "30mm" },
   ];
 
-  const coin = coins[id];
+  const coin = coins.find(c => slugify(c.title) === id);
 
   if (!coin) {
-    return <p>Coin not found!</p>;
+    return (
+      <AppLayout useCustomNavbar={false} useFooter={true} loginPage={false} color={true}>
+        <div className="product-page">
+          <Link to="/coins" className="back-link">← Back</Link>
+          <h2>Coin not found!</h2>
+        </div>
+      </AppLayout>
+    );
   }
 
   return (
