@@ -45,44 +45,23 @@
 }
 
 .hero-content h1 {
-    font-size: 3rem;
+    /* font-size: 3rem;
     margin-bottom: 1rem;
-    font-weight: 700;
+    font-weight: 700; */
     text-shadow: 0 3px 7px rgba(0, 0, 0, 0.8); /* Soft black shadow */
 }
 
 .hero-content p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+    /* font-size: 1.2rem; */
+    margin-bottom: 3rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* Lighter for smaller text */
 }
 
-.hero-content .btn {
-    background: #b87332;
-    padding: 0.8rem 2rem;
-    border-radius: 40px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    border: none;
-    cursor: pointer;
-    color: white;
-    margin-right: 1rem;
-    transition: background 0.3s ease;
-}
-
-.hero-content .btn.secondary {
-    background: transparent;
-    border: 2px solid #b87332;
-    color: white;
-}
-
-.hero-content .btn:hover {
-    background: #925d24;
-}
-
-.hero-content .btn.secondary:hover {
-    background: #b87332;
-    color: white;
+.hero-btns {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .mainClass {
@@ -93,13 +72,14 @@
 }
 
 section.featured {
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
+    margin-top: 3rem;
 }
 
 section.featured h2 {
     margin-bottom: 1rem;
-    font-weight: 700;
-    font-size: 1.8rem;
+    /* font-weight: 700; */
+    /* font-size: 1.8rem; */
 }
 
 .featured-grid {
@@ -108,9 +88,9 @@ section.featured h2 {
     gap: 1rem;
 }
 
-.featured {
+/* .featured {
   margin-bottom: 3rem;
-}
+} */
 
 .featured-header {
   display: flex;
@@ -120,7 +100,7 @@ section.featured h2 {
 }
 
 .pause-btn {
-  background: #7c9fad20;
+  background: #7DA0AE;
   color: white;
   border: none;
   padding: 0.4rem 1rem;
@@ -155,7 +135,7 @@ section.featured h2 {
 }
 
 .nav-btn {
-  background: rgba(124, 159, 173, 0.2); /* 7c9fad with 40% opacity */
+  background: #7da0ae72;
   border: none;
   color: #88a4ae;
   font-size: 0.5rem;   /* smaller font size */
@@ -171,7 +151,7 @@ section.featured h2 {
 }
 
 .nav-btn:hover {
-  background: rgba(124, 159, 173, 0.8); /* more opaque on hover */
+  background: #7da0aea6; /* more opaque on hover */
   color: #305f72; /* a bit darker text on hover */
 }
 
@@ -265,7 +245,7 @@ section.featured h2 {
 
 .coin-card {
     background: white;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     overflow: hidden;
     cursor: pointer;
@@ -305,12 +285,13 @@ section.featured h2 {
 }
 
 section.categories {
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
+    margin-top: 5rem;
 }
 
 section.categories h2 {
-    font-weight: 700;
-    font-size: 1.8rem;
+    /* font-weight: 700;
+    font-size: 1.8rem; */
     margin-bottom: 1rem;
 }
 
@@ -318,12 +299,13 @@ section.categories h2 {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-top: 2rem;
 }
 
 .category-card {
     flex: 1 1 150px;
     background: white;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     text-align: center;
     padding: 1rem;
@@ -349,15 +331,14 @@ section.categories h2 {
 section.community {
     background: #1a1f2b;
     color: white;
-    border-radius: 8px;
-    padding: 2rem 1rem;
+    border-radius: 20px;
+    padding: 3rem 1rem;
     margin-bottom: 3rem;
+    margin-top: 5rem;
 }
 
 section.community h2 {
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     text-align: center;
 }
 
@@ -370,16 +351,17 @@ section.community h2 {
 
 section.sell-cta {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
+    margin-top: 5rem;
 }
 
 section.sell-cta h2 {
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+    /* font-weight: 700;
+    font-size: 1.8rem; */
+    margin-bottom: 1.5rem;
 }
 
-section.sell-cta button {
+/* section.sell-cta button {
     background: #b87332;
     border: none;
     color: white;
@@ -392,23 +374,7 @@ section.sell-cta button {
 
 section.sell-cta button:hover {
     background: #925d24;
-}
-
-.homeFooter {
-    flex-shrink: 0;
-    background: #305f72;
-    color: white;
-    padding: 2rem 1rem;
-    text-align: center;
-    font-size: 0.9rem;
-    position: relative;
-    margin-bottom: -20px;
-}
-
-.homeFooter a {
-    color: #f0e6d2;
-    margin: 0 0.5rem;
-}
+} */
 
 /* Responsive */
 @media (max-width: 768px) {

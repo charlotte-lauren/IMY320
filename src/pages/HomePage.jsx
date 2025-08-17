@@ -85,8 +85,10 @@ const HomePage = () => {
         <div className="hero-content">
           <h1>Discover & Collect Rare Coins From Around the World</h1>
           <p>Your journey to the perfect collection starts here.</p>
-          <button className="btn">Explore Marketplace</button>
-          <button className="btn secondary">Start Collecting</button>
+          <div className="hero-btns">
+            <button className="btn">Explore Marketplace</button>
+            <button className="btn tertiary">Start Collecting</button>
+          </div>
         </div>
       </section>
 
@@ -94,9 +96,9 @@ const HomePage = () => {
         <section className="featured">
           <div className="featured-header">
             <h2>Featured Coins</h2>
-            <button onClick={() => setIsPaused(!isPaused)} className="pause-btn">
+            {/* <button onClick={() => setIsPaused(!isPaused)} className="pause-btn">
               {isPaused ? '▶' : '⏸'}
-            </button>
+            </button> */}
           </div>
 
           <div className="carousel-wrapper">
@@ -164,7 +166,7 @@ const HomePage = () => {
 
         <section className="sell-cta">
           <h2>Have Coins to Sell?</h2>
-          <button onClick={handleSellClick}>Start Selling</button>
+          <button className='btn' onClick={handleSellClick}>Start Selling</button>
         </section>
       </main>
 

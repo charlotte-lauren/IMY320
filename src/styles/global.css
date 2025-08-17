@@ -33,7 +33,7 @@
 h1 {
     font-family: 'Cinzel', serif;
     margin-bottom: 1rem;
-    font-size: 5.5rem;
+    font-size: 4rem;
 }
 
 h2 {
@@ -68,15 +68,15 @@ span {
 }
 .btn:hover {
   background: #eda15b;
-  color: #F2EFED;
+  color: #1A1F2B;
   text-decoration: none;
   border: 2px solid #eda15b;
 }
 .btn:active {
-  background: #B87332;
-  color: #F2EFED;
+  /* background: #B87332;
+  color: #1A1F2B;
   text-decoration: none;
-  border: 2px solid #B87332;
+  border: 2px solid #B87332; */
   transform: scale(0.90); /* Shrinks the button to 90% of its original size */
 }
 
@@ -113,16 +113,16 @@ span {
   transition: transform 0.1s ease-out;
 }
 .btn.tertiary:hover {
-  background: transparent;
-  color: #7DA0AE;
+  background: #99c3d3;
+  border: 2px solid #99c3d3;
+  color: #1A1F2B;
   text-decoration: none;
-  border: 2px solid #7DA0AE;
 }
 .btn.tertiary:active {
-  background: #7DA0AE;
+  /* background: #7DA0AE;
   border: 2px solid #7DA0AE;
-  color: #F2EFED;
-  text-decoration: none;
+  color: #1A1F2B;
+  text-decoration: none; */
   transform: scale(0.90); /* Shrinks the button to 90% of its original size */
 }
 
