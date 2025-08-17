@@ -48,26 +48,26 @@ header.container-s {
   overflow: hidden;
 }
 /* Dark feather (left) */
-header.container-s::before {
+.hero-section:before {
   content: "";
   position: absolute;
   left: 5%;
   top: 10%;
-  width: 100px;
+  width: 200px;
   height: 200px;
   background: url('../assets/DarkFeather.png') no-repeat center/contain;
   transform: rotate(-120deg); /* rotate individually */
   z-index: -1; /* behind the text */
 }
 /* Blue feather (right) */
-header.container-s::after {
+.hero-section::after {
   content: "";
   position: absolute;
   left: 75%;
-  bottom: 30%;
-  width: 500px;
-  height: 500px;
-  background: url('../assets/BlueFeather.png') no-repeat center/contain;
+  bottom: 20%;
+  width: 600px;
+  height: 600px;
+  background: url('../assets/BlueFeather.svg') no-repeat center/contain;
   transform: rotate(60deg); /* rotate individually */
   z-index: -2; /* behind the text */
 }
@@ -94,6 +94,7 @@ header.container-s::after {
   display: flex;
   flex-direction: column;
   align-items: center;
+  pointer-events: none;
 }
 
 /* ===================== Features Section ===================== */
@@ -147,12 +148,13 @@ header.container-s::after {
   gap: 2rem;
   align-items: center;
   color: #F2EFED;
+  z-index: 3;
 }
 .purpose-text {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  /* padding-left: 40px; */
+  padding-left: 20px;
 }
 .purpose-cta {
   display: flex;
@@ -165,30 +167,6 @@ hr {
   background-color: #7DA0AE;
   border: none;
   margin-left: 0.1rem;
-}
-/* Light feather (left) */
-.purposeBackground::before {
-  content: "";
-  position: absolute;
-  left: 5%;
-  top: 10%;
-  width: 100px;
-  height: 200px;
-  background: url('../assets/LightFeather.png') no-repeat center/contain;
-  transform: rotate(-120deg); /* rotate individually */
-  z-index: 1; /* behind the text */
-}
-/* Light feather (right) */
-.purposeBackground::after {
-  content: "";
-  position: absolute;
-  left: 75%;
-  bottom: 30%;
-  width: 500px;
-  height: 500px;
-  background: url('../assets/BlueFeather.png') no-repeat center/contain;
-  transform: rotate(60deg); /* rotate individually */
-  z-index: 1; /* behind the text */
 }
 
 /* ===================== Testimonials Section ===================== */
@@ -206,6 +184,7 @@ hr {
   gap: 2rem;
   border-radius: 30px;
   width: min(1200px, 90%);
+  z-index: 3;
 }
 .testimonials-split {
   display: grid;
@@ -276,87 +255,39 @@ hr {
 
 /* ===================== Feather Placements ===================== */
 
-/* Section container */
-.section-with-feathers {
-  position: relative; /* feathers will anchor here */
-}
+.section-with-feathers { 
+  position: relative;
+} 
 
-/* Feathers layer */
-.feather-layer {
-  position: absolute; /* relative to section */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0; /* behind content */
-  pointer-events: none;
-}
-
-.feather {
+.feather-layer { 
   position: absolute;
-  opacity: 0.8;
-  /* Let width control scaling */
-  width: auto;
-  height: auto;
-  max-width: none;
-  max-height: none;
-}
-
-.feather-left {
-  right: 1%;
-  top: 35%;
-  transform: rotate(250deg);
-  width: 500px;
-}
-
-
-
-
-
-
-
-/* .feather-layer {
-  position: absolute; 
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100%; 
+  height: 100%; 
   z-index: 0;
-  pointer-events: none;
-}
+  pointer-events: none; 
+} 
 
-.feather {
-  position: absolute;
-  max-width: min(20vw, 200px);
-  opacity: 0.8;
+.feather { 
+  position: absolute; 
+  opacity: 0.95; 
+  pointer-events: none; 
+  height: auto; 
+} 
+.feather-right { 
+  right: 5%; 
+  top: 10%; 
+  transform: rotate(250deg); 
+  width: clamp(200px, 45vw, 400px);
+} 
+.feather-left { 
+  left: -5%; 
+  top: -30%; 
+  transform: scaleX(-1) rotate(150deg); 
+  width: clamp(250px, 45vw, 600px);
+} 
+.feather-middle-right { 
+  right: 5%; 
+  bottom: -30%; 
+  transform: scaleX(1) rotate(230deg); 
+  width: clamp(215px, 45vw, 450px);
 }
-
-.feather-left {
-  left: 2%;
-  top: 15%;
-  transform: rotate(-20deg);
-}
-
-.feather-right {
-  right: 3%;
-  top: 30%;
-  transform: rotate(20deg);
-}
-
-.feather-middle-right {
-  right: 8%;
-  top: 50%;
-  transform: rotate(10deg);
-}
-
-.feather-bottom-left {
-  left: 5%;
-  bottom: 5%;
-  transform: rotate(-15deg);
-}
-
-.feather-bottom-right {
-  right: 5%;
-  bottom: 8%;
-  transform: rotate(15deg);
-} */

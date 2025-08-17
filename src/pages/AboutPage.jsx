@@ -65,9 +65,9 @@ const AboutPage = () => (
         </div>
 
         {/* Decorative feathers */}
-        <img src={feather1} className="feather feather1" alt="feather" />
-        <img src={feather2} className="feather feather2" alt="feather" />
-        <img src={feather3} className="feather feather3" alt="feather" />
+        <img src={feather1} className="feathers feather1" alt="feather" />
+        <img src={feather2} className="feathers feather2" alt="feather" />
+        <img src={feather3} className="feathers feather3" alt="feather" />
       </section>
 
       <section className="about-sections">
@@ -137,8 +137,8 @@ const AboutPage = () => (
         </div>
 
         {/* Decorative feathers */}
-        <img src={feather2} className="feather feather2-2-2" alt="feather" />
-        <img src={feather3} className="feather feather3-3-3" alt="feather" />
+        <img src={feather2} className="feathers feather2-2-2" alt="feather" />
+        <img src={feather3} className="feathers feather3-3-3" alt="feather" />
       </section>
 
       <section className="Explore-section">
@@ -158,8 +158,8 @@ const AboutPage = () => (
         </Link> */}
 
         {/* Decorative feathers */}
-        <img src={feather2} className="feather feather2-2" alt="feather" />
-        <img src={feather3} className="feather feather3-3" alt="feather" />
+        <img src={feather2} className="feathers feather2-2" alt="feather" />
+        <img src={feather3} className="feathers feather3-3" alt="feather" />
       </section>
 
       <footer className='homeFooter'>

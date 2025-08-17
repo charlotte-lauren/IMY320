@@ -3,9 +3,9 @@ import '../styles/SplashPage.css';
 import '../styles/global.css';
 import AppLayout from "../components/AppLayout";
 import heroImage from '../assets/Hero.png';
-import WhiteFeather from "../assets/WhiteFeather.png";
-import BlueFeather from "../assets/BlueFeather.png";
-import DarkFeather from "../assets/DarkFeather.png";
+import WhiteFeather from "../assets/WhiteFeather.svg";
+import BlueFeather from "../assets/BlueFeather.svg";
+import DarkFeather from "../assets/DarkFeather.svg";
 
 const SplashPage = () => (
   <AppLayout useCustomNavbar={true}>
@@ -44,13 +44,13 @@ const SplashPage = () => (
       </div>
 
       {/* Purpose Section */}
-      <div className='purposeBackground'>
-        <section className="purpose-section container section-with-feathers" aria-label="Our Purpose">
-          {/* Feather Decorations */}
-          <div className="feather-layer" aria-hidden="true">
-            <img src={WhiteFeather} alt="" className="feather feather-left" />
-          </div>
+      <div className='purposeBackground section-with-feathers'>
+        {/* Feather Decorations */}
+        <div className="feather-layer" aria-hidden="true">
+          <img src={WhiteFeather} alt="" className="feather feather-right" />
+        </div>
 
+        <section className="purpose-section container" aria-label="Our Purpose">
           <div className="purpose-text">
             <hr/>
             <h2>Our Purpose</h2>
@@ -75,8 +75,8 @@ const SplashPage = () => (
       </div> */}
 
       {/* Testimonials Section */}
-      <div className='testBackground'>
-        <section className="testimonials-section container section-with-feathers" aria-label="Testimonials">
+      <div className='testBackground section-with-feathers'>
+        <section className="testimonials-section container" aria-label="Testimonials">
           <div className="testimonials-split">
             <div className="testimonials-header">
               <h2>Testimonials</h2>
@@ -101,13 +101,12 @@ const SplashPage = () => (
               ))}
             </div>
           </div>
-
-          {/* Feather Decorations */}
-          <div className="feather-layer" aria-hidden="true">
-            <img src={WhiteFeather} alt="" className="feather feather-right" />
-            <img src={WhiteFeather} alt="" className="feather feather-middle-right" />
-          </div>
         </section>
+        {/* Feather Decorations */}
+        <div className="feather-layer" aria-hidden="true">
+          <img src={WhiteFeather} alt="" className="feather feather-left" />
+          <img src={WhiteFeather} alt="" className="feather feather-middle-right" />
+        </div>
       </div>
 
       {/* Login Section */}
