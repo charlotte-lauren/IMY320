@@ -2,55 +2,62 @@
 
 .under-construction {
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
-  background: linear-gradient(to bottom, #1A1F2B, #0e0f14);
-  color: #f0e6d6;
+  margin-top: -30px;
+  font-family: 'Inter', sans-serif;
+  background: #7DA0AE;
+  color: #1A1F2B;
   display: flex;
   flex-direction: column;
   justify-content: center;  /* center all content vertically */
   align-items: center;
   text-align: center;
-  height: 100vh;            /* fixed viewport height */
+  min-height: 80vh; 
   padding: 2rem;
   width: 100vw;
   box-sizing: border-box;   /* include padding in height */
-  position: relative;       /* for footer positioning */
+
 }
 
 .const-head {
-  font-family: 'Playfair Display', serif;
   font-size: 3rem;
-  margin-bottom: 1rem;
-  color: #b87332;
+  margin-bottom: 0rem;
+  color: #F2EFED;
 }
 
 .under-construction h2 {
   font-weight: 400;
   font-size: 1.5rem;
-  color: #7c9fad;
+  color: #1A1F2B;
   margin-bottom: 2rem;
 }
 
-.crow-icon {
-  font-size: 5rem;
-  margin-bottom: 1rem;
-  color: #7c9fad;
-}
+  .logo-img {
+    display: flex;
+    justify-content: center;
+    margin-bottom: -35px;
+    margin-top: -20px;
+  }
+
+  .logo-img img {
+    max-width: 120px;
+    height: auto;
+  }
 
 .construction-note {
   max-width: 600px;
   font-size: 1rem;
   line-height: 1.6;
-  background-color: rgba(255, 255, 255, 0.05);
+  background: #8bb7c992;
   padding: 1.5rem;
-  border: 1px solid #305f72;
-  border-radius: 10px;
+  /* border: 1px solid #305f72; */
+  border-radius: 20px;
   margin-bottom: 2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .back-button {
   background-color: #305f72;
-  color: #f0e6d6;
+  color: #F2EFED;
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 6px;

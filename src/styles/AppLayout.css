@@ -51,8 +51,8 @@
   flex-wrap: wrap;
 }
 
-.footer-links a,
-.footer-socials a {
+.footer a,
+.footer a {
   color: #1A1F2B;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -68,3 +68,24 @@
   opacity: 0.8;
 }
 
+/* Footer colored */
+.footer-colored {
+  background: #1A1F2B;
+  color: #F2EFED;
+  padding: 3rem 1rem;
+  text-align: center;
+
+  border-top-left-radius: 70px;
+  border-top-right-radius: 70px;
+
+  margin-top: 0;   /* remove the negative margin */
+  position: relative;
+  z-index: 1;
+}
+
+.footer-colored a,
+.footer-colored a {
+  color: #F2EFED;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}

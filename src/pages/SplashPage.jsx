@@ -8,7 +8,7 @@ import BlueFeather from "../assets/BlueFeather.svg";
 import DarkFeather from "../assets/DarkFeather.svg";
 
 const SplashPage = () => (
-  <AppLayout useCustomNavbar={true} useFooter={true} loginPage={false}>
+  <AppLayout useCustomNavbar={true} useFooter={true} loginPage={false} color={false}>
     <div className='splash'>
 
       {/* Header - Hero Section */}

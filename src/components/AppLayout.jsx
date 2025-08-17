@@ -4,14 +4,14 @@ import Navbar from "./Navbar";             // Navbar for Home, AboutUs, Sell, et
 import Footer from "./Footer";
 import "../styles/AppLayout.css"; // for the grid + layout styles
 
-const AppLayout = ({ children, useCustomNavbar, useFooter, loginPage }) => {
+const AppLayout = ({ children, useCustomNavbar, useFooter, loginPage, color }) => {
   return (
     <div className="app-layout">
       {useCustomNavbar ? <CustomNavbar loginPage={loginPage}/> : <Navbar />}
 
       <main>{children}</main>
 
-      {useFooter ? <Footer /> : null}
+      {useFooter ? <Footer color={color}/> : null}
     </div>
   );
 };

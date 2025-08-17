@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/LogoNBG.png';
-// import CustomNavbar from "../components/CustomNavbar";
 import AppLayout from "../components/AppLayout";
 import '../styles/global.css';
 
@@ -462,7 +461,7 @@ const LoginPage = ({ setIsAuth }) => {
   };
 
   return (
-    <AppLayout useCustomNavbar={true} useFooter={false} loginPage={true}>
+    <AppLayout useCustomNavbar={true} useFooter={false} loginPage={true} color={true}>
     <div className="container">
       <div className="right-panel">
         <form className="form-box" onSubmit={handleSubmit} noValidate>

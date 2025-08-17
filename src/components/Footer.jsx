@@ -1,9 +1,9 @@
 // import "../styles/Footer.css";
 import "../styles/AppLayout.css"; // for the grid + layout styles
 
-const Footer = () => {
+const Footer = ({color}) => {
   return (
-    <footer className="footer">
+    <footer className={color ? "footer-colored" : "footer"}>
       <div className="footer-content">
         <p>&copy; 2025 CurioCrow</p>
         <div className="footer-links">
