@@ -20,6 +20,7 @@
   grid-template-rows: auto 1fr auto; /* navbar, content, footer */
   min-height: 100vh; /* take full height */
   overflow-y: auto;
+  background: #F2EFED;
 }
 
 /* Main content area */

@@ -10,6 +10,10 @@
     color: #222;
 }
 
+.app-layout {
+  background: #F2EFED;
+}
+
 .parallax-bg {
   background-image: url('../assets/AboutUsHeader.png');
   background-size: cover;
@@ -397,9 +401,10 @@
 /************************* BROWSE COLLECTIONS SECTIONS *************************/
 
 section.Explore-section {
-    padding: 4rem 2rem;
+    padding: 4rem 2rem 4rem 2rem;
     text-align: center;
     margin: 6rem 0rem;
+    /* margin-bottom: 10rem; */
     background-color: #F2EFED;
     color: #1A1F2B;
 }

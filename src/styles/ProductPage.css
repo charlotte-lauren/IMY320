@@ -1,9 +1,15 @@
 .product-page {
   background: #305F72;
   color: #1A1F2B;
-  height: 100%;
+  height: auto;
   width: 100%;
   padding: 4rem 0rem;
+  overflow-x: hidden;
+  /* margin: 0 auto; */
+}
+
+.app-layout {
+  background: #305F72;
 }
 
 .product-page-section {
