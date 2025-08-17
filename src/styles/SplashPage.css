@@ -6,6 +6,7 @@
   min-height: 100vh;
   background-color: #F2EFED;
   color: #1A1F2B;
+  overflow-x: hidden;
 }
 
 /* Container utility for spacing */
@@ -22,13 +23,11 @@
   align-items: center;
 
     /* Curve the bottom edges */
-  border-bottom-left-radius: 80px;
-  border-bottom-right-radius: 80px;
+  border-bottom-left-radius: 70px;
+  border-bottom-right-radius: 70px;
 
   /* Ensure overlap into features section */
   margin-bottom: -60px; 
-  /* pull next section up */
-  /* padding-bottom: 6rem; */
 
   background-color: #F2EFED; /* keep hero background solid */
   position: relative;
@@ -123,16 +122,13 @@ header.container-s {
   color: #F2EFED;
 }
 .feature-card {
-  background: #305F72;
+  background: #1A1F2B;
   border-radius: 20px;
   padding: 1.5rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.2s ease;
   text-align: center;
 }
-/* .feature-card:hover {
-  transform: translateY(-5px);
-} */
 
 /* ===================== Purpose Section ===================== */
 .purposeBackground {
@@ -219,7 +215,7 @@ hr {
   /* background: #F2EFED; */
   background: #1A1F2B;
   color: #F2EFED;
-  padding: 10rem 3rem 20rem 3rem;
+  padding: 15rem 3rem 25rem 3rem;
   display: flex;
   align-items: center;
 }
@@ -260,11 +256,13 @@ hr {
 } 
 
 .feather-layer { 
-  position: absolute;
-  width: 100%; 
-  height: 100%; 
   z-index: 0;
   pointer-events: none; 
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  /* top: 0;
+  left: 0; */
 } 
 
 .feather { 
@@ -286,8 +284,8 @@ hr {
   width: clamp(250px, 45vw, 600px);
 } 
 .feather-middle-right { 
-  right: 5%; 
+  right: 5%;
   bottom: -30%; 
-  transform: scaleX(1) rotate(230deg); 
+  transform: scaleX(-1) rotate(230deg); 
   width: clamp(215px, 45vw, 450px);
 }

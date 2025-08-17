@@ -67,9 +67,6 @@ const SplashPage = () => (
 
       {/* Feather Decorations */}
       {/* <div className="feather-layer" aria-hidden="true">
-        <img src={WhiteFeather} alt="" className="feather feather-left" />
-        <img src={WhiteFeather} alt="" className="feather feather-right" />
-        <img src={WhiteFeather} alt="" className="feather feather-middle-right" />
         <img src={BlueFeather} alt="" className="feather feather-bottom-left" />
         <img src={DarkFeather} alt="" className="feather feather-bottom-right" />
       </div> */}

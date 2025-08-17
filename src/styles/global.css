@@ -11,6 +11,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
 
 
+
+/* -------------- Basic Features --------------*/
+
 /* Grid layout for the entire page */
 .app-layout {
   display: grid;
