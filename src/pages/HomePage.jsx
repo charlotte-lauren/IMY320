@@ -167,7 +167,7 @@ const HomePage = () => {
 
         <section className="sell-cta">
           <h2>Have Coins to Sell?</h2>
-          <button className='btn' onClick={handleSellClick}>Start Selling</button>
+          <Link to="/sell" className="btn">Sell Coins</Link>
         </section>
       </main>
 
