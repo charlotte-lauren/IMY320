@@ -8,7 +8,7 @@ import '../styles/global.css';
 const AppLayout = ({ children, useCustomNavbar, useFooter, loginPage, color }) => {
   return (
     <div className="app-layout">
-      {useCustomNavbar ? <CustomNavbar loginPage={loginPage}/> : <Navbar />}
+      {useCustomNavbar ? <CustomNavbar loginPage={loginPage}/> : null}
 
       <main>{children}</main>
 

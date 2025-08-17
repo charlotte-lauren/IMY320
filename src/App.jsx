@@ -4,13 +4,14 @@ import Splash from './pages/SplashPage';
 import Login from './pages/LoginPage';
 import Home from './pages/HomePage';
 import About from './pages/AboutPage';
+import Coins from './pages/CoinsDirectory';
 import Navbar from './components/Navbar';
 import UnderConstructionPage from './pages/UnderConstructionPage';
 
 // A layout wrapper with optional navbar
 const Layout = ({ children, setIsAuth }) => (
   <>
-    {/* <Navbar setIsAuth={setIsAuth} /> */}
+    <Navbar setIsAuth={setIsAuth} />
     <div className="page-content">{children}</div>
   </>
 );
@@ -53,6 +54,19 @@ function App() {
             isAuth ? (
               <Layout setIsAuth={setIsAuth}>
                 <Home />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/coins"
+          element={
+            isAuth ? (
+              <Layout setIsAuth={setIsAuth}>
+                <Coins />
               </Layout>
             ) : (
               <Navigate to="/login" replace />
