@@ -49,10 +49,12 @@ function Navbar({ setIsAuth }) {
     <nav className="navbar">
       {/* Top Row */}
       <div className="navbar-top">
-        <Link to="/" className="logo">
-          <img src={logo} alt="Logo" className="logo-image" />
-          <span className="logo-text">CurioCrow</span>
-        </Link>
+        <div className="c-nav-left logo-name">
+          <Link to="/" className="logo">
+            <img src={logo} alt="Logo" className="c-nav-logo" />
+            <span className="c-nav-name">CurioCrow</span>
+          </Link>
+        </div>
 
         <div className="search-container">
           <svg className="search-icon" viewBox="0 0 24 24">
@@ -90,14 +92,14 @@ function Navbar({ setIsAuth }) {
       </div>
 
       {/* Bottom Row */}
-      <div className="navbar-bottom">
+      {/* <div className="navbar-bottom">
         <Link to="/home" className={location.pathname === '/home' ? 'nav-link active' : 'nav-link'}>Home</Link>
         <Link to="/coins" className={location.pathname === '/coins' ? 'nav-link active' : 'nav-link'}>Coins Directory</Link>
         <Link to="/shop" className={location.pathname === '/shop' ? 'nav-link active' : 'nav-link'}>Shop</Link>
         <Link to="/sell" className={location.pathname === '/sell' ? 'nav-link active' : 'nav-link'}>Sell</Link>
         <Link to="/about" className={location.pathname === '/about' ? 'nav-link active' : 'nav-link'}>About</Link>
         <Link to="/community" className={location.pathname === '/community' ? 'nav-link active' : 'nav-link'}>Community</Link>
-      </div>
+      </div> */}
     </nav>
   );
 }

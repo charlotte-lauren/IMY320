@@ -6,7 +6,7 @@
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    background: #f5f5f5;
+    background: #F2EFED;
     color: #222;
 }
 
@@ -15,7 +15,7 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  height: 320px;
+  height: 500px;
   position: relative;
 }
 
@@ -43,20 +43,20 @@
 .header-content {
   position: relative;
   z-index: 1;
-  color: white;
+  color: #F2EFED;
 }
 
 .header-content h1 {
-  font-size: 3.5rem;
-  margin: 0;
+  /* font-size: 3.5rem; */
+  /* margin: 0; */
   text-shadow: 0 3px 7px rgba(0, 0, 0, 0.8); /* Soft black shadow */
 }
 
 .header-content .subtitle {
-  font-size: 1.2rem;
-  font-style: italic;
+  /* font-size: 1.2rem; */
+  /* font-style: italic; */
   margin-top: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* Lighter for smaller text */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); 
 }
 
 
@@ -65,8 +65,8 @@
 }
 
 .section h2 {
-    font-weight: 700;
-    font-size: 1.8rem;
+    /* font-weight: 700;
+    font-size: 1.8rem; */
     margin-bottom: 1rem;
 }
 
@@ -76,7 +76,7 @@
 .about-section {
   position: relative;
   padding: 100px 20px;
-  background-color: #f9f9f9;
+  background-color: #F2EFED;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -93,7 +93,7 @@
 }
 
 .mission-card {
-  background: white;
+  background: #F2EFED;
   text-align: justify;
   color: #1A1F2B;
   margin-left: 20rem;
@@ -110,7 +110,7 @@
 
 .crows-card {
   background: #1A1F2B;
-  color: white;
+  color: #F2EFED;
   text-align: justify;
   margin-right: 20rem;
   padding-left: 50px;
@@ -124,18 +124,17 @@
     margin-right: 5rem;
 }
 
-.card h2 {
+/* .card h2 {
     font-weight: 700;
     font-size: 1.8rem;
     margin-bottom: 1rem;
-  /* margin-bottom: 10px; */
-}
+} */
 
-.card p {
+/* .card p {
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 10px;
-}
+} */
 
 /* Crow image overlay */
 .crow-img {
@@ -211,7 +210,7 @@
 .about-sections {
   padding: 4rem 2rem;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f9f9f9;
+  background-color: #F2EFED;
 }
 
 .beliefs-section {
@@ -220,12 +219,12 @@
   color: #1A1F2B;
 }
 
-.beliefs-section h2{
+/* .beliefs-section h2{
     color: #1A1F2B;
     font-weight: 700;
     font-size: 1.8rem;
     margin-bottom: 1rem;
-}
+} */
 
 .beliefs-cards {
   display: flex;
@@ -236,7 +235,7 @@
 }
 
 .belief-card {
-  background: white;
+  background: #F2EFED;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
@@ -305,12 +304,12 @@
   text-align: center;
 }
 
-.what-to-do-section h2{
+/* .what-to-do-section h2{
     color: #1A1F2B;
     font-weight: 700;
     font-size: 1.8rem;
     margin-bottom: 1rem;
-}
+} */
 
 .what-to-do-content {
   display: flex;
@@ -358,7 +357,7 @@
   background-color: #2f5e6f;
   padding: 1rem 1.5rem;
   border-radius: 10px;
-  color: white;
+  color: #F2EFED;
   text-align: left;
 }
 
@@ -392,47 +391,17 @@
 section.Explore-section {
     padding: 4rem 2rem;
     text-align: center;
-    margin-bottom: 4rem;
-    background-color: #f9f9f9;
+    margin: 6rem 0rem;
+    background-color: #F2EFED;
     color: #1A1F2B;
 }
 
-section.Explore-section h2 {
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+.explore-links {
+  margin-top: 5rem;
 }
 
-section.Explore-section button {
-    background: #b87332;
-    border: none;
-    color: white;
-    padding: 1rem 3.5rem;
-    font-size: 1.2rem;
-    border-radius: 40px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin-top: 1rem;
-}
-
-section.Explore-section button:hover {
-    background: #925d24;
-}
-
-/************************* FOOTER SECTION *************************/
-
-.homeFooter {
-    flex-shrink: 0;
-    background: #305f72;
-    color: white;
-    padding: 2rem 1rem;
-    text-align: center;
-    font-size: 0.9rem;
-    position: relative;
-    margin-bottom: -20px;
-}
-
-.homeFooter a {
-    color: #f0e6d2;
-    margin: 0 0.5rem;
+.btn,
+.btn-explore {
+  color: #F2EFED;
+  text-decoration: none;
 }

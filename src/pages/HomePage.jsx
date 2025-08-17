@@ -8,6 +8,7 @@ import JapOb from '../assets/JapaneseOb.jpg';
 import FrenchFranc from '../assets/FrenchFra.png';
 import Sycee from '../assets/ChineseSycee.jpeg';
 import CanMaple from '../assets/CanadaMaple.jpg';
+import AppLayout from "../components/AppLayout";
 
 const HomePage = () => {
   const featuredRef = useRef(null);
@@ -78,6 +79,7 @@ const HomePage = () => {
   };
 
   return (
+    <AppLayout useCustomNavbar={false} useFooter={true} loginPage={false} color={true}>
     <div className='homePage'>
       <section className="hero">
         <div className="hero-content">
@@ -166,14 +168,8 @@ const HomePage = () => {
         </section>
       </main>
 
-      <footer className='homeFooter'>
-        &copy; 2025 Curiocrow &nbsp;|&nbsp;
-        <Link to="/about">About</Link>&nbsp;|&nbsp;
-        <Link to="/contact">Contact</Link>&nbsp;|&nbsp;
-        <Link to="/faq">FAQ</Link>&nbsp;|&nbsp;
-        <Link to="/privacy">Privacy Policy</Link>
-      </footer>
     </div>
+    </AppLayout>
   );
 };
 

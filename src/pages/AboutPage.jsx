@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/AboutPage.css";
-
+import AppLayout from "../components/AppLayout";
 import BuyCoins from '../assets/BuyCoins.png';
 import crowImg from '../assets/Crow.png';
 import feather1 from '../assets/WhiteFeather.png';
@@ -28,7 +28,8 @@ document.querySelectorAll(".scale-on-scroll").forEach(icon => {
 
 
 const AboutPage = () => (
-  <div className='homePage'>
+  <AppLayout useCustomNavbar={false} useFooter={true} loginPage={false} color={true}>
+    <div className='homePage'>
       <div className="parallax-bg">
         <header className="about-header">
           <div className="overlay" />
@@ -149,28 +150,17 @@ const AboutPage = () => (
           <br />
           <span className="text-italic"> - CurioCrow is your starting point.</span>
         </p>
-        <button onClick={handleClick}>Explore Our Collections</button>
-        {/* <Link
-          to="/collections"
-          className="inline-block bg-indigo-600 text-white py-2 px-6 rounded-full hover:bg-indigo-700 transition"
-        >
-          Explore Our Collections →
-        </Link> */}
+          <div className="explore-links">
+            <Link to="/sell" className="btn btn-explore">Explore Our Collections</Link>
+          </div>
 
         {/* Decorative feathers */}
         <img src={feather2} className="feathers feather2-2" alt="feather" />
         <img src={feather3} className="feathers feather3-3" alt="feather" />
       </section>
 
-      <footer className='homeFooter'>
-        &copy; 2025 Curiocrow &nbsp;|&nbsp;
-        <Link to="/about">About</Link>&nbsp;|&nbsp;
-        <Link to="/contact">Contact</Link>&nbsp;|&nbsp;
-        <Link to="/faq">FAQ</Link>&nbsp;|&nbsp;
-        <Link to="/privacy">Privacy Policy</Link>
-      </footer>
-
-  </div>
+    </div>
+  </AppLayout>
 );
 
 export default AboutPage;

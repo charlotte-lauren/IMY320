@@ -3,6 +3,7 @@ import CustomNavbar from "./CustomNavbar"; // Navbar for Splash, Login, Register
 import Navbar from "./Navbar";             // Navbar for Home, AboutUs, Sell, etc.
 import Footer from "./Footer";
 import "../styles/AppLayout.css"; // for the grid + layout styles
+import '../styles/global.css';
 
 const AppLayout = ({ children, useCustomNavbar, useFooter, loginPage, color }) => {
   return (

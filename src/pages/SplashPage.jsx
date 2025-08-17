@@ -113,8 +113,6 @@ const SplashPage = () => (
           <p>Ready to start collecting with curiosity? Discover the diverse treasury in store for you and grow your very own caw-llections.</p>
           <div className="login-register-links">
             <Link to="/login" className="btn">Begin Your Collection</Link>
-            {/* <Link to="/login" className="btn">Login</Link> */}
-            {/* <Link to="/login" className="btn secondary">Register</Link> */}
           </div>
         </section>
       </div>

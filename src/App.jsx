@@ -10,7 +10,7 @@ import UnderConstructionPage from './pages/UnderConstructionPage';
 // A layout wrapper with optional navbar
 const Layout = ({ children, setIsAuth }) => (
   <>
-    <Navbar setIsAuth={setIsAuth} />
+    {/* <Navbar setIsAuth={setIsAuth} /> */}
     <div className="page-content">{children}</div>
   </>
 );
