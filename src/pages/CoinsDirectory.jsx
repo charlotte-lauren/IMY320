@@ -1,53 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AppLayout from "../components/AppLayout";
-import { Link } from 'react-router-dom';
-import RomanDen from "../assets/RomanDen.jpg";
-import SilverDoll from "../assets/SilverDol.jpg";
-import GoldSov from "../assets/GoldSov.jpg";
-import JapOb from "../assets/JapaneseOb.jpg";
-import FrenchFranc from "../assets/FrenchFra.png";
-import Sycee from "../assets/ChineseSycee.jpeg";
-import CanMaple from "../assets/CanadaMaple.jpg";
+import { Link } from "react-router-dom";
+import RomanDen from "../assets/coin.png"; // fallback image
 import "../styles/CoinsDirectory.css";
 
-const CoinsDirectory = () => {
-  const coins = [
-    { title: "Ancient Roman Denarius", subtitle: "Circa 50 BC, Rome", description: "A rare Roman silver coin used during the Republic era.", price: "$1,200", img: RomanDen, country: "Rome", era: "Ancient", metal: "Silver", theme: "Empire" },
-    { title: "1916 Silver Dollar", subtitle: "USA", description: "A collectible American silver dollar minted in 1916.", price: "$850", img: SilverDoll, country: "USA", era: "Modern", metal: "Silver", theme: "Currency" },
-    { title: "Gold Sovereign", subtitle: "UK, 1901", description: "A British gold sovereign from the reign of Queen Victoria.", price: "$2,300", img: GoldSov, country: "UK", era: "Victorian", metal: "Gold", theme: "Monarchs" },
-    { title: "Japanese Oban Coin", subtitle: "Japan, Edo Period", description: "An Edo period oval coin used by merchants in Japan.", price: "$3,750", img: JapOb, country: "Japan", era: "Edo", metal: "Gold", theme: "Trade" },
-    { title: "French Franc", subtitle: "France, 1795", description: "A French coin minted after the Revolution.", price: "$620", img: FrenchFranc, country: "France", era: "Revolution", metal: "Silver", theme: "Revolution" },
-    { title: "Chinese Sycee", subtitle: "Qing Dynasty", description: "A silver ingot currency used during the Qing Dynasty.", price: "$4,100", img: Sycee, country: "China", era: "Dynastic", metal: "Silver", theme: "Trade" },
-    { title: "Canadian Maple Leaf", subtitle: "Canada, 1988", description: "A modern Canadian bullion coin featuring the maple leaf.", price: "$950", img: CanMaple, country: "Canada", era: "Modern", metal: "Gold", theme: "Nature" },
-  ];
+// Map filter categories to actual coin fields in DB
+const filterFieldMap = {
+  Metal: "Composition",
+  Theme: "Themes",
+  Country: "Country",
+  Era: "Era"
+};
 
-  // Track selected filters
+const CoinsDirectory = () => {
+  const [coins, setCoins] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [limit, setLimit] = useState(12);
   const [filters, setFilters] = useState({
     Metal: null,
     Theme: null,
     Country: null,
-    Era: null,
+    Era: null
   });
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  const catalogueRef = useRef(null);
 
   const filterOptions = {
     Metal: ["Gold", "Silver", "Bronze", "Copper"],
     Theme: ["Empire", "Trade", "Currency", "Monarchs", "Revolution", "Nature"],
     Country: ["Rome", "USA", "UK", "Japan", "France", "China", "Canada"],
-    Era: ["Ancient", "Victorian", "Edo", "Revolution", "Dynastic", "Modern"],
+    Era: ["Ancient", "Victorian", "Edo", "Revolution", "Dynastic", "Modern"]
   };
 
-  // Filter coins based on selected filters
-  const filteredCoins = coins.filter((coin) => {
-    return Object.keys(filters).every((key) => {
-      if (!filters[key]) return true; // skip if filter not selected
-      return coin[key.toLowerCase()] === filters[key];
-    });
-  });
+  const fetchCoins = async (newLimit) => {
+    setLoading(true);
+    const scrollPosition = window.scrollY; // save current scroll
+    try {
+      const res = await fetch(`/api/coins?limit=${newLimit}`);
+      const data = await res.json();
+      setCoins(data);
+      setTimeout(() => {
+        window.scrollTo({ top: scrollPosition, behavior: "auto" });
+      }, 50);
+    } catch (err) {
+      console.error("Failed to fetch coins:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCoins(limit);
+  }, [limit]);
+
+  // Show back to top button after scrolling down
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const filteredCoins = coins.filter((coin) =>
+    Object.keys(filters).every((key) => {
+      if (!filters[key]) return true;
+      const field = filterFieldMap[key];
+      const coinValue = coin[field]?.toString().toLowerCase();
+      const filterValue = filters[key].toLowerCase();
+      return coinValue === filterValue;
+    })
+  );
 
   const handleFilterSelect = (category, option) => {
     setFilters((prev) => ({
       ...prev,
-      [category]: prev[category] === option ? null : option,
+      [category]: prev[category] === option ? null : option
     }));
   };
 
@@ -56,78 +85,104 @@ const CoinsDirectory = () => {
       Metal: null,
       Theme: null,
       Country: null,
-      Era: null,
+      Era: null
     });
   };
 
   const slugify = (text) =>
-  text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-") // replace spaces & non-alphanumerics with "-"
-    .replace(/(^-|-$)+/g, "");   // trim leading/trailing dashes
+    text
+      ?.toString()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "") || "";
 
+  const handleLoadMore = () => {
+    setLimit((prev) => prev + 10);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (loading) return <p>Loading coins...</p>;
 
   return (
     <AppLayout useCustomNavbar={false} useFooter={true} loginPage={false} color={true}>
-      <div className="catalogue-page">
-        {/* Header */}
+      <div className="catalogue-page" ref={catalogueRef}>
         <div className="catalogue-header">
           <h1>PRODUCT CATALOGUE</h1>
         </div>
 
         <div className="catalogue-content">
-            {/* Sidebar Filters */}
-            <aside className="filters">
+          {/* Sidebar Filters */}
+          <aside className="filters">
             <h2>Filter By</h2>
             <button className="reset-btn" onClick={resetFilters}>Reset Filters</button>
             <ul className="filter-list">
-                {Object.keys(filterOptions).map((category) => (
+              {Object.keys(filterOptions).map((category) => (
                 <li key={category}>
-                    <h3>{category}</h3>
-                    <ul className="dropdown">
+                  <h3>{category}</h3>
+                  <ul className="dropdown">
                     {filterOptions[category].map((option) => (
-                        <li key={option}>
+                      <li key={option}>
                         <button
-                            className={`dropdown-item ${filters[category] === option ? "active" : ""}`}
-                            onClick={() => handleFilterSelect(category, option)}
+                          className={`dropdown-item ${filters[category] === option ? "active" : ""}`}
+                          onClick={() => handleFilterSelect(category, option)}
                         >
-                            {option}
+                          {option}
                         </button>
-                        </li>
+                      </li>
                     ))}
-                    </ul>
+                  </ul>
                 </li>
-                ))}
+              ))}
             </ul>
-            </aside>
-            
-            <div className="catalogue-list-section">
-                {/* Coin List */}
-                <div className="coin-list">
-                    {filteredCoins.map((coin, idx) => (
-                        <div key={idx} className="coin-row-list">
-                            <div className="coin-info-list">
-                                <img src={coin.img} alt={coin.title} className="coin-img-list" />
-                                <div className="coin-text-list">
-                                <h3>{coin.title}</h3>
-                                <p>{coin.description}</p>
-                                </div>
-                            </div>
-                        <Link to={`/product/${slugify(coin.title)}`}  className="btn btn-product-view">View</Link>
-                        </div>
-                    ))}
+          </aside>
 
-                    {filteredCoins.length === 0 && (
-                        <p className="no-results">No coins match this filter.</p>
-                    )}
+          {/* Coin List */}
+          <div className="catalogue-list-section">
+            <div className="coin-list">
+              {filteredCoins.map((coin, idx) => (
+                <div key={coin._id || idx} className="coin-row-list">
+                  <div className="coin-info-list">
+                    <img
+                      src={coin.img || RomanDen}
+                      alt={coin.Name || "Coin"}
+                      className="coin-img-list"
+                    />
+                    <div className="coin-text-list">
+                      <h3>{coin.Name || "Unnamed Coin"}</h3>
+                      <p>{coin.Description || "No description available"}</p>
+                    </div>
+                  </div>
+                  <Link to={`/product/${slugify(coin.Name)}`} className="btn btn-product-view">
+                    View
+                  </Link>
                 </div>
+              ))}
 
-                {/* Load More */}
-                <div className="load-more-wrapper">
-                    <button className="load-more">Load more...</button>
-                </div>
+              {filteredCoins.length === 0 && (
+                <p className="no-results">No coins match this filter.</p>
+              )}
             </div>
+
+            <div className="load-more-wrapper">
+              <button className="load-more" onClick={handleLoadMore}>
+                Load more...
+              </button>
+            </div>
+          </div>
         </div>
+
+        {/* Back to Top Button */}
+        {showBackToTop && (
+          <button
+            className="back-to-top"
+            onClick={scrollToTop}
+          >
+            ↑ Top
+          </button>
+        )}
       </div>
     </AppLayout>
   );

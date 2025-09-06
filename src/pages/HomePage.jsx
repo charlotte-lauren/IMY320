@@ -17,7 +17,6 @@ const HomePage = () => {
       try {
         const res = await fetch('/api/coins?limit=6');
         const data = await res.json();
-        console.log("Fetched coins: ", data)
         setCoins(data);
       } catch (err) {
         console.error('Failed to fetch coins:', err);
@@ -88,7 +87,7 @@ const HomePage = () => {
                   <div className="coin-card" key={coin._id || idx}>
                     <img
                       className="coin-img"
-                      src={coin.img || RomanDen}
+                      src={coin.img || RomanDen} // or any placeholder image
                       alt={coin.Name || 'Coin'}
                     />
                     <div className="coin-info">
