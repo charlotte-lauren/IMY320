@@ -4,7 +4,10 @@ import path, { dirname, join } from 'path';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import axios from 'axios';
+import * as cheerio from 'cheerio';
 import User from './models/User.js';
+import Coin from './models/Coin.js';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -29,7 +32,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 const generateToken = (user) => {
   return jwt.sign(
-    { id: user._id, username: user.username },
+    { id: user._id, username: user.username, role: user.role },
     process.env.JWT_SECRET || 'your_jwt_secret',
     { expiresIn: '1h' }
   );
@@ -53,6 +56,15 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+const authorizeRole = (role) => {
+  return (req, res, next) => {
+    if (req.user.role !== role) {
+      return res.status(403).json({ success: false, message: 'Forbidden: insufficient rights' });
+    }
+    next();
+  };
+};
+
 // Register
 app.post('/api/auth/register', async (req, res) => {
   try {
@@ -68,7 +80,16 @@ app.post('/api/auth/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword, name, email });
+
+    // Assign role: "user" by default
+    const newUser = new User({ 
+      username, 
+      password: hashedPassword, 
+      name, 
+      email, 
+      role: "user" 
+    });
+
     await newUser.save();
 
     const token = generateToken(newUser);
@@ -130,6 +151,52 @@ app.post('/api/auth/logout', (req, res) => {
   blacklistedTokens.add(token); // Blacklist the token
 
   res.json({ success: true, message: 'Logged out and token invalidated' });
+});
+
+// Get coins with optional limit
+app.get("/api/coins", async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const coins = await Coin.find().limit(limit);
+    res.json(coins);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Failed to fetch coins" });
+  }
+});
+
+app.get('/api/coins-with-images', async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 6;
+    const coins = await Coin.find().limit(limit);
+
+    // For each coin, fetch image from its Link field
+    const coinsWithImages = await Promise.all(
+      coins.map(async (coin) => {
+        if (coin.Link) {
+          try {
+            const response = await axios.get(coin.Link);
+            const $ = cheerio.load(response.data);
+
+            // Look for main image in the page HTML
+            const imgUrl = $('img[itemprop="image"]').attr('src') 
+                        || $('img').first().attr('src');
+
+            return { ...coin.toObject(), img: imgUrl || null };
+          } catch (err) {
+            console.error('Failed to fetch coin image for', coin.Name, err);
+            return { ...coin.toObject(), img: null };
+          }
+        }
+        return { ...coin.toObject(), img: null };
+      })
+    );
+
+    res.json(coinsWithImages);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to fetch coins with images' });
+  }
 });
 
 // Serve React static build

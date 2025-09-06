@@ -1,63 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/HomePage.css';
-import RomanDen from '../assets/RomanDen.jpg';
-import SilverDoll from '../assets/SilverDol.jpg';
-import GoldSov from '../assets/GoldSov.jpg';
-import JapOb from '../assets/JapaneseOb.jpg';
-import FrenchFranc from '../assets/FrenchFra.png';
-import Sycee from '../assets/ChineseSycee.jpeg';
-import CanMaple from '../assets/CanadaMaple.jpg';
+import RomanDen from '../assets/coin.png';
 import AppLayout from "../components/AppLayout";
 
 const HomePage = () => {
+  console.log("Loading")
   const featuredRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [coins, setCoins] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const coins = [
-    {
-      title: 'Ancient Roman Denarius',
-      subtitle: 'Circa 50 BC, Rome',
-      price: '$1,200',
-      img: RomanDen,
-    },
-    {
-      title: '1916 Silver Dollar',
-      subtitle: 'USA',
-      price: '$850',
-      img: SilverDoll,
-    },
-    {
-      title: 'Gold Sovereign',
-      subtitle: 'UK, 1901',
-      price: '$2,300',
-      img: GoldSov,
-    },
-    {
-      title: 'Japanese Oban Coin',
-      subtitle: 'Japan, Edo Period',
-      price: '$3,750',
-      img: JapOb,
-    },
-    {
-      title: 'French Franc',
-      subtitle: 'France, 1795',
-      price: '$620',
-      img: FrenchFranc,
-    },
-    {
-      title: 'Chinese Sycee',
-      subtitle: 'Qing Dynasty',
-      price: '$4,100',
-      img: Sycee,
-    },
-    {
-      title: 'Canadian Maple Leaf',
-      subtitle: 'Canada, 1988',
-      price: '$950',
-      img: CanMaple,
-    },
-  ];
+  useEffect(() => {
+    const fetchCoins = async () => {
+      console.log("Loading coins")
+      try {
+        const res = await fetch('/api/coins?limit=6');
+        const data = await res.json();
+        console.log("Fetched coins: ", data)
+        setCoins(data);
+      } catch (err) {
+        console.error('Failed to fetch coins:', err);
+      }
+    };
+    fetchCoins();
+  }, []);
 
   // Scroll amount per click (match .coin-card width + margin-right)
   const scrollAmount = 220 + 16; // 220px width + 16px margin-right approx
@@ -118,12 +85,20 @@ const HomePage = () => {
                     </div>
                   </Link>
                 ) : (
-                  <div className="coin-card" key={idx}>
-                    <img className="coin-img" src={coin.img} alt={coin.title} />
+                  <div className="coin-card" key={coin._id || idx}>
+                    <img
+                      className="coin-img"
+                      src={coin.img || RomanDen}
+                      alt={coin.Name || 'Coin'}
+                    />
                     <div className="coin-info">
-                      <h3>{coin.title}</h3>
-                      <p>{coin.subtitle}</p>
-                      <div className="coin-price">{coin.price}</div>
+                      <h3>{coin.Name}</h3>
+                      <p>
+                        {coin.Country} {coin["Issued on"] ? `(${coin["Issued on"]})` : ''}
+                      </p>
+                      <div className="coin-price">
+                        {coin.FaceValue ? `${coin.FaceValue} ${coin.Currency}` : 'N/A'}
+                      </div>
                     </div>
                   </div>
                 )
