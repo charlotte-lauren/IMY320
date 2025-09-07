@@ -8,6 +8,9 @@ import Coins from './pages/CoinsDirectory';
 import Product from './pages/ProductPage';
 import ProfilePage from './pages/ProfilePage';
 import CartPage from './pages/CartPage';
+import SellPage from './pages/SellerPage';
+import ManagePage from './pages/ManagePage';
+import SearchResults from "./pages/SearchResults";
 import Navbar from './components/Navbar';
 import UnderConstructionPage from './pages/UnderConstructionPage';
 
@@ -38,6 +41,8 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/search" element={<SearchResults />} />
+
         <Route path="/" element={<Splash />} />
 
         <Route
@@ -109,6 +114,32 @@ function App() {
             isAuth ? (
               <Layout setIsAuth={setIsAuth}>
                 <CartPage />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/sell"
+          element={
+            isAuth ? (
+              <Layout setIsAuth={setIsAuth}>
+                <SellPage />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/manage"
+          element={
+            isAuth ? (
+              <Layout setIsAuth={setIsAuth}>
+                <ManagePage />
               </Layout>
             ) : (
               <Navigate to="/login" replace />

@@ -207,14 +207,51 @@ app.get('/api/coins/slug/:slug', async (req, res) => {
   res.json(match);
 });
 
+app.get("/api/coins/search", async (req, res) => {
+  console.log("Search query received:", req.query.query, "Limit:", req.query.limit);
+  try {
+    const search = (req.query.query || "").trim();
+
+    if (!search) {
+      return res.status(400).json({ success: false, message: "Query cannot be empty" });
+    }
+
+    const limit = parseInt(req.query.limit) || 20;
+
+    // Sanitize search: allow letters, numbers, spaces, colons, dashes
+    const sanitizedSearch = search.replace(/[^a-zA-Z0-9 :\-]/g, "");
+
+    // Escape regex-special characters except allowed ones
+    const escapedSearch = sanitizedSearch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    const regex = new RegExp(escapedSearch, "i");
+
+    const coins = await Coin.find({
+      $or: [{ Name: regex }, { Country: regex }]
+    }).limit(limit);
+
+    res.json(coins);
+  } catch (err) {
+    console.error("Search error:", err);
+    res.status(500).json({ success: false, message: "Failed to search coins" });
+  }
+});
+
 // Get coin by ID
 app.get("/api/coins/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const coin = await Coin.findById(id);
+
+    const numericId = Number(id);
+    if (isNaN(numericId)) {
+      return res.status(400).json({ success: false, message: "Invalid coin ID" });
+    }
+
+    const coin = await Coin.findById(numericId);
     if (!coin) {
       return res.status(404).json({ success: false, message: "Coin not found" });
     }
+
     res.json(coin);
   } catch (err) {
     console.error("Error fetching coin by ID:", err);
@@ -253,14 +290,15 @@ app.post('/api/user/wishlist/:coinId', authenticateToken, async (req, res) => {
 
 app.get('/api/user/profile', authenticateToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('wishlist'); // populate wishlist coins
+    const user = await User.findById(req.user.id).populate('wishlist'); 
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
 
     res.json({
       username: user.username,
       name: user.name,
       email: user.email,
-      img: user.img || '',   // optional, you can add an 'img' field to User schema if desired
+      role: user.role,            // <-- add this line
+      img: user.img || '',        
       wishlist: user.wishlist,
     });
   } catch (err) {
@@ -322,6 +360,89 @@ app.delete('/api/user/cart', authenticateToken, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: 'Failed to clear cart' });
+  }
+});
+
+const authorizeAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, message: 'Admins only' });
+  }
+  next();
+};
+
+// Add a coin
+app.post('/api/admin/coin', authenticateToken, authorizeAdmin, async (req, res) => {
+  try {
+    const { Name, Country, FaceValue, Currency, Link, IssuedOn } = req.body;
+    if (!Name || !Country) return res.status(400).json({ success: false, message: 'Name and Country required' });
+
+    const lastCoin = await Coin.findOne().sort({ _id: -1 });
+    const newId = lastCoin ? lastCoin._id + 1 : 1;
+
+    const coin = new Coin({ _id: newId, Name, Country, FaceValue, Currency, Link, "Issued on": IssuedOn ? Number(IssuedOn) : undefined });
+    await coin.save();
+    res.json({ success: true, coin });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to add coin' });
+  }
+});
+
+// Request admin
+app.post('/api/user/request-admin', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (user.role === 'admin') return res.status(400).json({ success: false, message: 'Already an admin' });
+    if (user.pendingAdmin) return res.status(400).json({ success: false, message: 'Request already pending' });
+
+    user.pendingAdmin = true;
+    await user.save();
+    res.json({ success: true, message: 'Admin request submitted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to submit admin request' });
+  }
+});
+
+// Get pending admin requests
+app.get('/api/admin/pending-requests', authenticateToken, authorizeAdmin, async (req, res) => {
+  try {
+    const pendingUsers = await User.find({ pendingAdmin: true });
+    res.json({ success: true, pending: pendingUsers });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to fetch pending requests' });
+  }
+});
+
+// Approve admin request
+app.post('/api/admin/approve/:userId', authenticateToken, authorizeAdmin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user || !user.pendingAdmin) return res.status(404).json({ success: false, message: 'No pending request found' });
+
+    user.role = 'admin';
+    user.pendingAdmin = false;
+    await user.save();
+    res.json({ success: true, message: `${user.username} is now an admin` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to approve admin' });
+  }
+});
+
+// Reject admin request
+app.post('/api/admin/reject/:userId', authenticateToken, authorizeAdmin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user || !user.pendingAdmin) return res.status(404).json({ success: false, message: 'No pending request found' });
+
+    user.pendingAdmin = false; // reset flag
+    await user.save();
+    res.json({ success: true, message: `Admin request for ${user.username} rejected` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to reject admin request' });
   }
 });
 

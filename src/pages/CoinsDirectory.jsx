@@ -33,7 +33,7 @@ const CoinsDirectory = () => {
     Era: ["Ancient", "Victorian", "Edo", "Revolution", "Dynastic", "Modern"]
   };
 
-  // Fetch coins, optionally append to existing list
+  // Fetch coins
   const fetchCoins = async (newLimit, append = false) => {
     setLoading(true);
     try {
@@ -47,12 +47,10 @@ const CoinsDirectory = () => {
     }
   };
 
-  // Initial fetch
   useEffect(() => {
     fetchCoins(limit, false);
   }, []);
 
-  // Restore scroll position on mount
   useEffect(() => {
     const savedY = sessionStorage.getItem("coinsScrollY");
     if (savedY !== null) {
@@ -61,52 +59,50 @@ const CoinsDirectory = () => {
     }
   }, []);
 
-  // Show "Back to Top" button
   useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 300);
-    };
+    const handleScroll = () => setShowBackToTop(window.scrollY > 300);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Fully functional filtering logic
   const filteredCoins = coins.filter((coin) =>
     Object.keys(filters).every((key) => {
       if (!filters[key]) return true;
       const field = filterFieldMap[key];
-      const coinValue = coin[field] ? coin[field].toString().toLowerCase() : "";
+      if (!coin[field]) return false;
+
+      // Split multi-value fields, trim and lowercase
+      const coinValues = coin[field].toString().split(",").map(v => v.trim().toLowerCase());
       const filterValue = filters[key].toLowerCase();
-      return coinValue === filterValue;
+
+      return coinValues.some(value => value.includes(filterValue));
     })
   );
 
   const handleFilterSelect = (category, option) => {
-    setFilters((prev) => ({
+    setFilters(prev => ({
       ...prev,
       [category]: prev[category] === option ? null : option
     }));
   };
 
-  const resetFilters = () => {
-    setFilters({
-      Metal: null,
-      Theme: null,
-      Country: null,
-      Era: null
-    });
-  };
+  const resetFilters = () => setFilters({
+    Metal: null,
+    Theme: null,
+    Country: null,
+    Era: null
+  });
 
   const handleLoadMore = async () => {
     const currentY = window.scrollY;
     const newLimit = limit + 10;
     setLimit(newLimit);
-    await fetchCoins(newLimit, true); // append new coins
-    window.scrollTo({ top: currentY, behavior: "auto" }); // preserve scroll
+    await fetchCoins(newLimit, true);
+    window.scrollTo({ top: currentY, behavior: "auto" });
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   if (loading && coins.length === 0) return <p>Loading coins...</p>;
 
@@ -123,11 +119,11 @@ const CoinsDirectory = () => {
             <h2>Filter By</h2>
             <button className="reset-btn" onClick={resetFilters}>Reset Filters</button>
             <ul className="filter-list">
-              {Object.keys(filterOptions).map((category) => (
+              {Object.keys(filterOptions).map(category => (
                 <li key={category}>
                   <h3>{category}</h3>
                   <ul className="dropdown">
-                    {filterOptions[category].map((option) => (
+                    {filterOptions[category].map(option => (
                       <li key={option}>
                         <button
                           className={`dropdown-item ${filters[category] === option ? "active" : ""}`}
@@ -159,13 +155,10 @@ const CoinsDirectory = () => {
                       <p>{coin.Description || "No description available"}</p>
                     </div>
                   </div>
-                  {/* Save scroll before navigating */}
                   <Link
                     to={`/product/${coin._id}`}
                     className="btn btn-product-view"
-                    onClick={() => {
-                      sessionStorage.setItem("coinsScrollY", window.scrollY);
-                    }}
+                    onClick={() => sessionStorage.setItem("coinsScrollY", window.scrollY)}
                   >
                     View
                   </Link>
@@ -187,10 +180,7 @@ const CoinsDirectory = () => {
 
         {/* Back to Top Button */}
         {showBackToTop && (
-          <button
-            className="back-to-top"
-            onClick={scrollToTop}
-          >
+          <button className="back-to-top" onClick={scrollToTop}>
             ↑ Top
           </button>
         )}
