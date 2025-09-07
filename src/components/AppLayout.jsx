@@ -5,10 +5,10 @@ import Footer from "./Footer";
 import "../styles/AppLayout.css"; // for the grid + layout styles
 import '../styles/global.css';
 
-const AppLayout = ({ children, useCustomNavbar, useFooter, loginPage, color }) => {
+const AppLayout = ({ children, useCustomNavbar, useFooter, loginPage, color, isAuth }) => {
   return (
     <div className="app-layout">
-      {useCustomNavbar ? <CustomNavbar loginPage={loginPage}/> : null}
+      {useCustomNavbar ? <CustomNavbar loginPage={loginPage} isAuth={isAuth}/> : null}
 
       <main>{children}</main>
 

@@ -451,7 +451,16 @@ const LoginPage = ({ setIsAuth }) => {
       setMessage(result.message);
 
       if (result.success && result.token) {
-        localStorage.setItem('token', result.token);
+        // ✅ Save token consistently as 'authToken'
+        localStorage.setItem('authToken', result.token);
+
+        // Optionally, if user chooses "stay signed in", store a flag
+        if (staySignedIn) {
+          localStorage.setItem('staySignedIn', 'true');
+        } else {
+          localStorage.removeItem('staySignedIn');
+        }
+
         setIsAuth(true);
         navigate('/home');
       }
@@ -459,6 +468,7 @@ const LoginPage = ({ setIsAuth }) => {
       setMessage('Network error. Please try again.');
     }
   };
+
 
   return (
     <AppLayout useCustomNavbar={true} useFooter={false} loginPage={true} color={true}>

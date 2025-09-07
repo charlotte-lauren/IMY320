@@ -33,16 +33,13 @@ const CoinsDirectory = () => {
     Era: ["Ancient", "Victorian", "Edo", "Revolution", "Dynastic", "Modern"]
   };
 
-  const fetchCoins = async (newLimit) => {
+  // Fetch coins, optionally append to existing list
+  const fetchCoins = async (newLimit, append = false) => {
     setLoading(true);
-    const scrollPosition = window.scrollY; // save current scroll
     try {
       const res = await fetch(`/api/coins?limit=${newLimit}`);
       const data = await res.json();
-      setCoins(data);
-      setTimeout(() => {
-        window.scrollTo({ top: scrollPosition, behavior: "auto" });
-      }, 50);
+      setCoins(prev => append ? [...prev, ...data.slice(prev.length)] : data);
     } catch (err) {
       console.error("Failed to fetch coins:", err);
     } finally {
@@ -50,11 +47,21 @@ const CoinsDirectory = () => {
     }
   };
 
+  // Initial fetch
   useEffect(() => {
-    fetchCoins(limit);
-  }, [limit]);
+    fetchCoins(limit, false);
+  }, []);
 
-  // Show back to top button after scrolling down
+  // Restore scroll position on mount
+  useEffect(() => {
+    const savedY = sessionStorage.getItem("coinsScrollY");
+    if (savedY !== null) {
+      window.scrollTo({ top: parseInt(savedY, 10), behavior: "auto" });
+      sessionStorage.removeItem("coinsScrollY");
+    }
+  }, []);
+
+  // Show "Back to Top" button
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 300);
@@ -67,7 +74,7 @@ const CoinsDirectory = () => {
     Object.keys(filters).every((key) => {
       if (!filters[key]) return true;
       const field = filterFieldMap[key];
-      const coinValue = coin[field]?.toString().toLowerCase();
+      const coinValue = coin[field] ? coin[field].toString().toLowerCase() : "";
       const filterValue = filters[key].toLowerCase();
       return coinValue === filterValue;
     })
@@ -89,22 +96,19 @@ const CoinsDirectory = () => {
     });
   };
 
-  const slugify = (text) =>
-    text
-      ?.toString()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)+/g, "") || "";
-
-  const handleLoadMore = () => {
-    setLimit((prev) => prev + 10);
+  const handleLoadMore = async () => {
+    const currentY = window.scrollY;
+    const newLimit = limit + 10;
+    setLimit(newLimit);
+    await fetchCoins(newLimit, true); // append new coins
+    window.scrollTo({ top: currentY, behavior: "auto" }); // preserve scroll
   };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (loading) return <p>Loading coins...</p>;
+  if (loading && coins.length === 0) return <p>Loading coins...</p>;
 
   return (
     <AppLayout useCustomNavbar={false} useFooter={true} loginPage={false} color={true}>
@@ -155,7 +159,14 @@ const CoinsDirectory = () => {
                       <p>{coin.Description || "No description available"}</p>
                     </div>
                   </div>
-                  <Link to={`/product/${slugify(coin.Name)}`} className="btn btn-product-view">
+                  {/* Save scroll before navigating */}
+                  <Link
+                    to={`/product/${coin._id}`}
+                    className="btn btn-product-view"
+                    onClick={() => {
+                      sessionStorage.setItem("coinsScrollY", window.scrollY);
+                    }}
+                  >
                     View
                   </Link>
                 </div>

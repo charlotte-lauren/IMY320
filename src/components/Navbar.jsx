@@ -12,12 +12,12 @@ function Navbar({ setIsAuth }) {
   const location = useLocation();
 
   useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem('token'));
+    setIsLoggedIn(!!localStorage.getItem('authToken'));
   }, []);
 
   useEffect(() => {
     const handleStorageChange = () => {
-      setIsLoggedIn(!!localStorage.getItem('token'));
+      setIsLoggedIn(!!localStorage.getItem('authToken'));
     };
 
     window.addEventListener('storage', handleStorageChange);
@@ -32,11 +32,11 @@ function Navbar({ setIsAuth }) {
       await fetch('/api/auth/logout', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
         },
       });
 
-      localStorage.removeItem('token');
+      localStorage.removeItem('authToken');
       setIsLoggedIn(false);
       setIsAuth(false);
       console.log("Navigating back to splash");

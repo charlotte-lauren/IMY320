@@ -199,6 +199,58 @@ app.get('/api/coins-with-images', async (req, res) => {
   }
 });
 
+app.get('/api/coins/slug/:slug', async (req, res) => {
+  const slug = req.params.slug;
+  const coins = await Coin.find();
+  const match = coins.find(c => slugify(c.Name) === slug);
+  if (!match) return res.status(404).json({ error: "Not found" });
+  res.json(match);
+});
+
+// Get coin by ID
+app.get("/api/coins/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const coin = await Coin.findById(id);
+    if (!coin) {
+      return res.status(404).json({ success: false, message: "Coin not found" });
+    }
+    res.json(coin);
+  } catch (err) {
+    console.error("Error fetching coin by ID:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+app.post('/api/user/cart/:coinId', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user.cart.includes(req.params.coinId)) {
+      user.cart.push(req.params.coinId);
+      await user.save();
+    }
+    res.json({ success: true, cart: user.cart });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to add to cart' });
+  }
+});
+
+// Add to Wishlist
+app.post('/api/user/wishlist/:coinId', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user.wishlist.includes(req.params.coinId)) {
+      user.wishlist.push(req.params.coinId);
+      await user.save();
+    }
+    res.json({ success: true, wishlist: user.wishlist });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to add to wishlist' });
+  }
+});
+
 // Serve React static build
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -212,6 +264,10 @@ app.get('/', (req, res) => {
 // Example protected route
 app.get('/api/protected', authenticateToken, (req, res) => {
   res.json({ message: `Hello ${req.user.username}, this is protected data.` });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, '..', 'IMY320', 'dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
