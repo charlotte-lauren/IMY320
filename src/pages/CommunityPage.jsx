@@ -38,7 +38,7 @@ const CommunityPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <button type="submit">Subscribe</button>
+            <button type="submit" className="btn-news">Subscribe</button>
           </form>
           {subscribed && <p className="thank-you">Thank you for subscribing!</p>}
 

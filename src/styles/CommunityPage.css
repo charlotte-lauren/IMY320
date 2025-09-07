@@ -10,68 +10,82 @@
 
 /******************** Newsletter section ********************/
 .newsletter {
-  padding: 4rem 2rem;
+  padding: 4rem 2rem 1rem 2rem;
   text-align: center;
-  background: #fff;
+  background: #F2EFED;
 }
 
 .newsletter-form {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .newsletter-form input {
+    color: #1A1F2B;
+    font-size: 1rem;
   padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border-radius: 999px;
+  border: 2px solid #1A1F2B;
   width: 280px;
+  background-color: #F2EFED;
+  outline: none;
 }
-
-.newsletter-form button {
-  /* background: #1A1F2B; */
-  color: #fff;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.newsletter-form button:hover {
-  background: #2f5e6f;
+.newsletter-form input:focus {
+  box-shadow: 0 0 0 2px #B87332; /* subtle orange border glow */
+  border: 2px solid #B87332;
+  outline: none;
 }
 
 .newsletter-sample {
-  margin-top: 2rem;
-  padding: 2rem;
-  background: #F2EFED;
+  margin-top: 4rem;
+  background: #7DA0AE;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
   text-align: left;
+  padding: 30px 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.btn-news{
+    background: #B87332;
+  color: #F2EFED;
+  border: 2px solid #B87332;
+  padding: 15px 60px;
+  border-radius: 999px;
+  cursor: pointer;
+  /* transition: transform 0.1s ease-out; */
+}
+.btn-news:hover{
+  background: #eda15b;
+  color: #1A1F2B;
+  text-decoration: none;
+  border: 2px solid #eda15b;
+}
+.btn:active {
+  transform: scale(0.90);
 }
 
 /******************** Community Section ********************/
 .community-info {
   padding: 4rem 2rem;
-  background: #1A1F2B;
-  color: #F2EFED;
+  background-color: #F2EFED;
+  color: #1A1F2B;
   text-align: center;
 }
 
-.community-features {
+/* .community-features {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
   margin-top: 2rem;
-}
+} */
 
-.feature-card {
+/* .feature-card {
   background: #2f5e6f;
   padding: 2rem;
   border-radius: 12px;
@@ -83,4 +97,4 @@
 
 .feature-card:hover {
   transform: translateY(-5px);
-}
+} */
