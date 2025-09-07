@@ -107,7 +107,7 @@ header.container-s {
   color: #F2EFED;
   width: min(1700px, 90%);
   gap: 1.5rem;
-  padding: 1rem 5rem 5rem 5rem;
+  padding: 1rem 5rem 1rem 5rem;
   z-index: 300;
 }
 .features-section h2 {
@@ -122,7 +122,7 @@ header.container-s {
   color: #F2EFED;
 }
 .feature-card {
-  background: #1A1F2B;
+  background: #305F72;
   border-radius: 20px;
   padding: 1.5rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -133,7 +133,7 @@ header.container-s {
 /* ===================== Purpose Section ===================== */
 .purposeBackground {
   background: #1A1F2B;
-  padding: 10rem 3rem;
+  padding: 6rem 3rem;
   display: flex;
   align-items: center;
   /* justify-content: center; */
@@ -168,7 +168,7 @@ hr {
 /* ===================== Testimonials Section ===================== */
 .testBackground {
   background: #305F72;
-  padding: 10rem 3rem;
+  padding: 6rem 3rem;
   display: flex;
   align-items: center;
 }
@@ -215,7 +215,7 @@ hr {
   /* background: #F2EFED; */
   background: #1A1F2B;
   color: #F2EFED;
-  padding: 15rem 3rem 25rem 3rem;
+  padding: 5rem 3rem 17rem 3rem;
   display: flex;
   align-items: center;
 }

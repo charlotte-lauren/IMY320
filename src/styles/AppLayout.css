@@ -31,8 +31,8 @@
   text-align: center;
   grid-row: 3; /* explicitly place in footer row of grid */
 
-    border-top-left-radius: 70px;
-  border-top-right-radius: 70px;
+    /* border-top-left-radius: 70px;
+  border-top-right-radius: 70px; */
   margin-top: -150px;
   /* padding-top: 6rem; */
 }
@@ -75,8 +75,8 @@
   padding: 3rem 1rem;
   text-align: center;
 
-  border-top-left-radius: 70px;
-  border-top-right-radius: 70px;
+  /* border-top-left-radius: 70px;
+  border-top-right-radius: 70px; */
 
   margin-top: 0;   /* remove the negative margin */
   position: relative;
