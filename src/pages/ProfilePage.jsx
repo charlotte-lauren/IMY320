@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AppLayout from "../components/AppLayout";
 import RomanDen from "../assets/coin.png";
+import "../styles/ProfilePage.css";
 
 const ProfilePage = () => {
   const [user, setUser] = useState({ username: "", img: "" });
@@ -77,10 +78,10 @@ const ProfilePage = () => {
                         {coin.FaceValue ? `${coin.FaceValue} ${coin.Currency}` : 'N/A'}
                     </div>
                     <div className="wishlist-actions">
-                        <a href={`/product/${slugify(coin.Name)}`} className="btn">View</a>
+                        <a href={`/product/${slugify(coin.Name)}`} className="profile-btn">View</a>
                         <button 
                         onClick={() => removeFromWishlist(coin._id)} 
-                        className="btn secondary"
+                        className="profile-btn profile-btn-secondary"
                         >
                         Remove
                         </button>

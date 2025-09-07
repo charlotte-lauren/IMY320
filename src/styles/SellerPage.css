@@ -1,0 +1,84 @@
+/* Seller Page Styling with Brand Colours */
+
+.seller-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #F2EFED; /* neutral background */
+  color: #1A1F2B; /* primary text */
+}
+
+.seller-page h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #305F72; /* secondary */
+}
+
+.seller-page h2 {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  color: #B87332; /* accent highlight */
+}
+
+.seller-page p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #305F72; /* secondary */
+}
+
+/* Inputs */
+.seller-page input {
+  display: block;
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.5rem 0;
+  border: 1px solid #305F72;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.seller-page input:focus {
+  border-color: #B87332; /* accent on focus */
+  box-shadow: 0 0 4px rgba(184, 115, 50, 0.5);
+  outline: none;
+}
+
+/* Buttons */
+.seller-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  background-color: #305F72; /* secondary */
+  color: #F2EFED; /* neutral text */
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.seller-btn:hover {
+  background-color: #1A1F2B; /* primary hover */
+  transform: scale(1.03);
+}
+
+.seller-btn-accent {
+  background-color: #B87332; /* accent */
+  color: #F2EFED;
+}
+
+.seller-btn-accent:hover {
+  background-color: #7DA0AE; /* background on hover */
+}
+
+/* Message styling */
+.seller-message {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border-radius: 6px;
+  background-color: #7DA0AE; /* background highlight */
+  color: #1A1F2B;
+}

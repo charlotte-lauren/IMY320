@@ -1,0 +1,125 @@
+/* Profile Page Styling with Custom Colours */
+
+.profile-page {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #F2EFED; /* neutral background for content area */
+  color: #1A1F2B; /* primary text */
+}
+
+/* Profile header */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #305F72; /* secondary border */
+  margin-bottom: 1rem;
+}
+
+.profile-username {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1A1F2B; /* primary */
+}
+
+/* Wishlist Section */
+.wishlist {
+  margin-top: 2rem;
+}
+
+.wishlist h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #305F72; /* secondary */
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.wishlist-card {
+  background-color: #F2EFED; /* neutral card background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.wishlist-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.wishlist-info {
+  text-align: center;
+}
+
+.wishlist-info h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  color: #1A1F2B; /* primary */
+}
+
+.wishlist-info p {
+  color: #305F72; /* secondary for subtext */
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.wishlist-price {
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #B87332; /* accent for price */
+}
+
+/* Buttons */
+.profile-btn {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  background-color: #305F72; /* secondary */
+  color: #F2EFED; /* neutral text */
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin: 0.25rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: inline-block;
+}
+
+.profile-btn:hover {
+  background-color: #1A1F2B; /* dark primary on hover */
+  transform: scale(1.05);
+}
+
+.profile-btn-secondary {
+  background-color: #B87332; /* accent */
+  color: #F2EFED; /* neutral text */
+}
+
+.profile-btn-secondary:hover {
+  background-color: #7DA0AE; /* background colour on hover */
+}

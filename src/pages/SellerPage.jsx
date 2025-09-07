@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AppLayout from "../components/AppLayout";
+import "../styles/SellerPage.css";
 
 const SellerPage = () => {
   const [user, setUser] = useState({});
@@ -53,25 +54,31 @@ const SellerPage = () => {
 
   return (
     <AppLayout useCustomNavbar={false} useFooter={true} loginPage={false} color={true} isAuth={!!token}>
-      <h1>Seller Page</h1>
-      {user.role === 'admin' ? (
-        <>
-          <h2>Add a Coin</h2>
-          <input placeholder="Name" value={form.Name} onChange={e => setForm({ ...form, Name: e.target.value })} />
-          <input placeholder="Country" value={form.Country} onChange={e => setForm({ ...form, Country: e.target.value })} />
-          <input placeholder="FaceValue" value={form.FaceValue} onChange={e => setForm({ ...form, FaceValue: e.target.value })} />
-          <input placeholder="Currency" value={form.Currency} onChange={e => setForm({ ...form, Currency: e.target.value })} />
-          <input placeholder="Link" value={form.Link} onChange={e => setForm({ ...form, Link: e.target.value })} />
-          <input placeholder="Issued On" value={form.IssuedOn} onChange={e => setForm({ ...form, IssuedOn: e.target.value })} />
-          <button onClick={addCoin}>Add Coin</button>
-        </>
-      ) : (
-        <>
-          <p>You are a user. To add coins, request admin access.</p>
-          {user.pendingAdmin ? <p>Admin request pending...</p> : <button onClick={requestAdmin}>Request Admin</button>}
-        </>
-      )}
-    </AppLayout>
+        <div className="seller-page">
+            <h1>Seller Page</h1>
+            {user.role === "admin" ? (
+            <>
+                <h2>Add a Coin</h2>
+                <input placeholder="Name" value={form.Name} onChange={e => setForm({ ...form, Name: e.target.value })} />
+                <input placeholder="Country" value={form.Country} onChange={e => setForm({ ...form, Country: e.target.value })} />
+                <input placeholder="FaceValue" value={form.FaceValue} onChange={e => setForm({ ...form, FaceValue: e.target.value })} />
+                <input placeholder="Currency" value={form.Currency} onChange={e => setForm({ ...form, Currency: e.target.value })} />
+                <input placeholder="Link" value={form.Link} onChange={e => setForm({ ...form, Link: e.target.value })} />
+                <input placeholder="Issued On" value={form.IssuedOn} onChange={e => setForm({ ...form, IssuedOn: e.target.value })} />
+                <button className="seller-btn" onClick={addCoin}>Add Coin</button>
+            </>
+            ) : (
+            <>
+                <p>You are a user. To add coins, request admin access.</p>
+                {user.pendingAdmin ? (
+                <p className="seller-message">Admin request pending...</p>
+                ) : (
+                <button className="seller-btn seller-btn-accent" onClick={requestAdmin}>Request Admin</button>
+                )}
+            </>
+            )}
+        </div>
+        </AppLayout>
   );
 };
 
