@@ -1,16 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/AboutPage.css";
 import AppLayout from "../components/AppLayout";
 import BuyCoins from '../assets/BuyCoins.png';
 import crowImg from '../assets/Crow.png';
 import feather1 from '../assets/WhiteFeather.png';
 import feather2 from '../assets/BlueFeather.png';
 import feather3 from '../assets/DarkFeather.png';
+import "../styles/global.css";
+import "../styles/AboutPage.css";
 
-const handleClick = () => {
-  alert('Redirect to Coins Directory page');
-};
+// const handleClick = () => {
+//   alert('Redirect to Coins Directory page');
+// };
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -76,7 +77,9 @@ const AboutPage = () => (
           <h2>Our Beliefs</h2>
           <div className="beliefs-cards">
             <div className="belief-card">
-              <div className="belief-icon trust scale-on-scroll" />
+              <div className="belief-icon">
+                <div className="b-icon trust scale-on-scroll" />
+              </div>
               <h3>Trust First</h3>
               <p>
                 We believe collecting should be safe and secure. That’s why
@@ -85,7 +88,9 @@ const AboutPage = () => (
               </p>
             </div>
             <div className="belief-card">
-              <div className="belief-icon curiosity scale-on-scroll" />
+              <div className="belief-icon">
+                <div className="b-icon curiosity scale-on-scroll" />
+              </div>
               <h3>Fuelling Curiosity</h3>
               <p>
                 Coins are more than metal — they’re pieces of history,
@@ -94,7 +99,9 @@ const AboutPage = () => (
               </p>
             </div>
             <div className="belief-card">
-              <div className="belief-icon community scale-on-scroll" />
+              <div className="belief-icon">
+                <div className="b-icon community scale-on-scroll" />
+              </div>
               <h3>Community-Led</h3>
               <p>
                 The best part of collecting is sharing it. CurioCrow is made

@@ -74,10 +74,6 @@ span {
   border: 2px solid #eda15b;
 }
 .btn:active {
-  /* background: #B87332;
-  color: #1A1F2B;
-  text-decoration: none;
-  border: 2px solid #B87332; */
   transform: scale(0.90); /* Shrinks the button to 90% of its original size */
 }
 
@@ -120,16 +116,22 @@ span {
   text-decoration: none;
 }
 .btn.tertiary:active {
-  /* background: #7DA0AE;
-  border: 2px solid #7DA0AE;
-  color: #1A1F2B;
-  text-decoration: none; */
   transform: scale(0.90); /* Shrinks the button to 90% of its original size */
 }
 
 /* Links */
 Link {
     text-decoration: none;
+}
+Link:hover {
+    text-decoration: none;
+}
+
+a{
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: none;
 }
 
 /* Cards */

@@ -136,18 +136,6 @@
     margin-right: 5rem;
 }
 
-/* .card h2 {
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-} */
-
-/* .card p {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 10px;
-} */
-
 /* Crow image overlay */
 .crow-img {
   position: absolute;
@@ -163,15 +151,8 @@
   width: 50px;
   opacity: 0.9;
   pointer-events: none;
-  /* animation: floatSide 3s ease-in-out infinite; */
+  z-index: 0;
 }
-
-/* Side-to-side floating */
-/* @keyframes floatSide {
-  0%   { transform: translateX(0); }
-  50%  { transform: translateX(10px); }
-  100% { transform: translateX(0); }
-} */
 
 .feather1 {
   right: 700px;
@@ -227,16 +208,9 @@
 
 .beliefs-section {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 10rem;
   color: #1A1F2B;
 }
-
-/* .beliefs-section h2{
-    color: #1A1F2B;
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-} */
 
 .beliefs-cards {
   display: flex;
@@ -252,30 +226,42 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
   max-width: 300px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ centers belief-icon and text horizontally */
 }
 
 .belief-icon {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 1rem;
-  background-size: contain;
-  background-repeat: no-repeat;
   border-radius: 50%;
   background-color: #151b26;
+  width: 150px;
+  height: 150px;
   transition: transform 0.3s ease;
-  animation: floatWiggle 4s ease-in-out infinite;
-  display: inline-block;
+  animation: wiggle 2s ease-in-out infinite;
+
+  display: flex; /* ✅ makes it a flex container */
+  align-items: center; /* vertical center */
+  justify-content: center; /* horizontal center */
 }
 
-.belief-icon.trust {
+.b-icon {
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.trust {
   background-image: url('../assets/ShieldIcon.png');
   /* background-color: #1A1F2B; */
 }
-.belief-icon.curiosity {
+.curiosity {
   background-image: url('../assets/IdeaIcon.png');
 }
-.belief-icon.community {
+.community {
   background-image: url('../assets/PeopleIcon.png');
+  /* z-index: 3; */
 }
 
 @keyframes floatWiggle {
@@ -314,19 +300,13 @@
 
 .what-to-do-section {
   text-align: center;
+  z-index: 3;
 }
-
-/* .what-to-do-section h2{
-    color: #1A1F2B;
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-} */
 
 .what-to-do-content {
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: 3rem;
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
@@ -334,8 +314,6 @@
 }
 
 .what-to-do-circle {
-  /* background: url('../assets/BuyCoins.png') no-repeat center center;
-  background-size: contain; */
   width: 400px;
   height: 400px;
   border-radius: 50%;
@@ -344,11 +322,10 @@
   align-items: center;
   justify-content: center;
   animation: wiggle 2s ease-in-out infinite;
-  /* display: inline-block; */
 }
 
 .icon-img{
-    width: 250px;
+  width: 250px;
   object-fit: contain;
 }
 
@@ -356,30 +333,28 @@
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  max-width: 350px;
-    /* display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto auto;
-  gap: 1.2rem;
-  max-width: 700px;
-  position: relative; */
+  max-width: 600px; /* increase max width */
+  width: 100%;      /* stretch inside container */
 }
 
 .do-card {
   background-color: #2f5e6f;
-  padding: 1rem 1.5rem;
+  padding: 1rem 2rem;
   border-radius: 10px;
   color: #F2EFED;
-  text-align: left;
+
+  display: flex;          /* make h3 + p sit in a row */
+  flex-direction: row;    /* horizontal */
+  align-items: center;    /* vertically align text */
+  gap: 2rem;              /* spacing between h3 and p */
+  text-align: left;       /* keep left alignment */
+  z-index: 20;
 }
 
 
 .Sell-card {
-  /* grid-column: 1 / span 2;
-  grid-row: 2;
-  margin-left: 20%;
-  max-width: 60%;    */
   margin-left: 2rem; 
+  margin-right: -2rem;
 }
 
 
@@ -401,7 +376,7 @@
 /************************* BROWSE COLLECTIONS SECTIONS *************************/
 
 section.Explore-section {
-    padding: 4rem 2rem 4rem 2rem;
+    padding: 1rem 2rem 2rem 2rem;
     text-align: center;
     margin: 6rem 0rem;
     /* margin-bottom: 10rem; */
@@ -411,10 +386,4 @@ section.Explore-section {
 
 .explore-links {
   margin-top: 5rem;
-}
-
-.btn,
-.btn-explore {
-  color: #F2EFED;
-  text-decoration: none;
 }
