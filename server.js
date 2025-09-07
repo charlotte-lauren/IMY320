@@ -251,6 +251,24 @@ app.post('/api/user/wishlist/:coinId', authenticateToken, async (req, res) => {
   }
 });
 
+app.get('/api/user/profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('wishlist'); // populate wishlist coins
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+    res.json({
+      username: user.username,
+      name: user.name,
+      email: user.email,
+      img: user.img || '',   // optional, you can add an 'img' field to User schema if desired
+      wishlist: user.wishlist,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
 // Serve React static build
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
