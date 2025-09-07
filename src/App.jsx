@@ -11,6 +11,7 @@ import CartPage from './pages/CartPage';
 import SellPage from './pages/SellerPage';
 import ManagePage from './pages/ManagePage';
 import SearchResults from "./pages/SearchResults";
+import Community from "./pages/CommunityPage";
 import Navbar from './components/Navbar';
 import UnderConstructionPage from './pages/UnderConstructionPage';
 
@@ -42,6 +43,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/search" element={<SearchResults />} />
+
+        <Route path="/community" element={<Community />} />
 
         <Route path="/" element={<Splash />} />
 
