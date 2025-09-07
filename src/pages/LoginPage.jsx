@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/LogoNBG.png';
 import AppLayout from "../components/AppLayout";
 import '../styles/global.css';
+// import '../styles/LoginPage.css';
 
 const coinEmoji = '🪙';
 
@@ -10,7 +11,7 @@ const styles = `
   body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #1A1F2B;
+    background-color: #F2EFED;
     color: #C8D9E2;
   }
 
@@ -19,11 +20,12 @@ const styles = `
     height: 100%;
     width: 100vw;
     padding-bottom: 30px;
+    background-color: #F2EFED;
   }
 
   .left-panel {
     flex: 1;
-    background-color: #305F72;
+    background-color: #F2EFED;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +35,7 @@ const styles = `
 
   .right-panel {
     flex: 1;
-    background-color: #1A1F2B;
+    background-color: #F2EFED;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -279,30 +281,6 @@ const styles = `
     color: white !important;
   }
 
-// .google-btn {
-//   background: #5C7D8A;
-//   color: #F2EFED;
-//   border: 2px solid #5C7D8A;
-//   padding: 15px 60px;
-//   border-radius: 999px;
-//   cursor: pointer;
-//   transition: transform 0.1s ease-out;
-//   width: 100%;
-// }
-// .google-btn:hover {
-//   background: #7C9FAD;
-//   color: #F2EFED;
-//   text-decoration: none;
-//   border: 2px solid #7C9FAD;
-// }
-// .google-btn:active {
-//   background: #1A1F2B;
-//   color: #F2EFED;
-//   text-decoration: none;
-//   border: 2px solid #1A1F2B;
-//   transform: scale(0.90); 
-// }
-
 .google-btn {
   background: transparent;
   border: 2px solid #7DA0AE;
@@ -475,9 +453,6 @@ const LoginPage = ({ setIsAuth }) => {
     <div className="container">
       <div className="right-panel">
         <form className="form-box" onSubmit={handleSubmit} noValidate>
-          {/* <div className="logo-login">
-            <img src={logo} alt="Logo" />
-          </div> */}
           <h2>Welcome</h2>
           <p className="subheading">{isRegister ? 'Register to continue' : 'Log in to continue'}</p>
 

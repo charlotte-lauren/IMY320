@@ -137,7 +137,6 @@ body {
   background-color: rgba(26, 31, 43, 0.95); /* less transparent */
   box-shadow: 0 0 0 2px #B87332; /* subtle orange border glow */
   border: 1px solid #B87332;
-  /* border: none; */
 }
 
 .search-bar::placeholder {
