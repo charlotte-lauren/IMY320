@@ -44,7 +44,15 @@ function App() {
       <Routes>
         <Route path="/search" element={<SearchResults />} />
 
-        <Route path="/community" element={<Community />} />
+        <Route 
+          path="/community" 
+          element={isAuth ? (
+            <Layout setIsAuth={setIsAuth}>
+                <Community />
+              </Layout>
+          ) : (
+            <Login setIsAuth={setIsAuth} />
+          )} />
 
         <Route path="/" element={<Splash />} />
 

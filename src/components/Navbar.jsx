@@ -112,7 +112,6 @@ function Navbar({ setIsAuth }) {
       <div className="navbar-bottom">
         <Link to="/home" className={location.pathname === '/home' ? 'nav-link active' : 'nav-link'}>Home</Link>
         <Link to="/coins" className={location.pathname === '/coins' ? 'nav-link active' : 'nav-link'}>Coins Directory</Link>
-        <Link to="/shop" className={location.pathname === '/shop' ? 'nav-link active' : 'nav-link'}>Shop</Link>
         <Link to="/sell" className={location.pathname === '/sell' ? 'nav-link active' : 'nav-link'}>Sell</Link>
         <Link to="/about" className={location.pathname === '/about' ? 'nav-link active' : 'nav-link'}>About</Link>
         <Link to="/community" className={location.pathname === '/community' ? 'nav-link active' : 'nav-link'}>Community</Link>

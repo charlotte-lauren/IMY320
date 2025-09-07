@@ -13,25 +13,17 @@
 }
 
 .homePage a {
-    /* color: #b87332; */
-    text-decoration: none;
+  text-decoration: none;
 }
 
-/* .homePage a:hover {
-    text-decoration: underline;
-} */
-
 .hero {
-    /* background: url('../assets/AboutUsHeader.png') no-repeat center/cover; */
-    color: white;
-    text-align: center;
-    padding: 6rem 1rem;
-    /* position: relative; */
-      background-image: url('../assets/AboutUsHeader.png');
+  color: white;
+  text-align: center;
+  padding: 6rem 1rem;
+  background-image: url('../assets/AboutUsHeader.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  /* height: 500px; */
   position: relative;
 }
 

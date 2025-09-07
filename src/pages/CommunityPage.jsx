@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AppLayout from "../components/AppLayout";
+import '../styles/CommunityPage.css';
 
 const CommunityPage = () => {
   const [email, setEmail] = useState("");
@@ -16,10 +17,15 @@ const CommunityPage = () => {
   return (
     <AppLayout useCustomNavbar={false} useFooter={true} loginPage={false} color={true}>
       <div className="community-page">
-        <header className="community-header">
-          <h1>Join the Coin Collectors Community</h1>
-          <p>Stay updated with the latest coin insights, rare finds, and collector tips!</p>
+        <div className="parallax-bg">
+        <header className="about-header">
+          <div className="overlay" />
+          <div className="header-content">
+            <h1 className="title">Join the Coin Collectors Community</h1>
+            <p className="subtitle">Stay updated with the latest coin insights, rare finds, and collector tips!</p>
+          </div>
         </header>
+      </div>
 
         {/* Newsletter Section */}
         <section className="newsletter">
