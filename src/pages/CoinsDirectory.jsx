@@ -28,9 +28,9 @@ const CoinsDirectory = () => {
 
   const filterOptions = {
     Metal: ["Gold", "Silver", "Bronze", "Copper"],
-    Theme: ["Empire", "Trade", "Currency", "Monarchs", "Revolution", "Nature"],
-    Country: ["Rome", "USA", "UK", "Japan", "France", "China", "Canada"],
-    Era: ["Ancient", "Victorian", "Edo", "Revolution", "Dynastic", "Modern"]
+    Theme: ["Legends,Kings,Women,Seals (Emblems)", "Gods and goddesses,Kings,Seals (Emblems),Symbols", "Queens,Wreaths,Crowns and Coronets", "Kings,Emperors,Wreaths,Crowns and Coronets", "Kings,Crowns and Coronets", "Kings,Crowns and Coronets", "Birds,Kings,Emperors,Animals (Fauna)", "Birds,Kings,Animals (Fauna)", "Birds,Queens,Animals (Fauna)"],
+    Country: ["United Kingdom of Great Britain & Northern Ireland", "Argentina"],
+    Shape: [" 7-angular (heptagonal)", "12-angular (dodecagonal)", "Various (Sets Only)", "Various (Sets Only)", " 8-angular (octagonal)", "Circular", "Rhombus"]
   };
 
   // Fetch coins
