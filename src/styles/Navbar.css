@@ -118,7 +118,7 @@ body {
   height: 18px;
   transform: translateY(-50%);
   pointer-events: none;
-  filter: brightness(0) invert(1); /* ensure it's white */
+  filter: brightness(0) invert(1);
 }
 
 .search-bar {
