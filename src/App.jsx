@@ -6,6 +6,8 @@ import Home from './pages/HomePage';
 import About from './pages/AboutPage';
 import Coins from './pages/CoinsDirectory';
 import Product from './pages/ProductPage';
+import ProfilePage from './pages/ProfilePage';
+import CartPage from './pages/CartPage';
 import Navbar from './components/Navbar';
 import UnderConstructionPage from './pages/UnderConstructionPage';
 
@@ -81,6 +83,32 @@ function App() {
             isAuth ? (
               <Layout setIsAuth={setIsAuth}>
                 <Product />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            isAuth ? (
+              <Layout setIsAuth={setIsAuth}>
+                <ProfilePage />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/cart"
+          element={
+            isAuth ? (
+              <Layout setIsAuth={setIsAuth}>
+                <CartPage />
               </Layout>
             ) : (
               <Navigate to="/login" replace />

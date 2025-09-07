@@ -269,6 +269,62 @@ app.get('/api/user/profile', authenticateToken, async (req, res) => {
   }
 });
 
+// Remove from Wishlist
+app.delete('/api/user/wishlist/:coinId', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    user.wishlist = user.wishlist.filter(id => id.toString() !== req.params.coinId);
+    await user.save();
+    res.json({ success: true, wishlist: user.wishlist });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to remove from wishlist' });
+  }
+});
+
+// Remove from Cart
+app.delete('/api/user/cart/:coinId', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    // Filter out the coinId to remove it
+    user.cart = user.cart.filter(id => id.toString() !== req.params.coinId);
+    await user.save();
+    res.json({ success: true, cart: user.cart });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to remove from cart' });
+  }
+});
+
+// Get user's cart with populated coins
+app.get('/api/user/cart', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('cart'); // populate cart coins
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+    res.json({
+      username: user.username,
+      img: user.img || '',
+      cart: user.cart,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.delete('/api/user/cart', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    user.cart = []; // empty the cart
+    await user.save();
+    res.json({ success: true, cart: [] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Failed to clear cart' });
+  }
+});
+
 // Serve React static build
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
