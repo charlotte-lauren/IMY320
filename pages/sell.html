@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Page - CurioCrow</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="../css/Footer.css">
+  <link rel="stylesheet" href="../css/SellerPage.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <div class="seller-page">
+    <h1>Seller Page</h1>
+    <div id="content">
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <script>
+    // Load Navbar and Footer
+    fetch('../components/navbar.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('navbar').innerHTML = html)
+      .catch(err => console.error('Error loading navbar:', err));
+
+    fetch('../components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer').innerHTML = html)
+      .catch(err => console.error('Error loading footer:', err));
+
+    // Seller page functionality
+    const token = localStorage.getItem("authToken");
+    const contentEl = document.getElementById("content");
+
+    let user = {};
+    let form = { Name: "", Country: "", FaceValue: "", Currency: "", Link: "", IssuedOn: "" };
+
+    async function fetchProfile() {
+      try {
+        const res = await fetch("/api/user/profile", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        user = data;
+        renderPage();
+      } catch (err) {
+        console.error(err);
+        contentEl.innerHTML = "<p>Failed to load user profile.</p>";
+      }
+    }
+
+    async function requestAdmin() {
+      try {
+        const res = await fetch("/api/user/request-admin", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        alert(data.message);
+        fetchProfile();
+      } catch (err) { console.error(err); }
+    }
+
+    async function addCoin() {
+      try {
+        const res = await fetch("/api/admin/coin", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ ...form, IssuedOn: Number(form.IssuedOn) })
+        });
+        const data = await res.json();
+        alert(data.success ? "Coin added!" : data.message);
+      } catch (err) { console.error(err); }
+    }
+
+    function renderPage() {
+      if (!token) {
+        contentEl.innerHTML = "<p>Please log in to access this page.</p>";
+        return;
+      }
+
+      if (user.role === "admin") {
+        contentEl.innerHTML = `
+          <h2>Add a Coin</h2>
+          <input placeholder="Name" id="coinName" value="${form.Name}">
+          <input placeholder="Country" id="coinCountry" value="${form.Country}">
+          <input placeholder="FaceValue" id="coinFaceValue" value="${form.FaceValue}">
+          <input placeholder="Currency" id="coinCurrency" value="${form.Currency}">
+          <input placeholder="Link" id="coinLink" value="${form.Link}">
+          <input placeholder="Issued On" id="coinIssuedOn" value="${form.IssuedOn}">
+          <button class="seller-btn" id="addCoinBtn">Add Coin</button>
+        `;
+
+        document.getElementById("coinName").addEventListener("input", e => form.Name = e.target.value);
+        document.getElementById("coinCountry").addEventListener("input", e => form.Country = e.target.value);
+        document.getElementById("coinFaceValue").addEventListener("input", e => form.FaceValue = e.target.value);
+        document.getElementById("coinCurrency").addEventListener("input", e => form.Currency = e.target.value);
+        document.getElementById("coinLink").addEventListener("input", e => form.Link = e.target.value);
+        document.getElementById("coinIssuedOn").addEventListener("input", e => form.IssuedOn = e.target.value);
+
+        document.getElementById("addCoinBtn").addEventListener("click", addCoin);
+
+      } else {
+        contentEl.innerHTML = `
+          <p>You are a user. To add coins, request admin access.</p>
+          ${user.pendingAdmin ? 
+            '<p class="seller-message">Admin request pending...</p>' :
+            '<button class="seller-btn seller-btn-accent" id="requestAdminBtn">Request Admin</button>'
+          }
+        `;
+
+        const btn = document.getElementById("requestAdminBtn");
+        if (btn) btn.addEventListener("click", requestAdmin);
+      }
+    }
+
+    // Initial load
+    if (token) fetchProfile();
+    else renderPage();
+  </script>
+
+</body>
+</html>

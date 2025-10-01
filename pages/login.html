@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login / Register - CurioCrow</title>
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/Navbar.css">
+<link rel="stylesheet" href="../css/Footer.css">
+<link rel="stylesheet" href="../css/LoginPage.css">
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="container">
+    <form id="loginForm" novalidate>
+      <h2>Welcome</h2>
+      <p class="subheading" id="subheading">Log in to continue</p>
+
+      <!-- Email is always required -->
+      <div class="floating-label">
+        <input type="email" id="email" placeholder="Email">
+        <label>Email</label>
+        <p class="feedback" id="emailError"></p>
+      </div>
+
+      <!-- Username only for registration -->
+      <div class="floating-label" id="usernameField" style="display:none;">
+        <input type="text" id="username" placeholder="Username (optional)">
+        <label>Username</label>
+        <p class="feedback" id="usernameError"></p>
+      </div>
+
+      <div class="floating-label">
+        <input type="password" id="password" placeholder="Password">
+        <label>Password <span id="passwordScore" class="coin-tooltip"></span></label>
+        <p class="feedback" id="passwordError"></p>
+      </div>
+
+      <div class="floating-label" id="confirmField" style="display:none;">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password">
+        <label>Confirm Password <span id="confirmScore" class="coin-tooltip"></span></label>
+        <p class="feedback" id="confirmError"></p>
+      </div>
+
+      <div class="signin-row" id="staySignedRow">
+        <label class="stay-signed-in">
+          <input type="checkbox" id="staySignedIn"> Stay signed in
+        </label>
+      </div>
+
+      <button type="submit" class="btn-login" id="submitBtn">Log In</button>
+      <div class="register-link" id="toggleLink">
+        <p>Don't have an account? <a href="#" id="toggleMode">Register here</a></p>
+      </div>
+      <p id="message" style="color:#fff; text-align:center; margin-top:10px;"></p>
+    </form>
+  </div>
+
+  <div id="footer"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    setPersistence, 
+    browserLocalPersistence
+  } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+  import { updateProfile } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+    authDomain: "curiocrow.firebaseapp.com",
+    projectId: "curiocrow",
+    storageBucket: "curiocrow.firebasestorage.app",
+    messagingSenderId: "570380745141",
+    appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Persist login across sessions
+  setPersistence(auth, browserLocalPersistence);
+
+  // Load navbar and footer
+  fetch('../components/navbar.html').then(r => r.text()).then(html => document.getElementById('navbar').innerHTML = html);
+  fetch('../components/footer.html').then(r => r.text()).then(html => document.getElementById('footer').innerHTML = html);
+
+  const coinEmoji = '🪙';
+  let isRegister = false;
+
+  const loginForm = document.getElementById('loginForm');
+  const emailEl = document.getElementById('email');
+  const passwordEl = document.getElementById('password');
+  const usernameEl = document.getElementById('username');
+  const confirmEl = document.getElementById('confirmPassword');
+  const usernameField = document.getElementById('usernameField');
+  const confirmField = document.getElementById('confirmField');
+  const subheading = document.getElementById('subheading');
+  const submitBtn = document.getElementById('submitBtn');
+  const toggleMode = document.getElementById('toggleMode');
+  const messageEl = document.getElementById('message');
+
+  function getPasswordScore(password) {
+    let score = 0;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
+    if (password.length > 8) score++;
+    return score;
+  }
+
+  function updateScores() {
+    const score = getPasswordScore(passwordEl.value);
+    document.getElementById('passwordScore').textContent = coinEmoji.repeat(score);
+    document.getElementById('confirmScore').textContent = isRegister && passwordEl.value === confirmEl.value ? coinEmoji.repeat(score) : '';
+  }
+
+  passwordEl.addEventListener('input', updateScores);
+  confirmEl.addEventListener('input', updateScores);
+
+  // Toggle login/register
+  function toggleRegister() {
+    isRegister = !isRegister;
+    usernameField.style.display = isRegister ? 'block' : 'none';
+    confirmField.style.display = isRegister ? 'block' : 'none';
+    subheading.textContent = isRegister ? 'Register to continue' : 'Log in to continue';
+    submitBtn.textContent = isRegister ? 'Register' : 'Log In';
+    toggleMode.textContent = isRegister ? 'Login here' : 'Register here';
+    messageEl.textContent = '';
+  }
+
+  toggleMode.addEventListener('click', e => { e.preventDefault(); toggleRegister(); });
+
+  loginForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    messageEl.textContent = '';
+
+    const email = emailEl.value.trim();
+    const password = passwordEl.value;
+
+    if (!email) { messageEl.style.color='red'; messageEl.textContent = 'Email is required.'; return; }
+    if (!password) { messageEl.style.color='red'; messageEl.textContent = 'Password is required.'; return; }
+
+    try {
+        await setPersistence(auth, browserLocalPersistence);
+
+      if (isRegister) {
+    if (password !== confirmEl.value) { 
+        messageEl.style.color='red'; 
+        messageEl.textContent='Passwords do not match.'; 
+        return; 
+    }
+
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+    // Save the username in Firebase Auth
+    await updateProfile(userCredential.user, {
+        displayName: usernameEl.value.trim() || 'User'
+    });
+
+    messageEl.style.color = 'green';
+    messageEl.textContent = `Registered as ${usernameEl.value.trim() || email}`;
+}
+ else {
+        await signInWithEmailAndPassword(auth, email, password);
+        messageEl.style.color = 'green';
+        messageEl.textContent = `Logged in as ${email}`;
+      }
+      window.location.href = 'home.html';
+    } catch (error) {
+      messageEl.style.color = 'red';
+      messageEl.textContent = error.message;
+    }
+  });
+</script>
+</body>
+</html>

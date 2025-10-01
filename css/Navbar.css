@@ -1,0 +1,208 @@
+/* ---------------- Fonts ---------------- */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
+
+/* ---------------- Global Styles ---------------- */
+body {
+  width: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* ---------------- Logo ---------------- */
+.logo, .c-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-text, .c-nav-name {
+  color: #F2EFED;
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.logo-text:hover, .c-nav-name:hover {
+  color: #B87332;
+}
+
+.logo-image, .c-nav-logo {
+  height: 72px;
+}
+
+/* ---------------- Navbar ---------------- */
+.navbar, .c-navbar {
+  width: 100vw;
+  position: sticky;
+  top: 0;
+  background: #1A1F2B;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.navbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  width: 99%;
+  flex-wrap: wrap;
+}
+
+.navbar-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #7DA0AE;
+  width: 100%;
+  font-weight: bold;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  position: relative;
+  padding: 0.5rem 1.5rem;
+}
+
+.nav-link:hover {
+  background: #90b3c19b;
+  border-radius: 999px;
+}
+
+.nav-link.active {
+  color: #B87332;
+  font-weight: 600;
+}
+
+.nav-link.active:hover {
+  background: #90b3c19b;
+  border-radius: 0;
+}
+
+.nav-link.active::after {
+  content: '';
+  display: block;
+  width: 100%;
+  background: #B87332;
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+}
+
+/* ---------------- Search ---------------- */
+.search-container {
+  position: relative;
+  width: 45%;
+}
+
+.search-bar {
+  background-color: rgba(26, 31, 43, 0.7);
+  color: white;
+  border: 1px solid #7C9FAD;
+  border-radius: 999px;
+  padding: 15px 20px;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-bar:focus {
+  background-color: rgba(26, 31, 43, 0.95);
+  box-shadow: 0 0 0 2px #B87332;
+  border: 1px solid #B87332;
+}
+
+.search-bar::placeholder {
+  color: #aaa;
+  font-size: 1rem;
+}
+
+/* ---------------- Auth Buttons ---------------- */
+.auth-buttons, .user-menu, .c-nav-right {
+  display: flex;
+  gap: 1rem;
+}
+
+.auth-link {
+  background-color: #305F72;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.auth-link:hover {
+  background-color: #7C9FAD;
+}
+
+/* ---------------- Dropdown ---------------- */
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: #7DA0AE;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 20px;
+  padding: 10px;
+  z-index: 10;
+  min-width: 120px;
+}
+
+.dropdown-item {
+  display: block;
+  color: white;
+  width: 100%;
+  padding: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dropdown-item:hover {
+  background-color: #90b3c19b;
+  border-radius: 999px;
+  color: #F2EFED;
+}
+
+/* ---------------- Icons ---------------- */
+.cart-icon {
+  width: 40px;
+  height: auto;
+}
+
+.profile-icon {
+  height: auto;
+  width: 45px;
+  cursor: pointer;
+  object-fit: cover;
+  margin-left: -90px;
+}
+
+/* ---------------- Misc ---------------- */
+.logo-name {
+  margin-left: 0;
+}
+
+Link {
+  text-decoration: none;
+}

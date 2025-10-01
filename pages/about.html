@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About CurioCrow</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="../css/Footer.css">
+  <link rel="stylesheet" href="../css/About.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #F2EFED;
+      color: #1A1F2B;
+    }
+
+    h1, h2, h3 { margin: 0.5em 0; }
+    p { margin: 0.5em 0; }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border-radius: 6px;
+      text-decoration: none;
+      background-color: #B87332;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .btn:hover { background-color: #7DA0AE; }
+
+    .homePage { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+    .parallax-bg {
+      position: relative;
+      height: 300px;
+      background: url('../assets/WhiteFeather.png') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+
+    .overlay {
+      position: absolute;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.4);
+    }
+
+    .header-content { position: relative; z-index: 1; }
+
+    .about-section, .about-sections, .Explore-section { margin: 40px 0; position: relative; }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .mission-card img.crow-img { width: 100px; display: block; margin-top: 10px; }
+
+    .beliefs-cards, .do-cards { display: flex; gap: 20px; flex-wrap: wrap; }
+
+    .belief-card, .do-card { flex: 1; min-width: 250px; padding: 10px; background: #F2EFED; border-radius: 8px; }
+
+    .belief-icon { width: 50px; height: 50px; margin-bottom: 10px; background: #B87332; border-radius: 50%; }
+
+    .what-to-do-content { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .what-to-do-circle img.icon-img { width: 100px; height: 100px; border-radius: 50%; }
+
+    .feathers { position: absolute; width: 60px; opacity: 0.6; }
+    .feather1 { top: 20px; left: 10px; }
+    .feather2 { top: 50px; right: 20px; }
+    .feather3 { bottom: 30px; left: 50px; }
+
+    .text-italic { font-style: italic; }
+    .explore-links { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <div class="homePage">
+
+    <!-- Header Section -->
+    <div class="parallax-bg">
+      <div class="overlay"></div>
+      <div class="header-content">
+        <h1 class="title">About CurioCrow</h1>
+        <p class="subtitle">Crows know value — so do we.</p>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about-section">
+      <div class="card mission-card">
+        <h2>Our Mission</h2>
+        <p>At CurioCrow, our goal is to create a trusted and engaging space for coin collectors of all experience levels.</p>
+        <p>Whether you're just starting out or have been collecting for years, we’re building a platform where you can buy & sell coins and dive into the community with fellow collectors – all in one place.</p>
+        <img src="../assets/Crow.png" alt="Crow" class="crow-img">
+      </div>
+
+      <div class="card crows-card">
+        <h2>Who Are The Crows</h2>
+        <p>We’re a team of three university students who share a passion for collecting shiny things – much like Crows.</p>
+        <p>What started as a personal hobby quickly turned into an idea we wanted to share with others – so we created CurioCrow.</p>
+        <p>Now, we’re turning that passion into a platform that brings the coin-collecting community together.</p>
+      </div>
+
+      <img src="../assets/WhiteFeather.png" class="feathers feather1" alt="feather">
+      <img src="../assets/BlueFeather.png" class="feathers feather2" alt="feather">
+      <img src="../assets/DarkFeather.png" class="feathers feather3" alt="feather">
+    </section>
+
+    <!-- Beliefs & What To Do Section -->
+    <section class="about-sections">
+      <div class="beliefs-section">
+        <h2>Our Beliefs</h2>
+        <div class="beliefs-cards">
+          <div class="belief-card">
+            <div class="belief-icon"></div>
+            <h3>Trust First</h3>
+            <p>We believe collecting should be safe and secure. That’s why we’re building community-driven tools and verified listings you can rely on.</p>
+          </div>
+          <div class="belief-card">
+            <div class="belief-icon"></div>
+            <h3>Fuelling Curiosity</h3>
+            <p>Coins are more than metal — they’re pieces of history, culture, and craftsmanship. We want to spark curiosity and help people learn through their collections.</p>
+          </div>
+          <div class="belief-card">
+            <div class="belief-icon"></div>
+            <h3>Community-Led</h3>
+            <p>The best part of collecting is sharing it. CurioCrow is made for and by the collecting community.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="what-to-do-section">
+        <h2>What To Do</h2>
+        <div class="what-to-do-content">
+          <div class="what-to-do-circle">
+            <img src="../assets/BuyCoins.png" alt="Hands swapping coins" class="icon-img">
+          </div>
+
+          <div class="do-cards">
+            <div class="do-card Buy-card">
+              <h3>Buy coins</h3>
+              <p>From our range of coin collectables and from trusted collectors in our community</p>
+            </div>
+            <div class="do-card Sell-card">
+              <h3>Sell coins</h3>
+              <p>To expand CurioCrow’s treasury, and help give fellow collectors a mint they have been dying for!</p>
+            </div>
+            <div class="do-card Connect-card">
+              <h3>Connect</h3>
+              <p>With other collectors, share stories, and explore the world of numismatics</p>
+            </div>
+          </div>
+        </div>
+        <img src="../assets/BlueFeather.png" class="feathers feather2-2-2" alt="feather">
+        <img src="../assets/DarkFeather.png" class="feathers feather3-3-3" alt="feather">
+      </div>
+    </section>
+
+    <!-- Explore Section -->
+    <section class="Explore-section">
+      <h2>Start Your Collection</h2>
+      <p>
+        Whether you're here to build a collection, learn something new, or pass on a prized piece
+        <br>
+        <span class="text-italic">- CurioCrow is your starting point.</span>
+      </p>
+      <div class="explore-links">
+        <a href="coins.html" class="btn btn-explore">Explore Our Collections</a>
+      </div>
+      <img src="../assets/BlueFeather.png" class="feathers feather2-2" alt="feather">
+      <img src="../assets/DarkFeather.png" class="feathers feather3-3" alt="feather">
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Load Navbar and Footer Dynamically -->
+  <script>
+    fetch('../components/navbar.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('navbar').innerHTML = html)
+      .catch(err => console.error('Error loading navbar:', err));
+
+    fetch('../components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer').innerHTML = html)
+      .catch(err => console.error('Error loading footer:', err));
+  </script>
+
+</body>
+</html>

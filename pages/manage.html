@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Admin Requests - CurioCrow</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="../css/Footer.css">
+  <link rel="stylesheet" href="../css/ManagePage.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F2EFED;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #1A1F2B;
+    }
+
+    .manage-page {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .manage-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    .manage-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .manage-username {
+      font-weight: bold;
+    }
+
+    .manage-btn {
+      padding: 6px 12px;
+      margin-left: 5px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .manage-btn-approve { background-color: #4CAF50; }
+    .manage-btn-reject { background-color: #F44336; }
+    .manage-btn:hover { opacity: 0.9; }
+
+    p { font-style: italic; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <div class="manage-page">
+    <h1>Pending Admin Requests</h1>
+    <p id="noRequestsMsg" style="display:none;">No pending requests.</p>
+    <ul class="manage-list" id="pendingList"></ul>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script>
+    // Load Navbar and Footer
+    fetch('../components/navbar.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('navbar').innerHTML = html)
+      .catch(err => console.error('Error loading navbar:', err));
+
+    fetch('../components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer').innerHTML = html)
+      .catch(err => console.error('Error loading footer:', err));
+
+    // Manage admin requests functionality
+    const token = localStorage.getItem("authToken");
+    const pendingListEl = document.getElementById("pendingList");
+    const noRequestsMsg = document.getElementById("noRequestsMsg");
+
+    async function fetchPending() {
+      try {
+        const res = await fetch("/api/admin/pending-requests", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const pending = data.pending || [];
+        renderPending(pending);
+      } catch (err) { console.error(err); }
+    }
+
+    function renderPending(pending) {
+      pendingListEl.innerHTML = "";
+      if (pending.length === 0) {
+        noRequestsMsg.style.display = "block";
+        return;
+      }
+      noRequestsMsg.style.display = "none";
+
+      pending.forEach(u => {
+        const li = document.createElement("li");
+
+        const usernameSpan = document.createElement("span");
+        usernameSpan.className = "manage-username";
+        usernameSpan.textContent = u.username;
+
+        const btnContainer = document.createElement("div");
+
+        const approveBtn = document.createElement("button");
+        approveBtn.className = "manage-btn manage-btn-approve";
+        approveBtn.textContent = "Approve";
+        approveBtn.addEventListener("click", () => approveAdmin(u._id));
+
+        const rejectBtn = document.createElement("button");
+        rejectBtn.className = "manage-btn manage-btn-reject";
+        rejectBtn.textContent = "Reject";
+        rejectBtn.addEventListener("click", () => rejectAdmin(u._id));
+
+        btnContainer.appendChild(approveBtn);
+        btnContainer.appendChild(rejectBtn);
+
+        li.appendChild(usernameSpan);
+        li.appendChild(btnContainer);
+
+        pendingListEl.appendChild(li);
+      });
+    }
+
+    async function approveAdmin(userId) {
+      try {
+        const res = await fetch(`/api/admin/approve/${userId}`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        alert(data.message);
+        fetchPending();
+      } catch (err) { console.error(err); }
+    }
+
+    async function rejectAdmin(userId) {
+      try {
+        const res = await fetch(`/api/admin/reject/${userId}`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        alert(data.message);
+        fetchPending();
+      } catch (err) { console.error(err); }
+    }
+
+    fetchPending();
+  </script>
+
+</body>
+</html>

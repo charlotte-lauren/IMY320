@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - CurioCrow</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/HomePage.css">
+  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="../css/Footer.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Discover & Collect Rare Coins From Around the World</h1>
+    <p>Your journey to the perfect collection starts here.</p>
+    <div class="greeting" id="greeting"></div>
+    <a href="coins.html" class="btn">Explore Marketplace</a>
+  </section>
+
+  <!-- Featured Coins -->
+  <section class="featured">
+    <div class="featured-header">
+      <h2>Featured Coins</h2>
+    </div>
+
+    <div class="carousel-wrapper">
+      <button class="nav-btn left" onclick="scrollLeft()">&#9664;</button>
+
+      <div class="carousel" id="featured-carousel">
+        <a href="product.html" class="coin-card">
+          <img src="../assets/coin.png" alt="Roman Coin">
+          <div class="coin-info">
+            <h3>Roman Denarius</h3>
+            <p>Rome (50 BC)</p>
+            <div class="coin-price">5 Denarii</div>
+          </div>
+        </a>
+
+        <a href="product.html" class="coin-card">
+          <img src="../assets/coin.png" alt="Greek Coin">
+          <div class="coin-info">
+            <h3>Greek Drachma</h3>
+            <p>Greece (100 BC)</p>
+            <div class="coin-price">3 Drachma</div>
+          </div>
+        </a>
+
+        <a href="shop.html" class="coin-card">
+          <div class="coin-info">
+            <h3>View All Coins</h3>
+            <p>Explore our full catalog</p>
+            <div class="coin-price">Shop &rarr;</div>
+          </div>
+        </a>
+      </div>
+
+      <button class="nav-btn right" onclick="scrollRight()">&#9654;</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+      authDomain: "curiocrow.firebaseapp.com",
+      projectId: "curiocrow",
+      storageBucket: "curiocrow.firebasestorage.app",
+      messagingSenderId: "570380745141",
+      appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Display logged-in user info if available
+    const greetingEl = document.getElementById('greeting');
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        greetingEl.textContent = `Logged in as: ${user.email}`;
+      } else {
+        greetingEl.textContent = '';
+      }
+    });
+
+    // Load Navbar and Footer
+    fetch('../components/navbar.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('navbar').innerHTML = html)
+      .catch(err => console.error('Error loading navbar:', err));
+
+    fetch('../components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer').innerHTML = html)
+      .catch(err => console.error('Error loading footer:', err));
+
+    // Carousel
+    const carousel = document.getElementById('featured-carousel');
+    const scrollAmount = 220 + 16;
+    window.scrollLeft = () => carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    window.scrollRight = () => carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  </script>
+
+</body>
+</html>

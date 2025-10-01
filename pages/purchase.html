@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart - CurioCrow</title>
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/Navbar.css">
+<link rel="stylesheet" href="../css/Footer.css">
+<link rel="stylesheet" href="../css/PurchasePage.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <div class="cart-page">
+    <section class="cart-header">
+      <h1 id="username">User's Cart</h1>
+    </section>
+
+    <p class="checkout-message" id="checkoutMessage"></p>
+
+    <div class="cart-grid" id="cartGrid"></div>
+
+    <button class="btn checkout-btn" id="checkoutBtn" style="display:none;">Checkout</button>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+<script>
+fetch('../components/navbar.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('navbar').innerHTML = html)
+    .catch(err => console.error('Error loading navbar:', err));
+
+fetch('../components/footer.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('footer').innerHTML = html)
+    .catch(err => console.error('Error loading footer:', err));
+
+  const token = localStorage.getItem('authToken');
+  const cartGrid = document.getElementById('cartGrid');
+  const usernameEl = document.getElementById('username');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const checkoutMessageEl = document.getElementById('checkoutMessage');
+
+  if (!token) {
+    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your cart.</p>';
+  } else {
+    let user = JSON.parse(localStorage.getItem('user')) || { username: 'User', img: '' };
+    let cart = JSON.parse(localStorage.getItem('cart')) || [
+      {
+        _id: '1',
+        Name: 'Roman Denarius',
+        Country: 'Rome',
+        'Issued on': '200 BC',
+        FaceValue: '1',
+        Currency: 'Denarius',
+        img: ''
+      },
+      {
+        _id: '2',
+        Name: 'Ancient Coin',
+        Country: 'Greece',
+        FaceValue: '5',
+        Currency: 'Drachma',
+        img: ''
+      }
+    ];
+
+    usernameEl.textContent = user.username + "'s Cart";
+
+    function slugify(text) {
+      return text.toString().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');
+    }
+
+    function renderCart() {
+      cartGrid.innerHTML = '';
+      if (cart.length === 0) {
+        cartGrid.innerHTML = '<p style="text-align:center;">Your cart is empty.</p>';
+        checkoutBtn.style.display = 'none';
+        return;
+      }
+      cart.forEach(coin => {
+        const card = document.createElement('div');
+        card.className = 'cart-card';
+        card.innerHTML = `
+          <img src="${coin.img || 'coin.png'}" alt="${coin.Name}" class="cart-img">
+          <div class="cart-info">
+            <h3>${coin.Name}</h3>
+            <p>${coin.Country} ${coin['Issued on'] ? '('+coin['Issued on']+')' : ''}</p>
+            <div class="cart-price">${coin.FaceValue ? coin.FaceValue+' '+coin.Currency : 'N/A'}</div>
+            <div class="cart-actions">
+              <a href="/product/${slugify(coin.Name)}" class="btn">View</a>
+              <button class="btn secondary">Remove</button>
+            </div>
+          </div>
+        `;
+        card.querySelector('.btn.secondary').addEventListener('click', () => removeFromCart(coin._id));
+        cartGrid.appendChild(card);
+      });
+      checkoutBtn.style.display = 'block';
+    }
+
+    function removeFromCart(coinId) {
+      cart = cart.filter(c => c._id !== coinId);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    checkoutBtn.addEventListener('click', () => {
+      cart = [];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      checkoutMessageEl.textContent = "Thank you for your purchase! (Simulation only)";
+      renderCart();
+    });
+
+    renderCart();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CurioCrow Splash Page</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/SplashPage.css">
+  <link rel="stylesheet" href="css/Navbar.css">
+  <link rel="stylesheet" href="css/Footer.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <!-- Splash Content -->
+  <div class="splash">
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <header class="container-s">
+        <div class="hero-text">
+          <h1>Welcome to CurioCrow</h1>
+          <h2 class="hero-subtitle">Discover & Collect Rare Coins From Around the World</h2>
+        </div>
+        <img src="assets/Hero.png" alt="Hero" class="hero-img">
+      </header>
+    </div>
+
+    <!-- Features Section -->
+    <div class="featBackground">
+      <section class="features-section" aria-label="Feathered Features">
+        <div class="features-grid">
+          <article class="feature-card" tabindex="0">
+            <h3>Explore Rarity</h3>
+            <p>Browse a growing archive of coins with detailed art, burn mints, dates, and provenance.</p>
+          </article>
+          <article class="feature-card" tabindex="0">
+            <h3>Track Your Treasures</h3>
+            <p>Easily catalog your collection and add custom notes, photos, and videos.</p>
+          </article>
+          <article class="feature-card" tabindex="0">
+            <h3>Learn & Share</h3>
+            <p>Connect with passionate collectors, share insights, and discover hidden gems.</p>
+          </article>
+          <article class="feature-card" tabindex="0">
+            <h3>Buy, Sell, Trade</h3>
+            <p>Use our secure marketplace to grow your hoard or find the crow that got away.</p>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <!-- Purpose Section -->
+    <div class="purposeBackground section-with-feathers">
+      <div class="feather-layer" aria-hidden="true">
+        <img src="assets/WhiteFeather.png" alt="" class="feather feather-right">
+      </div>
+      <section class="purpose-section container" aria-label="Our Purpose">
+        <div class="purpose-text">
+          <hr>
+          <h2>Our Purpose</h2>
+          <p>We stand by the fact that coin collecting is broader than others imagine.</p>
+          <p>Our team is working hard to provide a platform centered around collecting coins and connecting within the <strong>coin community</strong>.</p>
+        </div>
+        <div class="purpose-cta">
+          <p>Find out more</p>
+          <a href="pages/about.html" class="btn tertiary">About CurioCrow</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="testBackground section-with-feathers">
+      <section class="testimonials-section container" aria-label="Testimonials">
+        <div class="testimonials-split">
+          <div class="testimonials-header">
+            <h2>Testimonials</h2>
+            <h3>What <strong>The Flock</strong> Is Saying About Us</h3>
+            <p>Take a first hand glance at how our site has helped fellow collectors!</p>
+          </div>
+          <div class="testimonial-cards">
+            <article class="testimonial-card" tabindex="0">
+              <p class="testimonial-text">"Found my first Roman coin here!"</p>
+              <div class="testimonial-author">
+                <img src="https://i.pravatar.cc/24?img=5" alt="Profile of @RavenRaven">
+                <span>@RavenRaven</span>
+              </div>
+            </article>
+            <article class="testimonial-card" tabindex="0">
+              <p class="testimonial-text">"The cataloging tool is a dream to use."</p>
+              <div class="testimonial-author">
+                <img src="https://i.pravatar.cc/24?img=6" alt="Profile of @NumiNerd">
+                <span>@NumiNerd</span>
+              </div>
+            </article>
+            <article class="testimonial-card" tabindex="0">
+              <p class="testimonial-text">"Safe trades and real experts."</p>
+              <div class="testimonial-author">
+                <img src="https://i.pravatar.cc/24?img=8" alt="Profile of @JollyJourneyman">
+                <span>@JollyJourneyman</span>
+              </div>
+            </article>
+            <article class="testimonial-card" tabindex="0">
+              <p class="testimonial-text">"Best place for collectors, hands down."</p>
+              <div class="testimonial-author">
+                <img src="https://i.pravatar.cc/24?img=9" alt="Profile of @CrowDaddy">
+                <span>@CrowDaddy</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+      <div class="feather-layer" aria-hidden="true">
+        <img src="assets/WhiteFeather.png" alt="" class="feather feather-left">
+        <img src="assets/WhiteFeather.png" alt="" class="feather feather-middle-right">
+      </div>
+    </div>
+
+    <!-- Login Section -->
+    <div class="loginBackground">
+      <section class="login-register-section container" aria-label="Login or Register">
+        <h2>Become <strong>A Crow</strong> • Join <strong>The Roost</strong></h2>
+        <p>Ready to start collecting with curiosity? Discover the diverse treasury in store for you and grow your very own caw-llections.</p>
+        <div class="login-register-links">
+          <a href="pages/login.html" class="btn">Begin Your Collection</a>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Load Navbar and Footer Dynamically -->
+  <script>
+    fetch('components/navbar.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('navbar').innerHTML = html)
+      .catch(err => console.error('Error loading navbar:', err));
+
+    fetch('components/footer.html')
+      .then(res => res.text())
+      .then(html => document.getElementById('footer').innerHTML = html)
+      .catch(err => console.error('Error loading footer:', err));
+  </script>
+
+</body>
+</html>
