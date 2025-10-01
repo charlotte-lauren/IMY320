@@ -1,0 +1,91 @@
+/* Grid layout for the entire app */
+.app-layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* Navbar | Main Content | Footer */
+  min-height: 100vh; /* full viewport height */
+}
+
+/* Main content section */
+.app-content {
+  display: flex;          /* allows flex layout inside main content */
+  flex-direction: column; /* stack child containers vertically */
+  gap: 2rem;              /* spacing between sections */
+  padding: 2rem;
+}
+
+/* Each container/section inside main content can also use flex or grid */
+.section {
+  display: flex;          /* or grid if desired for that section */
+  flex-direction: column; /* default stacking inside a section */
+  gap: 1rem;
+  background: #f9f9f9;   /* optional for visual separation */
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* Footer styling */
+.footer {
+  background: #F2EFED;
+  color: #1A1F2B;
+  padding: 3rem 1rem;
+  text-align: center;
+  grid-row: 3; /* explicitly place in footer row of grid */
+
+    /* border-top-left-radius: 70px;
+  border-top-right-radius: 70px; */
+  margin-top: -150px;
+  /* padding-top: 6rem; */
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-links,
+.footer-socials {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer a,
+.footer a {
+  color: #1A1F2B;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover,
+.footer-socials a:hover {
+  color: #d4842b;
+}
+
+.footer p {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* Footer colored */
+.footer-colored {
+  background: #1A1F2B;
+  color: #F2EFED;
+  padding: 3rem 1rem;
+  text-align: center;
+
+  /* border-top-left-radius: 70px;
+  border-top-right-radius: 70px; */
+
+  margin-top: 0;   /* remove the negative margin */
+  position: relative;
+  z-index: 1;
+}
+
+.footer-colored a,
+.footer-colored a {
+  color: #F2EFED;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}

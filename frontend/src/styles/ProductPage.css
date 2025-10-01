@@ -1,0 +1,107 @@
+.product-page {
+  background: #305F72;
+  color: #1A1F2B;
+  height: auto;
+  width: 100%;
+  padding: 4rem 0rem;
+  overflow-x: hidden;
+  /* margin: 0 auto; */
+}
+
+.app-layout {
+  background: #305F72;
+}
+
+.product-page-section {
+    background: #F2EFED;
+    max-width: 1400px;
+    border-radius: 20px;
+    padding: 3rem;
+    margin: 4rem auto;
+    position: relative;
+}
+
+.back-link {
+  display: inline-block;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.9rem;
+  /* margin-bottom: 2rem; */
+}
+
+.coin-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.product-content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start; /* keep image and details aligned at top */
+  padding: 4rem 1rem 2rem 1rem;
+}
+
+.coin-image img {
+  max-width: 300px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+}
+
+/* make details a vertical flex container */
+.coin-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* push buttons to bottom */
+  min-height: 400px; /* ensures some space so buttons stay at bottom */
+}
+
+.coin-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: left; /* no longer centered */
+}
+
+.coin-attributes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+  color: #1A1F2B;
+}
+
+.attribute {
+  background: transparent;
+  border: 2px solid #1A1F2B;
+  padding: 0.5rem 2rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+.buttons {
+  margin-top: auto; /* pushes buttons to bottom */
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-to-collection {
+  background: #a86032;
+  /* color: #1A1F2B; */
+}
+
+.add-to-wishlist {
+  border: 1px solid #a86032;
+  background: transparent;
+  color: #a86032;
+}

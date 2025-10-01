@@ -1,0 +1,183 @@
+/********************* Basic Global Styles *********************/
+
+/* -------------- Colours --------------*/
+/* Primary color => #1A1F2B */
+/* Seconday color => #305F72 */
+/* Background color => #7DA0AE */
+/* Accent color => #B87332 */
+/* Neutral color => #F2EFED */
+
+/* -------------- Fonts --------------*/
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
+
+
+
+/* -------------- Basic Features --------------*/
+
+/* Grid layout for the entire page */
+.app-layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* navbar, content, footer */
+  min-height: 100vh; /* take full height */
+  overflow-y: auto;
+  background: #F2EFED;
+}
+
+/* Main content area */
+.content {
+  display: grid;
+  gap: 2rem; /* spacing between sections */
+  padding: 2rem;
+}
+
+/* Headings, text, buttons, etc */
+h1 {
+    font-family: 'Cinzel', serif;
+    margin-bottom: 1rem;
+    font-size: 4rem;
+}
+
+h2 {
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+span {
+    color: #305F72;
+}
+
+.btn {
+  background: #B87332;
+  color: #F2EFED;
+  border: 2px solid #B87332;
+  padding: 15px 60px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.1s ease-out;
+}
+.btn:hover {
+  background: #eda15b;
+  color: #1A1F2B;
+  text-decoration: none;
+  border: 2px solid #eda15b;
+}
+.btn:active {
+  transform: scale(0.90); /* Shrinks the button to 90% of its original size */
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 2px solid #B87332;
+  color: #B87332;
+  padding: 15px 60px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.1s ease-out;
+}
+.btn.secondary:hover {
+  background: #7DA0AE;
+  color: #F2EFED;
+  text-decoration: none;
+  border: 2px solid #7DA0AE;
+}
+.btn.secondary:active {
+  background: #7DA0AE;
+  color: #F2EFED;
+  text-decoration: none;
+  border: 2px solid #7DA0AE;
+  transform: scale(0.90); /* Shrinks the button to 90% of its original size */
+}
+
+.btn.tertiary {
+  background: #7DA0AE;
+  border: 2px solid #7DA0AE;
+  color: #F2EFED;
+  padding: 15px 60px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.1s ease-out;
+}
+.btn.tertiary:hover {
+  background: #99c3d3;
+  border: 2px solid #99c3d3;
+  color: #1A1F2B;
+  text-decoration: none;
+}
+.btn.tertiary:active {
+  transform: scale(0.90); /* Shrinks the button to 90% of its original size */
+}
+
+/* Links */
+Link {
+    text-decoration: none;
+}
+Link:hover {
+    text-decoration: none;
+}
+
+a{
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: none;
+}
+
+/* Cards */
+.card {
+  background: #F2EFED;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+
+/* Section layouts */
+.section-flex { /* Flaexbox layout for sections */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-grid { /* Grid layout for sections */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+
+/* Scrollbar styles */
+
+::-webkit-scrollbar { /* Arc, Chrome, Edge, Safari */
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7da0ae94; /* semi-transparent */
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #7da0ae94 transparent;
+}

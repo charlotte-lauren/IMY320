@@ -1,0 +1,383 @@
+/************************* HEADER SECTION *************************/
+
+.homePage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #F2EFED;
+    color: #222;
+}
+
+.app-layout {
+  background: #F2EFED;
+}
+
+.parallax-bg {
+  background-image: url('../assets/AboutUsHeader.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 500px;
+  position: relative;
+}
+
+.parallax-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 31, 43, 0.7);
+    z-index: 0;
+}
+
+.about-header {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.overlay {
+  /* background-color: rgba(0, 0, 0, 0.3); */
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+  color: #F2EFED;
+}
+
+.header-content h1 {
+  text-shadow: 0 3px 7px rgba(0, 0, 0, 0.8); /* Soft black shadow */
+}
+
+.header-content .subtitle {
+  margin-top: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); 
+}
+
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section h2 {
+    margin-bottom: 1rem;
+}
+
+
+/************************* OUR MISSION AND WHO ARE THE CROWS SECTIONS *************************/
+
+.about-section {
+  position: relative;
+  padding: 100px 20px;
+  background-color: #F2EFED;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+.card {
+  max-width: 600px;
+  padding: 30px 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.mission-card {
+  background: #F2EFED;
+  text-align: justify;
+  color: #1A1F2B;
+  margin-left: 20rem;
+  padding-right: 50px;
+}
+
+.mission-card h2 {
+    margin-left: 5rem;
+}
+
+.mission-card p {
+    margin-left: 5rem;
+}
+
+.crows-card {
+  background: #1A1F2B;
+  color: #F2EFED;
+  text-align: justify;
+  margin-right: 20rem;
+  padding-left: 50px;
+}
+
+.crows-card h2 {
+    margin-right: 5rem;
+}
+
+.crows-card p {
+    margin-right: 5rem;
+}
+
+/* Crow image overlay */
+.crow-img {
+  position: absolute;
+  bottom: -20px;
+  left: 2px;
+  width: 100px;
+  z-index: 2;
+}
+
+/* Feathers */
+.feathers {
+  position: absolute;
+  width: 50px;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.feather1 {
+  right: 700px;
+  top: 720px;
+  transform: rotate(0deg);
+  z-index: 1;
+}
+
+.feather2 {
+  right: 450px;
+  top: 800px;
+  transform: rotate(-15deg);
+}
+
+.feather3 {
+  right: 300px;
+  top: 900px;
+  transform: rotate(25deg);
+}
+
+.feather2-2-2 { /* 2nd Bottom feathers */
+  left: 200px;
+  top: 2200px;
+  transform: scaleX(-1) rotate(65deg);
+}
+
+.feather3-3-3 { /* 2nd Bottom feathers */
+  left: 250px;
+  top: 2000px;
+  transform:  rotate(65deg);
+}
+
+.feather2-2 { /* Bottom feathers */
+  right: 350px;
+  bottom: -1800px;
+  transform:  rotate(-15deg);
+}
+
+.feather3-3 { /* Bottom feathers */
+  right: 250px;
+  bottom: -1950px;
+  transform:  rotate(25deg);
+}
+
+
+/************************* BELIEFS AND WHAT TO DO SECTIONS *************************/
+
+.about-sections {
+  padding: 4rem 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #F2EFED;
+}
+
+.beliefs-section {
+  text-align: center;
+  margin-bottom: 10rem;
+  color: #1A1F2B;
+}
+
+.beliefs-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.belief-card {
+  background: #F2EFED;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  max-width: 300px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ centers belief-icon and text horizontally */
+}
+
+.belief-icon {
+  border-radius: 50%;
+  background-color: #2f5e6f;
+  width: 150px;
+  height: 150px;
+  transition: transform 0.3s ease;
+  animation: wiggle 2s ease-in-out infinite;
+
+  display: flex; /* ✅ makes it a flex container */
+  align-items: center; /* vertical center */
+  justify-content: center; /* horizontal center */
+}
+
+.b-icon {
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.trust {
+  background-image: url('../assets/ShieldIcon.png');
+  /* background-color: #1A1F2B; */
+}
+.curiosity {
+  background-image: url('../assets/IdeaIcon.png');
+}
+.community {
+  background-image: url('../assets/PeopleIcon.png');
+  /* z-index: 3; */
+}
+
+@keyframes floatWiggle {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(3px) rotate(1deg);
+  }
+  50% {
+    transform: translateX(0) rotate(-1deg);
+  }
+  75% {
+    transform: translateX(-3px) rotate(1deg);
+  }
+}
+
+/* Hover effect */
+.belief-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Initial scale */
+.scale-on-scroll {
+  transform: scale(0.8);
+  opacity: 0.5;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+/* Class to apply when in view */
+.scale-on-scroll.in-view {
+  transform: scale(1);
+  opacity: 1;
+}
+
+
+.what-to-do-section {
+  text-align: center;
+  z-index: 3;
+}
+
+.what-to-do-content {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.what-to-do-circle {
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background-color: #1A1F2B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+.icon-img{
+  width: 250px;
+  object-fit: contain;
+}
+
+.do-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 600px; /* increase max width */
+  width: 100%;      /* stretch inside container */
+}
+
+.do-card {
+  background-color: #2f5e6f;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  color: #F2EFED;
+
+  display: flex;          /* make h3 + p sit in a row */
+  flex-direction: row;    /* horizontal */
+  align-items: center;    /* vertically align text */
+  gap: 2rem;              /* spacing between h3 and p */
+  text-align: left;       /* keep left alignment */
+  z-index: 20;
+}
+
+
+.Sell-card {
+  margin-left: 2rem; 
+  margin-right: -2rem;
+}
+
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1deg);
+  }
+  50% {
+    transform: rotate(-1deg);
+  }
+  75% {
+    transform: rotate(1deg);
+  }
+}
+
+/************************* BROWSE COLLECTIONS SECTIONS *************************/
+
+section.Explore-section {
+    padding: 1rem 2rem 2rem 2rem;
+    text-align: center;
+    margin: 6rem 0rem;
+    /* margin-bottom: 10rem; */
+    background-color: #F2EFED;
+    color: #1A1F2B;
+}
+
+.explore-links {
+  margin-top: 5rem;
+}
