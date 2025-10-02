@@ -8,6 +8,30 @@
   <link rel="stylesheet" href="../css/Navbar.css">
   <link rel="stylesheet" href="../css/Footer.css">
   <link rel="stylesheet" href="../css/SellerPage.css">
+  <style>
+    /* Popup Notification */
+    .popup-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #333;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 9999;
+      transform: translateY(-20px);
+      font-family: sans-serif;
+      font-size: 14px;
+    }
+    .popup-notification.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
 
@@ -20,6 +44,9 @@
       <p>Loading...</p>
     </div>
   </div>
+
+  <!-- Popup Notification -->
+  <div id="popup-notification" class="popup-notification"></div>
 
   <!-- Footer -->
   <div id="footer"></div>
@@ -41,10 +68,17 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-
     const contentEl = document.getElementById("content");
 
-    // Load Navbar
+    // ---------------- Popup Function ----------------
+    function showPopup(message, duration = 2000) {
+      const popup = document.getElementById('popup-notification');
+      popup.textContent = message;
+      popup.classList.add('show');
+      setTimeout(() => popup.classList.remove('show'), duration);
+    }
+
+    // ---------------- Navbar & Footer ----------------
     fetch('../components/navbar.html')
       .then(res => res.text())
       .then(html => {
@@ -54,7 +88,6 @@
         const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
         const profileIcon = userDropdown.querySelector('.profile-icon');
 
-        // Profile dropdown
         profileIcon.addEventListener('click', e => {
           e.stopPropagation();
           dropdownMenu.classList.toggle('show');
@@ -62,7 +95,6 @@
         dropdownMenu.addEventListener('click', e => e.stopPropagation());
         document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
 
-        // Search bar
         const searchForm = document.getElementById('searchForm');
         const searchInput = document.getElementById('searchInput');
         if (searchForm && searchInput) {
@@ -97,26 +129,25 @@
       })
       .catch(err => console.error('Error loading navbar:', err));
 
-    // Load Footer
     fetch('../components/footer.html')
       .then(res => res.text())
       .then(html => document.getElementById('footer').innerHTML = html)
       .catch(err => console.error('Error loading footer:', err));
 
-    // Seller page render
+    // ---------------- Seller Page Render ----------------
     function renderPage(user) {
       contentEl.innerHTML = `
         <h2>Add a Coin</h2>
-        <input placeholder="Name" id="coinName" value="">
-        <input placeholder="Country" id="coinCountry" value="">
-        <input placeholder="Description" id="coinDescription" value="">
-        <input placeholder="FaceValue" id="coinFaceValue" value="">
-        <input placeholder="Currency" id="coinCurrency" value="">
-        <input placeholder="Series" id="coinSeries" value="">
-        <input placeholder="Shape" id="coinShape" value="">
-        <input placeholder="Metal Composition (separate metals with commas)" id="coinMetal" value="">
-        <input placeholder="Link" id="coinLink" value="">
-        <input placeholder="Issued On" id="coinIssuedOn" value="">
+        <input placeholder="Name" id="coinName">
+        <input placeholder="Country" id="coinCountry">
+        <input placeholder="Description" id="coinDescription">
+        <input placeholder="FaceValue" id="coinFaceValue">
+        <input placeholder="Currency" id="coinCurrency">
+        <input placeholder="Series" id="coinSeries">
+        <input placeholder="Shape" id="coinShape">
+        <input placeholder="Metal Composition (separate metals with commas)" id="coinMetal">
+        <input placeholder="Link" id="coinLink">
+        <input placeholder="Issued On" id="coinIssuedOn">
         <button class="seller-btn" id="addCoinBtn">Add Coin</button>
       `;
 
@@ -133,7 +164,7 @@
         Description: ""
       };
 
-      // Input event listeners
+      // Input listeners
       document.getElementById("coinName").addEventListener("input", e => form.Name = e.target.value);
       document.getElementById("coinCountry").addEventListener("input", e => form.Country = e.target.value);
       document.getElementById("coinFaceValue").addEventListener("input", e => form.FaceValue = e.target.value);
@@ -145,10 +176,10 @@
       document.getElementById("coinIssuedOn").addEventListener("input", e => form.IssuedOn = e.target.value);
       document.getElementById("coinDescription").addEventListener("input", e => form.Description = e.target.value);
 
+      // Add Coin button
       document.getElementById("addCoinBtn").addEventListener("click", async () => {
         try {
           const metalsArray = form.MetalComposition.split(',').map(m => m.trim()).filter(m => m);
-
           await addDoc(collection(db, "coins"), {
             Name: form.Name,
             Country: form.Country,
@@ -164,11 +195,11 @@
             createdAt: serverTimestamp()
           });
 
-          alert("Coin added successfully!");
+          showPopup("Coin added successfully!");  // <- Popup notification
           document.querySelectorAll('input').forEach(input => input.value = '');
         } catch (err) {
           console.error(err);
-          alert("Failed to add coin.");
+          showPopup("Failed to add coin.");
         }
       });
     }

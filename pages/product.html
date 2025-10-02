@@ -8,6 +8,30 @@
 <link rel="stylesheet" href="../css/Navbar.css">
 <link rel="stylesheet" href="../css/Footer.css">
 <link rel="stylesheet" href="../css/ProductPage.css">
+<style>
+/* Popup Notification */
+.popup-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 9999;
+  transform: translateY(-20px);
+  font-family: sans-serif;
+  font-size: 14px;
+}
+.popup-notification.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+</style>
 </head>
 <body>
 
@@ -46,6 +70,9 @@
     </div>
   </div>
 </div>
+
+<!-- Popup Notification -->
+<div id="popup-notification" class="popup-notification"></div>
 
 <!-- Footer -->
 <div id="footer"></div>
@@ -124,6 +151,14 @@ function setupNavbar() {
   }
 }
 
+// ---------------- Popup Function ----------------
+function showPopup(message, duration = 2000) {
+  const popup = document.getElementById('popup-notification');
+  popup.textContent = message;
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), duration);
+}
+
 // ---------------- Load Coin Data ----------------
 let coinDataLoaded = false;
 let coinData = {};
@@ -134,10 +169,10 @@ function getCoinIdFromURL() {
 
 async function loadCoin() {
   const coinId = getCoinIdFromURL();
-  if (!coinId) { alert("Coin ID missing in URL"); return; }
+  if (!coinId) { showPopup("Coin ID missing in URL"); return; }
   const coinRef = doc(db, "coins", coinId);
   const coinSnap = await getDoc(coinRef);
-  if (!coinSnap.exists()) { alert("Coin not found"); return; }
+  if (!coinSnap.exists()) { showPopup("Coin not found"); return; }
   const coin = coinSnap.data();
 
   coinData = {
@@ -172,7 +207,7 @@ onAuthStateChanged(auth, async user => {
   // ----- Add to Cart -----
   addToCartBtn.addEventListener('click', () => {
     if (!coinDataLoaded) {
-      alert("Please wait for the coin to load.");
+      showPopup("Please wait for the coin to load.");
       return;
     }
 
@@ -181,10 +216,10 @@ onAuthStateChanged(auth, async user => {
 
     if (existing) {
       existing.quantity += 1;
-      alert("Increased quantity in cart!");
+      showPopup("Increased quantity in cart!");
     } else {
-      cart.push({...coinData}); // clone to avoid mutation
-      alert("Added to cart!");
+      cart.push({...coinData});
+      showPopup("Added to cart!");
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -204,10 +239,8 @@ onAuthStateChanged(auth, async user => {
       const snapshot = await getDocs(q);
 
       if (!snapshot.empty) {
-        for (const docSnap of snapshot.docs) {
-          await deleteDoc(doc(db, "wishlist", docSnap.id));
-        }
-        alert("Coin removed from your wishlist!");
+        for (const docSnap of snapshot.docs) await deleteDoc(doc(db, "wishlist", docSnap.id));
+        showPopup("Coin removed from your wishlist!");
         addToWishlistBtn.textContent = "Add to Wishlist";
       } else {
         await addDoc(fbCollection(db, "wishlist"), {
@@ -215,12 +248,12 @@ onAuthStateChanged(auth, async user => {
           coinId: coinId,
           addedAt: new Date()
         });
-        alert("Coin added to your wishlist!");
+        showPopup("Coin added to your wishlist!");
         addToWishlistBtn.textContent = "Remove from Wishlist";
       }
     } catch (err) {
       console.error("Error toggling wishlist:", err);
-      alert("Failed to update wishlist.");
+      showPopup("Failed to update wishlist.");
     }
   }
 

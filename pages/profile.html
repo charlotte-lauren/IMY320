@@ -17,6 +17,29 @@
   .order-items { margin-top: 0.5rem; }
   .order-item { display: flex; align-items: center; margin-bottom: 0.5rem; }
   .order-item img { width: 50px; height: 50px; object-fit: contain; margin-right: 0.75rem; }
+
+  /* Popup Notification */
+  .popup-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 9999;
+    transform: translateY(-20px);
+    font-family: sans-serif;
+    font-size: 14px;
+  }
+  .popup-notification.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
 </style>
 </head>
 <body>
@@ -63,6 +86,9 @@
   </section>
 </div>
 
+<!-- Popup Notification -->
+<div id="popup-notification" class="popup-notification"></div>
+
 <!-- Footer -->
 <div id="footer"></div>
 
@@ -84,12 +110,19 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ---------------- Popup Function ----------------
+function showPopup(message, duration = 2000) {
+  const popup = document.getElementById('popup-notification');
+  popup.textContent = message;
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), duration);
+}
+
 // ---------------- Navbar ----------------
 fetch('../components/navbar.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('navbar').innerHTML = html;
-
     const userDropdown = document.querySelector('.user-dropdown');
     const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
     const profileIcon = userDropdown.querySelector('.profile-icon');
@@ -99,7 +132,6 @@ fetch('../components/navbar.html')
     if (!userDropdown || !dropdownMenu || !profileIcon || !searchForm || !searchInput) 
       return console.error('Navbar elements missing');
 
-    // Profile dropdown
     profileIcon.addEventListener('click', e => {
       e.stopPropagation();
       dropdownMenu.classList.toggle('show');
@@ -122,7 +154,7 @@ fetch('../components/navbar.html')
             window.location.href = "../index.html";
           } catch (err) {
             console.error("Logout failed:", err);
-            alert("Failed to log out. Try again.");
+            showPopup("Failed to log out. Try again.");
           }
         });
       } else {
@@ -131,7 +163,6 @@ fetch('../components/navbar.html')
       }
     });
 
-    // Search bar
     searchForm.addEventListener('submit', e => {
       e.preventDefault();
       const query = searchInput.value.trim();
@@ -208,10 +239,11 @@ onAuthStateChanged(auth, async user => {
         card.querySelector('.profile-btn-secondary').addEventListener('click', async () => {
           try {
             await deleteDoc(doc(db, "wishlist", docSnap.id));
+            showPopup("Item removed from wishlist!");
             renderWishlist();
           } catch (err) {
             console.error("Failed to remove from wishlist:", err);
-            alert("Failed to remove item.");
+            showPopup("Failed to remove item.");
           }
         });
         wishlistGrid.appendChild(card);
@@ -276,11 +308,16 @@ avatarChoices.forEach(img => {
 saveProfileBtn.addEventListener('click', async () => {
   if (!currentUser) return;
   const photoURL = selectedAvatar || currentUser.photoURL || '../assets/coin.png';
-  await updateProfile(currentUser, { displayName: usernameInput.value, photoURL });
-  profileUsername.textContent = usernameInput.value;
-  profileAvatar.src = photoURL;
-  profileEdit.style.display = 'none';
-  alert("Profile updated!");
+  try {
+    await updateProfile(currentUser, { displayName: usernameInput.value, photoURL });
+    profileUsername.textContent = usernameInput.value;
+    profileAvatar.src = photoURL;
+    profileEdit.style.display = 'none';
+    showPopup("Profile updated!"); // <- popup instead of alert
+  } catch (err) {
+    console.error(err);
+    showPopup("Failed to update profile.");
+  }
 });
 </script>
 </body>
