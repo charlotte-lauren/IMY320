@@ -29,96 +29,145 @@
   <!-- Footer -->
   <div id="footer"></div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+// Firebase initialization
+const firebaseConfig = {
+  apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+  authDomain: "curiocrow.firebaseapp.com",
+  projectId: "curiocrow",
+  storageBucket: "curiocrow.appspot.com",
+  messagingSenderId: "570380745141",
+  appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Load Navbar
 fetch('../components/navbar.html')
-    .then(res => res.text())
-    .then(html => document.getElementById('navbar').innerHTML = html)
-    .catch(err => console.error('Error loading navbar:', err));
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('navbar').innerHTML = html;
 
-fetch('../components/footer.html')
-    .then(res => res.text())
-    .then(html => document.getElementById('footer').innerHTML = html)
-    .catch(err => console.error('Error loading footer:', err));
+    const userDropdown = document.querySelector('.user-dropdown');
+    const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+    const profileIcon = userDropdown.querySelector('.profile-icon');
 
-  const token = localStorage.getItem('authToken');
-  const cartGrid = document.getElementById('cartGrid');
-  const usernameEl = document.getElementById('username');
-  const checkoutBtn = document.getElementById('checkoutBtn');
-  const checkoutMessageEl = document.getElementById('checkoutMessage');
+    if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
 
-  if (!token) {
-    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your cart.</p>';
-  } else {
-    let user = JSON.parse(localStorage.getItem('user')) || { username: 'User', img: '' };
-    let cart = JSON.parse(localStorage.getItem('cart')) || [
-      {
-        _id: '1',
-        Name: 'Roman Denarius',
-        Country: 'Rome',
-        'Issued on': '200 BC',
-        FaceValue: '1',
-        Currency: 'Denarius',
-        img: ''
-      },
-      {
-        _id: '2',
-        Name: 'Ancient Coin',
-        Country: 'Greece',
-        FaceValue: '5',
-        Currency: 'Drachma',
-        img: ''
-      }
-    ];
-
-    usernameEl.textContent = user.username + "'s Cart";
-
-    function slugify(text) {
-      return text.toString().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');
-    }
-
-    function renderCart() {
-      cartGrid.innerHTML = '';
-      if (cart.length === 0) {
-        cartGrid.innerHTML = '<p style="text-align:center;">Your cart is empty.</p>';
-        checkoutBtn.style.display = 'none';
-        return;
-      }
-      cart.forEach(coin => {
-        const card = document.createElement('div');
-        card.className = 'cart-card';
-        card.innerHTML = `
-          <img src="${coin.img || 'coin.png'}" alt="${coin.Name}" class="cart-img">
-          <div class="cart-info">
-            <h3>${coin.Name}</h3>
-            <p>${coin.Country} ${coin['Issued on'] ? '('+coin['Issued on']+')' : ''}</p>
-            <div class="cart-price">${coin.FaceValue ? coin.FaceValue+' '+coin.Currency : 'N/A'}</div>
-            <div class="cart-actions">
-              <a href="/product/${slugify(coin.Name)}" class="btn">View</a>
-              <button class="btn secondary">Remove</button>
-            </div>
-          </div>
+    // Observe auth state and update navbar
+    onAuthStateChanged(auth, (user) => {
+      dropdownMenu.innerHTML = '';
+      if (user) {
+        profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+        dropdownMenu.innerHTML = `
+          <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+          <button class="btn dropdown-item" id="logoutBtn">Logout</button>
         `;
-        card.querySelector('.btn.secondary').addEventListener('click', () => removeFromCart(coin._id));
-        cartGrid.appendChild(card);
-      });
-      checkoutBtn.style.display = 'block';
-    }
-
-    function removeFromCart(coinId) {
-      cart = cart.filter(c => c._id !== coinId);
-      localStorage.setItem('cart', JSON.stringify(cart));
-      renderCart();
-    }
-
-    checkoutBtn.addEventListener('click', () => {
-      cart = [];
-      localStorage.setItem('cart', JSON.stringify(cart));
-      checkoutMessageEl.textContent = "Thank you for your purchase! (Simulation only)";
-      renderCart();
+        const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+        logoutBtn.addEventListener('click', async () => {
+          try {
+            await signOut(auth);
+            localStorage.clear();
+            window.location.href = "../index.html";
+          } catch (err) {
+            console.error("Logout failed:", err);
+            alert("Failed to log out. Try again.");
+          }
+        });
+      } else {
+        profileIcon.src = '../assets/UserIcon.png';
+        dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+      }
     });
 
-    renderCart();
+    // Dropdown toggle logic
+    profileIcon.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+    dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  })
+  .catch(err => console.error('Error loading navbar:', err));
+
+// Load Footer
+fetch('../components/footer.html')
+  .then(res => res.text())
+  .then(html => document.getElementById('footer').innerHTML = html)
+  .catch(err => console.error('Error loading footer:', err));
+
+// Cart logic
+const cartGrid = document.getElementById('cartGrid');
+const usernameEl = document.getElementById('username');
+const checkoutBtn = document.getElementById('checkoutBtn');
+const checkoutMessageEl = document.getElementById('checkoutMessage');
+
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+function slugify(text) {
+  return text.toString().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');
+}
+
+function renderCart() {
+  cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cartGrid.innerHTML = '';
+  if (cart.length === 0) {
+    cartGrid.innerHTML = '<p style="text-align:center;">Your cart is empty.</p>';
+    checkoutBtn.style.display = 'none';
+    return;
   }
+
+  cart.forEach(coin => {
+    const card = document.createElement('div');
+    card.className = 'cart-card';
+    card.innerHTML = `
+      <img src="${coin.img || 'coin.png'}" alt="${coin.Name}" class="cart-img">
+      <div class="cart-info">
+        <h3>${coin.Name} ${coin.quantity > 1 ? `×${coin.quantity}` : ''}</h3>
+        <p>${coin.Country} ${coin['Issued on'] ? '('+coin['Issued on']+')' : ''}</p>
+        <div class="cart-price">${coin.FaceValue ? (coin.FaceValue * coin.quantity)+' '+coin.Currency : 'N/A'}</div>
+        <div class="cart-actions">
+          <a href="/product/${slugify(coin.Name)}" class="btn">View</a>
+          <button class="btn secondary">Remove</button>
+        </div>
+      </div>
+    `;
+    card.querySelector('.btn.secondary').addEventListener('click', () => removeFromCart(coin._id));
+    cartGrid.appendChild(card);
+  });
+
+  checkoutBtn.style.display = 'block';
+}
+
+function removeFromCart(coinId) {
+  cart = cart.filter(c => c._id !== coinId);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
+}
+
+checkoutBtn.addEventListener('click', () => {
+  cart = [];
+  localStorage.setItem('cart', JSON.stringify(cart));
+  checkoutMessageEl.textContent = "Thank you for your purchase! (Simulation only)";
+  renderCart();
+});
+
+// Populate username & avatar + ensure cart only visible if logged in
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your cart.</p>';
+    return;
+  }
+
+  usernameEl.textContent = `${user.displayName || 'User'}'s Cart`;
+
+  localStorage.setItem('user', JSON.stringify({ username: user.displayName, img: user.photoURL }));
+
+  renderCart();
+});
 </script>
 </body>
 </html>

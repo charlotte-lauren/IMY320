@@ -8,60 +8,6 @@
   <link rel="stylesheet" href="../css/Navbar.css">
   <link rel="stylesheet" href="../css/Footer.css">
   <link rel="stylesheet" href="../css/ManagePage.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #F2EFED;
-      margin: 0;
-      padding: 20px;
-    }
-
-    h1 {
-      color: #1A1F2B;
-    }
-
-    .manage-page {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .manage-list {
-      list-style: none;
-      padding: 0;
-      margin-top: 20px;
-    }
-
-    .manage-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #fff;
-      padding: 10px 15px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .manage-username {
-      font-weight: bold;
-    }
-
-    .manage-btn {
-      padding: 6px 12px;
-      margin-left: 5px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      color: #fff;
-    }
-
-    .manage-btn-approve { background-color: #4CAF50; }
-    .manage-btn-reject { background-color: #F44336; }
-    .manage-btn:hover { opacity: 0.9; }
-
-    p { font-style: italic; }
-  </style>
 </head>
 <body>
 
@@ -77,98 +23,155 @@
   <!-- Footer -->
   <div id="footer"></div>
 
-  <!-- Scripts -->
-  <script>
-    // Load Navbar and Footer
-    fetch('../components/navbar.html')
-      .then(res => res.text())
-      .then(html => document.getElementById('navbar').innerHTML = html)
-      .catch(err => console.error('Error loading navbar:', err));
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-    fetch('../components/footer.html')
-      .then(res => res.text())
-      .then(html => document.getElementById('footer').innerHTML = html)
-      .catch(err => console.error('Error loading footer:', err));
+  // Firebase setup
+  const firebaseConfig = {
+    apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+    authDomain: "curiocrow.firebaseapp.com",
+    projectId: "curiocrow",
+    storageBucket: "curiocrow.firebasestorage.app",
+    messagingSenderId: "570380745141",
+    appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    // Manage admin requests functionality
-    const token = localStorage.getItem("authToken");
-    const pendingListEl = document.getElementById("pendingList");
-    const noRequestsMsg = document.getElementById("noRequestsMsg");
+  // Load Navbar
+  fetch('../components/navbar.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('navbar').innerHTML = html;
 
-    async function fetchPending() {
-      try {
-        const res = await fetch("/api/admin/pending-requests", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        const pending = data.pending || [];
-        renderPending(pending);
-      } catch (err) { console.error(err); }
-    }
+      const userDropdown = document.querySelector('.user-dropdown');
+      const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+      const profileIcon = userDropdown.querySelector('.profile-icon');
 
-    function renderPending(pending) {
-      pendingListEl.innerHTML = "";
-      if (pending.length === 0) {
-        noRequestsMsg.style.display = "block";
-        return;
-      }
-      noRequestsMsg.style.display = "none";
+      if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
 
-      pending.forEach(u => {
-        const li = document.createElement("li");
+      // Monitor auth state
+      onAuthStateChanged(auth, (user) => {
+        dropdownMenu.innerHTML = '';
 
-        const usernameSpan = document.createElement("span");
-        usernameSpan.className = "manage-username";
-        usernameSpan.textContent = u.username;
-
-        const btnContainer = document.createElement("div");
-
-        const approveBtn = document.createElement("button");
-        approveBtn.className = "manage-btn manage-btn-approve";
-        approveBtn.textContent = "Approve";
-        approveBtn.addEventListener("click", () => approveAdmin(u._id));
-
-        const rejectBtn = document.createElement("button");
-        rejectBtn.className = "manage-btn manage-btn-reject";
-        rejectBtn.textContent = "Reject";
-        rejectBtn.addEventListener("click", () => rejectAdmin(u._id));
-
-        btnContainer.appendChild(approveBtn);
-        btnContainer.appendChild(rejectBtn);
-
-        li.appendChild(usernameSpan);
-        li.appendChild(btnContainer);
-
-        pendingListEl.appendChild(li);
+        if (user) {
+          profileIcon.src = user.photoURL || 'assets/UserIcon.png';
+          dropdownMenu.innerHTML = `
+            <a href="profile.html" class="dropdown-item">Profile</a>
+            <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+          `;
+          const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+          logoutBtn.addEventListener('click', async () => {
+            try {
+              await signOut(auth);
+              localStorage.clear();
+              window.location.href = "../index.html";
+            } catch (err) {
+              console.error("Logout failed:", err);
+              alert("Failed to log out. Try again.");
+            }
+          });
+        } else {
+          profileIcon.src = 'assets/UserIcon.png';
+          dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item">Login</a>`;
+        }
       });
-    }
 
-    async function approveAdmin(userId) {
-      try {
-        const res = await fetch(`/api/admin/approve/${userId}`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        alert(data.message);
-        fetchPending();
-      } catch (err) { console.error(err); }
-    }
+      // Dropdown toggle logic
+      profileIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+      });
+      document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+      dropdownMenu.addEventListener('click', e => e.stopPropagation());
+    })
+    .catch(err => console.error('Error loading navbar:', err));
 
-    async function rejectAdmin(userId) {
-      try {
-        const res = await fetch(`/api/admin/reject/${userId}`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        alert(data.message);
-        fetchPending();
-      } catch (err) { console.error(err); }
-    }
+  // Load Footer
+  fetch('../components/footer.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('footer').innerHTML = html)
+    .catch(err => console.error('Error loading footer:', err));
 
-    fetchPending();
-  </script>
+  // --- Manage Admin Requests logic ---
+  const token = localStorage.getItem("authToken");
+  const pendingListEl = document.getElementById("pendingList");
+  const noRequestsMsg = document.getElementById("noRequestsMsg");
+
+  async function fetchPending() {
+    try {
+      const res = await fetch("/api/admin/pending-requests", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      renderPending(data.pending || []);
+    } catch (err) { console.error(err); }
+  }
+
+  function renderPending(pending) {
+    pendingListEl.innerHTML = "";
+    if (pending.length === 0) {
+      noRequestsMsg.style.display = "block";
+      return;
+    }
+    noRequestsMsg.style.display = "none";
+
+    pending.forEach(u => {
+      const li = document.createElement("li");
+
+      const usernameSpan = document.createElement("span");
+      usernameSpan.className = "manage-username";
+      usernameSpan.textContent = u.username;
+
+      const btnContainer = document.createElement("div");
+
+      const approveBtn = document.createElement("button");
+      approveBtn.className = "manage-btn manage-btn-approve";
+      approveBtn.textContent = "Approve";
+      approveBtn.addEventListener("click", () => approveAdmin(u._id));
+
+      const rejectBtn = document.createElement("button");
+      rejectBtn.className = "manage-btn manage-btn-reject";
+      rejectBtn.textContent = "Reject";
+      rejectBtn.addEventListener("click", () => rejectAdmin(u._id));
+
+      btnContainer.appendChild(approveBtn);
+      btnContainer.appendChild(rejectBtn);
+
+      li.appendChild(usernameSpan);
+      li.appendChild(btnContainer);
+
+      pendingListEl.appendChild(li);
+    });
+  }
+
+  async function approveAdmin(userId) {
+    try {
+      const res = await fetch(`/api/admin/approve/${userId}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      alert(data.message);
+      fetchPending();
+    } catch (err) { console.error(err); }
+  }
+
+  async function rejectAdmin(userId) {
+    try {
+      const res = await fetch(`/api/admin/reject/${userId}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      alert(data.message);
+      fetchPending();
+    } catch (err) { console.error(err); }
+  }
+
+  fetchPending();
+</script>
 
 </body>
 </html>

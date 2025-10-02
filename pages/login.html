@@ -60,122 +60,169 @@
   <div id="footer"></div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-  import { 
-    getAuth, 
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword, 
-    setPersistence, 
-    browserLocalPersistence
-  } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-  import { updateProfile } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { 
+  getAuth, 
+  onAuthStateChanged,
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  setPersistence, 
+  browserLocalPersistence,
+  signOut,
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
-    authDomain: "curiocrow.firebaseapp.com",
-    projectId: "curiocrow",
-    storageBucket: "curiocrow.firebasestorage.app",
-    messagingSenderId: "570380745141",
-    appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+  authDomain: "curiocrow.firebaseapp.com",
+  projectId: "curiocrow",
+  storageBucket: "curiocrow.firebasestorage.app",
+  messagingSenderId: "570380745141",
+  appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  // Persist login across sessions
-  setPersistence(auth, browserLocalPersistence);
+// Ensure login persistence
+setPersistence(auth, browserLocalPersistence);
 
-  // Load navbar and footer
-  fetch('../components/navbar.html').then(r => r.text()).then(html => document.getElementById('navbar').innerHTML = html);
-  fetch('../components/footer.html').then(r => r.text()).then(html => document.getElementById('footer').innerHTML = html);
+// Load Navbar dynamically
+fetch('../components/navbar.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('navbar').innerHTML = html;
 
-  const coinEmoji = '🪙';
-  let isRegister = false;
+    const userDropdown = document.querySelector('.user-dropdown');
+    const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+    const profileIcon = userDropdown.querySelector('.profile-icon');
 
-  const loginForm = document.getElementById('loginForm');
-  const emailEl = document.getElementById('email');
-  const passwordEl = document.getElementById('password');
-  const usernameEl = document.getElementById('username');
-  const confirmEl = document.getElementById('confirmPassword');
-  const usernameField = document.getElementById('usernameField');
-  const confirmField = document.getElementById('confirmField');
-  const subheading = document.getElementById('subheading');
-  const submitBtn = document.getElementById('submitBtn');
-  const toggleMode = document.getElementById('toggleMode');
-  const messageEl = document.getElementById('message');
+    if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
 
-  function getPasswordScore(password) {
-    let score = 0;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
-    if (password.length > 8) score++;
-    return score;
-  }
+    // Show login/logout dynamically
+    onAuthStateChanged(auth, (user) => {
+      dropdownMenu.innerHTML = '';
+      if (user) {
+        profileIcon.src = user.photoURL || 'assets/UserIcon.png';
+        dropdownMenu.innerHTML = `
+          <a href="profile.html" class="dropdown-item">Profile</a>
+          <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+        `;
+        const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+        logoutBtn.addEventListener('click', async () => {
+          try {
+            await signOut(auth);
+            localStorage.clear();
+            window.location.href = "home.html";
+          } catch(err) {
+            console.error("Logout failed:", err);
+            alert("Failed to log out. Try again.");
+          }
+        });
+      } else {
+        profileIcon.src = 'assets/UserIcon.png';
+        dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item">Login</a>`;
+      }
+    });
 
-  function updateScores() {
-    const score = getPasswordScore(passwordEl.value);
-    document.getElementById('passwordScore').textContent = coinEmoji.repeat(score);
-    document.getElementById('confirmScore').textContent = isRegister && passwordEl.value === confirmEl.value ? coinEmoji.repeat(score) : '';
-  }
+    // Dropdown toggle
+    profileIcon.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+    dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  })
+  .catch(err => console.error('Error loading navbar:', err));
 
-  passwordEl.addEventListener('input', updateScores);
-  confirmEl.addEventListener('input', updateScores);
+// Load Footer dynamically
+fetch('../components/footer.html')
+  .then(res => res.text())
+  .then(html => document.getElementById('footer').innerHTML = html)
+  .catch(err => console.error('Error loading footer:', err));
 
-  // Toggle login/register
-  function toggleRegister() {
-    isRegister = !isRegister;
-    usernameField.style.display = isRegister ? 'block' : 'none';
-    confirmField.style.display = isRegister ? 'block' : 'none';
-    subheading.textContent = isRegister ? 'Register to continue' : 'Log in to continue';
-    submitBtn.textContent = isRegister ? 'Register' : 'Log In';
-    toggleMode.textContent = isRegister ? 'Login here' : 'Register here';
-    messageEl.textContent = '';
-  }
+/* Login/Register Logic */
+const coinEmoji = '🪙';
+let isRegister = false;
 
-  toggleMode.addEventListener('click', e => { e.preventDefault(); toggleRegister(); });
+const loginForm = document.getElementById('loginForm');
+const emailEl = document.getElementById('email');
+const passwordEl = document.getElementById('password');
+const usernameEl = document.getElementById('username');
+const confirmEl = document.getElementById('confirmPassword');
+const usernameField = document.getElementById('usernameField');
+const confirmField = document.getElementById('confirmField');
+const subheading = document.getElementById('subheading');
+const submitBtn = document.getElementById('submitBtn');
+const toggleMode = document.getElementById('toggleMode');
+const messageEl = document.getElementById('message');
 
-  loginForm.addEventListener('submit', async e => {
-    e.preventDefault();
-    messageEl.textContent = '';
+function getPasswordScore(password) {
+  let score = 0;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score++;
+  if (password.length > 8) score++;
+  return score;
+}
 
-    const email = emailEl.value.trim();
-    const password = passwordEl.value;
+function updateScores() {
+  const score = getPasswordScore(passwordEl.value);
+  document.getElementById('passwordScore').textContent = coinEmoji.repeat(score);
+  document.getElementById('confirmScore').textContent = isRegister && passwordEl.value === confirmEl.value ? coinEmoji.repeat(score) : '';
+}
 
-    if (!email) { messageEl.style.color='red'; messageEl.textContent = 'Email is required.'; return; }
-    if (!password) { messageEl.style.color='red'; messageEl.textContent = 'Password is required.'; return; }
+passwordEl.addEventListener('input', updateScores);
+confirmEl.addEventListener('input', updateScores);
 
-    try {
-        await setPersistence(auth, browserLocalPersistence);
+function toggleRegister() {
+  isRegister = !isRegister;
+  usernameField.style.display = isRegister ? 'block' : 'none';
+  confirmField.style.display = isRegister ? 'block' : 'none';
+  subheading.textContent = isRegister ? 'Register to continue' : 'Log in to continue';
+  submitBtn.textContent = isRegister ? 'Register' : 'Log In';
+  toggleMode.textContent = isRegister ? 'Login here' : 'Register here';
+  messageEl.textContent = '';
+}
 
-      if (isRegister) {
-    if (password !== confirmEl.value) { 
+toggleMode.addEventListener('click', e => { e.preventDefault(); toggleRegister(); });
+
+loginForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  messageEl.textContent = '';
+
+  const email = emailEl.value.trim();
+  const password = passwordEl.value;
+
+  if (!email) { messageEl.style.color='red'; messageEl.textContent = 'Email is required.'; return; }
+  if (!password) { messageEl.style.color='red'; messageEl.textContent = 'Password is required.'; return; }
+
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+
+    if (isRegister) {
+      if (password !== confirmEl.value) { 
         messageEl.style.color='red'; 
         messageEl.textContent='Passwords do not match.'; 
         return; 
-    }
-
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
-    // Save the username in Firebase Auth
-    await updateProfile(userCredential.user, {
-        displayName: usernameEl.value.trim() || 'User'
-    });
-
-    messageEl.style.color = 'green';
-    messageEl.textContent = `Registered as ${usernameEl.value.trim() || email}`;
-}
- else {
-        await signInWithEmailAndPassword(auth, email, password);
-        messageEl.style.color = 'green';
-        messageEl.textContent = `Logged in as ${email}`;
       }
-      window.location.href = 'home.html';
-    } catch (error) {
-      messageEl.style.color = 'red';
-      messageEl.textContent = error.message;
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(userCredential.user, {
+        displayName: usernameEl.value.trim() || 'User'
+      });
+      messageEl.style.color = 'green';
+      messageEl.textContent = `Registered as ${usernameEl.value.trim() || email}`;
+    } else {
+      await signInWithEmailAndPassword(auth, email, password);
+      messageEl.style.color = 'green';
+      messageEl.textContent = `Logged in as ${email}`;
     }
-  });
+    window.location.href = 'home.html';
+  } catch(error) {
+    messageEl.style.color = 'red';
+    messageEl.textContent = error.message;
+  }
+});
 </script>
 </body>
 </html>

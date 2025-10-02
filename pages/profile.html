@@ -8,6 +8,25 @@
 <link rel="stylesheet" href="../css/Navbar.css">
 <link rel="stylesheet" href="../css/Footer.css">
 <link rel="stylesheet" href="../css/ProfilePage.css">
+<style>
+  .avatar-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+  }
+  .avatar-choice {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    object-fit: cover;
+    transition: border 0.2s;
+  }
+  .avatar-choice.selected {
+    border-color: #FFD700;
+  }
+</style>
 </head>
 <body>
 
@@ -16,8 +35,30 @@
 
 <div class="profile-page">
   <section class="profile-header">
-    <img src="coin.png" alt="User" class="profile-avatar" id="profileAvatar">
+    <img src="../assets/coin.png" alt="User" class="profile-avatar" id="profileAvatar">
     <h1 class="profile-username" id="profileUsername">User</h1>
+    <button class="profile-btn" id="editProfileBtn">Edit Profile</button>
+  </section>
+
+  <!-- Edit profile form -->
+  <section class="profile-edit" id="profileEdit" style="display:none;">
+    <label>
+      Username:
+      <input type="text" id="usernameInput">
+    </label>
+    <label>
+      Select Avatar:
+      <div id="avatarOptions" class="avatar-options">
+        <img src="../assets/avatars/avatar1.png" class="avatar-choice" data-url="../assets/avatars/avatar1.png">
+        <img src="../assets/avatars/avatar2.png" class="avatar-choice" data-url="../assets/avatars/avatar2.png">
+        <img src="../assets/avatars/avatar3.png" class="avatar-choice" data-url="../assets/avatars/avatar3.png">
+        <img src="../assets/avatars/avatar4.png" class="avatar-choice" data-url="../assets/avatars/avatar4.png">
+        <img src="../assets/avatars/avatar5.png" class="avatar-choice" data-url="../assets/avatars/avatar5.png">
+        <img src="../assets/avatars/avatar6.png" class="avatar-choice" data-url="../assets/avatars/avatar6.png">
+      </div>
+    </label>
+    <button class="profile-btn" id="saveProfileBtn">Save</button>
+    <button class="profile-btn profile-btn-secondary" id="cancelEditBtn">Cancel</button>
   </section>
 
   <section class="wishlist">
@@ -30,87 +71,177 @@
 <div id="footer"></div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
-    authDomain: "curiocrow.firebaseapp.com",
-    projectId: "curiocrow",
-    storageBucket: "curiocrow.firebasestorage.app",
-    messagingSenderId: "570380745141",
-    appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+  authDomain: "curiocrow.firebaseapp.com",
+  projectId: "curiocrow",
+  storageBucket: "curiocrow.appspot.com",
+  messagingSenderId: "570380745141",
+  appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  // Load navbar and footer
-  fetch('../components/navbar.html').then(r => r.text()).then(html => document.getElementById('navbar').innerHTML = html);
-  fetch('../components/footer.html').then(r => r.text()).then(html => document.getElementById('footer').innerHTML = html);
+// Load Navbar
+fetch('../components/navbar.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('navbar').innerHTML = html;
 
-  const profileUsername = document.getElementById('profileUsername');
-  const profileAvatar = document.getElementById('profileAvatar');
-  const wishlistGrid = document.getElementById('wishlistGrid');
+    const userDropdown = document.querySelector('.user-dropdown');
+    const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+    const profileIcon = userDropdown.querySelector('.profile-icon');
 
-  const defaultWishlist = [
-    { _id: '1', Name: 'Roman Denarius', Country: 'Rome', 'Issued on': '200 BC', FaceValue: '1', Currency: 'Denarius', img: '' },
-    { _id: '2', Name: 'Greek Drachma', Country: 'Greece', FaceValue: '5', Currency: 'Drachma', img: '' }
-  ];
+    if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
 
-  // Check if user is logged in
-  onAuthStateChanged(auth, user => {
-    if (!user) {
-      document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your profile.</p>';
+    // Update navbar based on auth state
+    onAuthStateChanged(auth, (user) => {
+      dropdownMenu.innerHTML = '';
+      if (user) {
+        profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+        dropdownMenu.innerHTML = `
+          <a href="profile.html" class="dropdown-item">Profile</a>
+          <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+        `;
+        const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+        logoutBtn.addEventListener('click', async () => {
+          try {
+            await signOut(auth);
+            localStorage.clear();
+            window.location.href = "../index.html";
+          } catch (err) {
+            console.error("Logout failed:", err);
+            alert("Failed to log out. Try again.");
+          }
+        });
+      } else {
+        profileIcon.src = '../assets/UserIcon.png';
+        dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item">Login</a>`;
+      }
+    });
+
+    // Dropdown toggle logic
+    profileIcon.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+    dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  })
+  .catch(err => console.error('Error loading navbar:', err));
+
+// Load Footer
+fetch('../components/footer.html')
+  .then(r => r.text())
+  .then(html => document.getElementById('footer').innerHTML = html)
+  .catch(err => console.error('Error loading footer:', err));
+
+// Profile logic
+const profileUsername = document.getElementById('profileUsername');
+const profileAvatar = document.getElementById('profileAvatar');
+const wishlistGrid = document.getElementById('wishlistGrid');
+const editProfileBtn = document.getElementById('editProfileBtn');
+const profileEdit = document.getElementById('profileEdit');
+const usernameInput = document.getElementById('usernameInput');
+const saveProfileBtn = document.getElementById('saveProfileBtn');
+const cancelEditBtn = document.getElementById('cancelEditBtn');
+const avatarChoices = document.querySelectorAll('.avatar-choice');
+
+const defaultWishlist = [
+  { _id: '1', Name: 'Roman Denarius', Country: 'Rome', 'Issued on': '200 BC', FaceValue: '1', Currency: 'Denarius', img: '' },
+  { _id: '2', Name: 'Greek Drachma', Country: 'Greece', FaceValue: '5', Currency: 'Drachma', img: '' }
+];
+
+let currentUser;
+let selectedAvatar = null;
+
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your profile.</p>';
+    return;
+  }
+
+  currentUser = user;
+  profileUsername.textContent = user.displayName || "User";
+  profileAvatar.src = user.photoURL || '../assets/coin.png';
+  usernameInput.value = user.displayName || "";
+
+  let wishlist = JSON.parse(localStorage.getItem('wishlist')) || defaultWishlist;
+
+  function slugify(text) {
+    return text.toString().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');
+  }
+
+  function renderWishlist() {
+    wishlistGrid.innerHTML = '';
+    if (wishlist.length === 0) {
+      wishlistGrid.innerHTML = '<p style="text-align:center;">Your wishlist is empty.</p>';
       return;
     }
 
-    // User is logged in
-    profileUsername.textContent = user.displayName; // or user.displayName if you store it
-    profileAvatar.src = 'coin.png'; // Replace with user.photoURL if available
-
-    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || defaultWishlist;
-
-    function slugify(text) {
-      return text.toString().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');
-    }
-
-    function renderWishlist() {
-      wishlistGrid.innerHTML = '';
-      if (wishlist.length === 0) {
-        wishlistGrid.innerHTML = '<p style="text-align:center;">Your wishlist is empty.</p>';
-        return;
-      }
-
-      wishlist.forEach(coin => {
-        const card = document.createElement('div');
-        card.className = 'wishlist-card';
-        card.innerHTML = `
-          <img src="${coin.img || 'coin.png'}" alt="${coin.Name}" class="wishlist-img">
-          <div class="wishlist-info">
-            <h3>${coin.Name}</h3>
-            <p>${coin.Country} ${coin['Issued on'] ? '('+coin['Issued on']+')' : ''}</p>
-            <div class="wishlist-price">${coin.FaceValue ? coin.FaceValue+' '+coin.Currency : 'N/A'}</div>
-            <div class="wishlist-actions">
-              <a href="/product/${slugify(coin.Name)}" class="profile-btn">View</a>
-              <button class="profile-btn profile-btn-secondary">Remove</button>
-            </div>
+    wishlist.forEach(coin => {
+      const card = document.createElement('div');
+      card.className = 'wishlist-card';
+      card.innerHTML = `
+        <img src="${coin.img || '../assets/coin.png'}" alt="${coin.Name}" class="wishlist-img">
+        <div class="wishlist-info">
+          <h3>${coin.Name}</h3>
+          <p>${coin.Country} ${coin['Issued on'] ? '('+coin['Issued on']+')' : ''}</p>
+          <div class="wishlist-price">${coin.FaceValue ? coin.FaceValue+' '+coin.Currency : 'N/A'}</div>
+          <div class="wishlist-actions">
+            <a href="/product/${slugify(coin.Name)}" class="profile-btn">View</a>
+            <button class="profile-btn profile-btn-secondary">Remove</button>
           </div>
-        `;
-        card.querySelector('.profile-btn-secondary').addEventListener('click', () => removeFromWishlist(coin._id));
-        wishlistGrid.appendChild(card);
-      });
-    }
+        </div>
+      `;
+      card.querySelector('.profile-btn-secondary').addEventListener('click', () => removeFromWishlist(coin._id));
+      wishlistGrid.appendChild(card);
+    });
+  }
 
-    function removeFromWishlist(coinId) {
-      wishlist = wishlist.filter(c => c._id !== coinId);
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
-      renderWishlist();
-    }
-
+  function removeFromWishlist(coinId) {
+    wishlist = wishlist.filter(c => c._id !== coinId);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
     renderWishlist();
+  }
+
+  renderWishlist();
+});
+
+// Toggle edit form
+editProfileBtn.addEventListener('click', () => profileEdit.style.display = 'block');
+cancelEditBtn.addEventListener('click', () => profileEdit.style.display = 'none');
+
+// Select avatar
+avatarChoices.forEach(img => {
+  img.addEventListener('click', () => {
+    avatarChoices.forEach(i => i.classList.remove('selected'));
+    img.classList.add('selected');
+    selectedAvatar = img.dataset.url;
+  });
+});
+
+// Save profile changes
+saveProfileBtn.addEventListener('click', async () => {
+  if (!currentUser) return;
+
+  const photoURL = selectedAvatar || currentUser.photoURL || '../assets/coin.png';
+
+  await updateProfile(currentUser, {
+    displayName: usernameInput.value,
+    photoURL: photoURL
   });
 
+  profileUsername.textContent = usernameInput.value;
+  profileAvatar.src = photoURL;
+
+  profileEdit.style.display = 'none';
+  alert("Profile updated!");
+});
 </script>
 </body>
 </html>

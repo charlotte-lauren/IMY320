@@ -152,11 +152,13 @@ a {
 
 /* ---------------- Dropdown ---------------- */
 .user-dropdown {
+  border: solid teal;
   position: relative;
   display: inline-block;
 }
 
 .dropdown-menu {
+  display: none; /* hide by default */
   position: absolute;
   top: 50px;
   right: 0;
@@ -166,6 +168,10 @@ a {
   padding: 10px;
   z-index: 10;
   min-width: 120px;
+}
+
+.dropdown-menu.show {
+  display: block; /* show when 'show' class is toggled */
 }
 
 .dropdown-item {
@@ -179,7 +185,6 @@ a {
 }
 
 .dropdown-item:hover {
-  background-color: #90b3c19b;
   border-radius: 999px;
   color: #F2EFED;
 }
@@ -191,11 +196,13 @@ a {
 }
 
 .profile-icon {
+  border: solid darkblue;
+  margin-left: 0;
+  display: block;
   height: auto;
   width: 45px;
   cursor: pointer;
   object-fit: cover;
-  margin-left: -90px;
 }
 
 /* ---------------- Misc ---------------- */

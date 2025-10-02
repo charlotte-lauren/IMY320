@@ -1,38 +1,41 @@
-<nav class="navbar">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navbar - CurioCrow</title>
+<link rel="stylesheet" href="../css/Navbar.css">
+</head>
+<body>
 
+<nav class="navbar">
   <div class="navbar-top">
+    <!-- Logo -->
     <div class="c-nav-left logo-name">
       <a href="../index.html" class="logo">
-        <img src="../assets/LogoCBG.png" alt="Logo" class="c-nav-logo" />
+        <img src="../assets/LogoCBG.png" alt="Logo" class="c-nav-logo">
         <span class="c-nav-name">CurioCrow</span>
       </a>
     </div>
 
-    <!-- Search form -->
+    <!-- Search -->
     <form class="search-container" onsubmit="event.preventDefault(); alert('Search triggered!');">
-      <input type="text" class="search-bar" placeholder="Search..." />
+      <input type="text" class="search-bar" placeholder="Search...">
     </form>
 
-    <!-- Cart icon -->
+    <!-- Cart -->
     <a href="../pages/purchase.html" class="icon-button">
-      <img src="../assets/Cart.png" alt="Cart" class="cart-icon" />
+      <img src="../assets/Cart.png" alt="Cart" class="cart-icon">
     </a>
 
-    <!-- User menu (logged in) -->
+    <!-- User Dropdown -->
     <div class="user-menu">
       <div class="user-dropdown">
-        <img src="../assets/UserIcon.png" alt="Profile" class="profile-icon">
+        <img src="../assets/UserIcon.png" alt="Profile" class="profile-icon" id="profileIcon">
         <div class="dropdown-menu">
-          <a href="../pages/profile.html" class="dropdown-item">Profile</a>
-          <button class="btn dropdown-item" onclick="alert('Logged out!')">Logout</button>
+          <!-- Content dynamically inserted based on login state -->
         </div>
       </div>
-    </div>
-
-    <!-- Auth buttons (logged out) -->
-    <div class="auth-buttons">
-      <a href="../pages/login.html" class="auth-link">Login</a>
-      <a href="../pages/login.html" class="auth-link">Register</a>
     </div>
   </div>
 
@@ -42,8 +45,64 @@
     <a href="../pages/sell.html" class="nav-link">Sell</a>
     <a href="../pages/about.html" class="nav-link">About</a>
     <a href="../pages/community.html" class="nav-link">Community</a>
-    <!-- Admin link example -->
     <a href="../pages/manage.html" class="nav-link">Manage</a>
   </div>
-
 </nav>
+
+<script type="module">
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+document.addEventListener('DOMContentLoaded', () => {
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+  if (!profileIcon || !dropdownMenu) return console.error('Dropdown elements missing');
+
+  const auth = getAuth();
+
+  // Toggle dropdown visibility on profile icon click
+  profileIcon.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+  // Prevent dropdown click from closing itself
+  dropdownMenu.addEventListener('click', e => e.stopPropagation());
+
+  // Dynamically update dropdown content
+  onAuthStateChanged(auth, (user) => {
+    dropdownMenu.innerHTML = ''; // clear previous content
+
+    if (user) {
+      // Logged-in: Profile + Logout
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png'; // show user photo if available
+      dropdownMenu.innerHTML = `
+        <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+        <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+      `;
+      const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          localStorage.clear();
+          window.location.href = "../index.html";
+        } catch (err) {
+          console.error("Logout failed:", err);
+          alert("Failed to log out. Try again.");
+        }
+      });
+    } else {
+      // Not logged-in: show default icon + Login link
+      profileIcon.src = '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `
+        <a href="../pages/login.html" class="dropdown-item">Login</a>
+      `;
+    }
+  });
+});
+</script>
+
+</body>
+</html>

@@ -8,81 +8,6 @@
   <link rel="stylesheet" href="../css/Navbar.css">
   <link rel="stylesheet" href="../css/Footer.css">
   <link rel="stylesheet" href="../css/About.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #F2EFED;
-      color: #1A1F2B;
-    }
-
-    h1, h2, h3 { margin: 0.5em 0; }
-    p { margin: 0.5em 0; }
-
-    .btn {
-      display: inline-block;
-      padding: 10px 20px;
-      margin: 10px 0;
-      border-radius: 6px;
-      text-decoration: none;
-      background-color: #B87332;
-      color: #fff;
-      font-weight: bold;
-    }
-
-    .btn:hover { background-color: #7DA0AE; }
-
-    .homePage { max-width: 1200px; margin: 0 auto; padding: 20px; }
-
-    .parallax-bg {
-      position: relative;
-      height: 300px;
-      background: url('../assets/WhiteFeather.png') center/cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-align: center;
-    }
-
-    .overlay {
-      position: absolute;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.4);
-    }
-
-    .header-content { position: relative; z-index: 1; }
-
-    .about-section, .about-sections, .Explore-section { margin: 40px 0; position: relative; }
-
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .mission-card img.crow-img { width: 100px; display: block; margin-top: 10px; }
-
-    .beliefs-cards, .do-cards { display: flex; gap: 20px; flex-wrap: wrap; }
-
-    .belief-card, .do-card { flex: 1; min-width: 250px; padding: 10px; background: #F2EFED; border-radius: 8px; }
-
-    .belief-icon { width: 50px; height: 50px; margin-bottom: 10px; background: #B87332; border-radius: 50%; }
-
-    .what-to-do-content { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-    .what-to-do-circle img.icon-img { width: 100px; height: 100px; border-radius: 50%; }
-
-    .feathers { position: absolute; width: 60px; opacity: 0.6; }
-    .feather1 { top: 20px; left: 10px; }
-    .feather2 { top: 50px; right: 20px; }
-    .feather3 { bottom: 30px; left: 50px; }
-
-    .text-italic { font-style: italic; }
-    .explore-links { margin-top: 20px; }
-  </style>
 </head>
 <body>
 
@@ -191,13 +116,73 @@
   <!-- Footer -->
   <div id="footer"></div>
 
-  <!-- Load Navbar and Footer Dynamically -->
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+      authDomain: "curiocrow.firebaseapp.com",
+      projectId: "curiocrow",
+      storageBucket: "curiocrow.appspot.com",
+      messagingSenderId: "570380745141",
+      appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Load Navbar dynamically
     fetch('../components/navbar.html')
       .then(res => res.text())
-      .then(html => document.getElementById('navbar').innerHTML = html)
+      .then(html => {
+        document.getElementById('navbar').innerHTML = html;
+
+        const userDropdown = document.querySelector('.user-dropdown');
+        const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+        const profileIcon = userDropdown.querySelector('.profile-icon');
+
+        if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
+
+        // Update dropdown dynamically based on user login state
+        onAuthStateChanged(auth, (user) => {
+          dropdownMenu.innerHTML = ''; // Clear previous content
+          if (user) {
+            profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+            dropdownMenu.innerHTML = `
+              <a href="profile.html" class="dropdown-item">Profile</a>
+              <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+            `;
+
+            const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+            logoutBtn.addEventListener('click', async () => {
+              try {
+                await signOut(auth);
+                localStorage.clear();
+                window.location.href = "../index.html";
+              } catch (err) {
+                console.error("Logout failed:", err);
+                alert("Failed to log out. Try again.");
+              }
+            });
+          } else {
+            profileIcon.src = '../assets/UserIcon.png';
+            dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item">Login</a>`;
+          }
+        });
+
+        // Dropdown toggle
+        profileIcon.addEventListener('click', e => {
+          e.stopPropagation();
+          dropdownMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+        dropdownMenu.addEventListener('click', e => e.stopPropagation());
+      })
       .catch(err => console.error('Error loading navbar:', err));
 
+    // Load Footer dynamically
     fetch('../components/footer.html')
       .then(res => res.text())
       .then(html => document.getElementById('footer').innerHTML = html)

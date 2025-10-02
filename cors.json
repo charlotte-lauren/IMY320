@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["http://localhost:8000", "http://127.0.0.1:8000"],
+    "method": ["GET", "POST", "PUT", "HEAD", "DELETE"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["Content-Type", "x-goog-meta-*"]
+  }
+]

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - CurioCrow</title>
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/Navbar.css">
+<link rel="stylesheet" href="../css/Footer.css">
+<link rel="stylesheet" href="../css/PurchasePage.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<div id="navbar"></div>
+
+<div class="purchase-page">
+  <h1>Purchase Confirmation</h1>
+  <p class="confirmation-message">Thank you for your purchase! (Simulation only, no data saved.)</p>
+
+  <section class="purchase-details">
+    <h2>Order Summary</h2>
+    <div class="purchase-grid" id="purchaseGrid"></div>
+
+    <div class="purchase-total" id="purchaseTotal"></div>
+
+    <a href="coins.html" class="btn continue-shopping">Continue Shopping</a>
+  </section>
+</div>
+
+<!-- Footer -->
+<div id="footer"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+  authDomain: "curiocrow.firebaseapp.com",
+  projectId: "curiocrow",
+  storageBucket: "curiocrow.appspot.com",
+  messagingSenderId: "570380745141",
+  appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Navbar
+fetch('../components/navbar.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('navbar').innerHTML = html;
+    const userDropdown = document.querySelector('.user-dropdown');
+    const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+    const profileIcon = userDropdown.querySelector('.profile-icon');
+
+    if (!userDropdown || !dropdownMenu || !profileIcon) return;
+
+    onAuthStateChanged(auth, user => {
+      dropdownMenu.innerHTML = '';
+      if (user) {
+        profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+        dropdownMenu.innerHTML = `
+          <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+          <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+        `;
+        dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
+          await signOut(auth);
+          window.location.href = "../index.html";
+        });
+      } else {
+        profileIcon.src = '../assets/UserIcon.png';
+        dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+      }
+    });
+
+    profileIcon.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+    dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  });
+
+// Footer
+fetch('../components/footer.html')
+  .then(res => res.text())
+  .then(html => document.getElementById('footer').innerHTML = html);
+
+// ------------------- Purchase Page Logic -------------------
+const purchaseGrid = document.getElementById('purchaseGrid');
+const purchaseTotalEl = document.getElementById('purchaseTotal');
+
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your purchases.</p>';
+    return;
+  }
+
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  if (cart.length === 0) {
+    purchaseGrid.innerHTML = '<p style="text-align:center;">Your cart was empty.</p>';
+    purchaseTotalEl.textContent = '';
+    return;
+  }
+
+  let total = 0;
+  purchaseGrid.innerHTML = '';
+
+  cart.forEach(coin => {
+    const quantity = coin.quantity || 1;
+    const price = parseFloat(coin.FaceValue) || 0;
+    const subtotal = price * quantity;
+    total += subtotal;
+
+    const card = document.createElement('div');
+    card.className = 'purchase-card';
+    card.innerHTML = `
+      <img src="${coin.img || '../assets/coin.png'}" alt="${coin.Name}" class="purchase-img">
+      <div class="purchase-info">
+        <h3>${coin.Name}</h3>
+        <p>Country: ${coin.Country}</p>
+        <p>Series: ${coin.Series || 'N/A'}</p>
+        <p>Shape: ${coin.Shape || 'N/A'}</p>
+        <p>Metal: ${coin.MetalComposition ? coin.MetalComposition.join(', ') : 'N/A'}</p>
+        <p>Era: ${coin.IssuedOn || 'N/A'}</p>
+        <p>Quantity: ${quantity}</p>
+        <p>Price per item: ${price} ${coin.Currency || 'USD'}</p>
+        <p>Subtotal: ${subtotal} ${coin.Currency || 'USD'}</p>
+      </div>
+    `;
+    purchaseGrid.appendChild(card);
+  });
+
+  purchaseTotalEl.innerHTML = `<h3>Total: ${total.toFixed(2)} ${cart[0]?.Currency || 'USD'}</h3>`;
+
+  // Clear cart after checkout (simulation)
+  localStorage.setItem('cart', JSON.stringify([]));
+});
+</script>
+
+</body>
+</html>

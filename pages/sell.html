@@ -24,110 +24,142 @@
   <!-- Footer -->
   <div id="footer"></div>
 
-  <script>
-    // Load Navbar and Footer
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+      authDomain: "curiocrow.firebaseapp.com",
+      projectId: "curiocrow",
+      storageBucket: "curiocrow.firebasestorage.app",
+      messagingSenderId: "570380745141",
+      appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const contentEl = document.getElementById("content");
+
+    // Load Navbar
     fetch('../components/navbar.html')
       .then(res => res.text())
-      .then(html => document.getElementById('navbar').innerHTML = html)
+      .then(html => {
+        document.getElementById('navbar').innerHTML = html;
+
+        const userDropdown = document.querySelector('.user-dropdown');
+        const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+        const profileIcon = userDropdown.querySelector('.profile-icon');
+
+        profileIcon.addEventListener('click', e => {
+          e.stopPropagation();
+          dropdownMenu.classList.toggle('show');
+        });
+        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+        dropdownMenu.addEventListener('click', e => e.stopPropagation());
+
+        onAuthStateChanged(auth, async (user) => {
+          dropdownMenu.innerHTML = '';
+          if (user) {
+            profileIcon.src = user.photoURL || 'assets/UserIcon.png';
+            dropdownMenu.innerHTML = `
+              <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+              <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+            `;
+            dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
+              await signOut(auth);
+              window.location.href = "../index.html";
+            });
+
+            renderPage(user);
+          } else {
+            profileIcon.src = 'assets/UserIcon.png';
+            dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+            contentEl.innerHTML = "<p>Please log in to access this page.</p>";
+          }
+        });
+      })
       .catch(err => console.error('Error loading navbar:', err));
 
+    // Load Footer
     fetch('../components/footer.html')
       .then(res => res.text())
       .then(html => document.getElementById('footer').innerHTML = html)
       .catch(err => console.error('Error loading footer:', err));
 
-    // Seller page functionality
-    const token = localStorage.getItem("authToken");
-    const contentEl = document.getElementById("content");
+    // Seller page render
+    function renderPage(user) {
+      contentEl.innerHTML = `
+        <h2>Add a Coin</h2>
+        <input placeholder="Name" id="coinName" value="">
+        <input placeholder="Country" id="coinCountry" value="">
+        <input placeholder="Description" id="coinDescription" value="">
+        <input placeholder="FaceValue" id="coinFaceValue" value="">
+        <input placeholder="Currency" id="coinCurrency" value="">
+        <input placeholder="Series" id="coinSeries" value="">
+        <input placeholder="Shape" id="coinShape" value="">
+        <input placeholder="Metal Composition (separate metals with commas)" id="coinMetal" value="">
+        <input placeholder="Link" id="coinLink" value="">
+        <input placeholder="Issued On" id="coinIssuedOn" value="">
+        <button class="seller-btn" id="addCoinBtn">Add Coin</button>
+      `;
 
-    let user = {};
-    let form = { Name: "", Country: "", FaceValue: "", Currency: "", Link: "", IssuedOn: "" };
+      const form = {
+        Name: "",
+        Country: "",
+        FaceValue: "",
+        Currency: "",
+        Series: "",
+        Shape: "",
+        MetalComposition: "",
+        Link: "",
+        IssuedOn: "",
+        Description: ""
+      };
 
-    async function fetchProfile() {
-      try {
-        const res = await fetch("/api/user/profile", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        user = data;
-        renderPage();
-      } catch (err) {
-        console.error(err);
-        contentEl.innerHTML = "<p>Failed to load user profile.</p>";
-      }
+      // Input event listeners
+      document.getElementById("coinName").addEventListener("input", e => form.Name = e.target.value);
+      document.getElementById("coinCountry").addEventListener("input", e => form.Country = e.target.value);
+      document.getElementById("coinFaceValue").addEventListener("input", e => form.FaceValue = e.target.value);
+      document.getElementById("coinCurrency").addEventListener("input", e => form.Currency = e.target.value);
+      document.getElementById("coinSeries").addEventListener("input", e => form.Series = e.target.value);
+      document.getElementById("coinShape").addEventListener("input", e => form.Shape = e.target.value);
+      document.getElementById("coinMetal").addEventListener("input", e => form.MetalComposition = e.target.value);
+      document.getElementById("coinLink").addEventListener("input", e => form.Link = e.target.value);
+      document.getElementById("coinIssuedOn").addEventListener("input", e => form.IssuedOn = e.target.value);
+      document.getElementById("coinDescription").addEventListener("input", e => form.Description = e.target.value);
+
+      document.getElementById("addCoinBtn").addEventListener("click", async () => {
+        try {
+          // Split metals into array
+          const metalsArray = form.MetalComposition.split(',').map(m => m.trim()).filter(m => m);
+
+          await addDoc(collection(db, "coins"), {
+            Name: form.Name,
+            Country: form.Country,
+            FaceValue: form.FaceValue,
+            Currency: form.Currency,
+            Series: form.Series,
+            Shape: form.Shape,
+            MetalComposition: metalsArray,
+            Link: form.Link,
+            IssuedOn: Number(form.IssuedOn),
+            Description: form.Description,
+            createdBy: user.uid,
+            createdAt: serverTimestamp()
+          });
+
+          alert("Coin added successfully!");
+          document.querySelectorAll('input').forEach(input => input.value = '');
+        } catch (err) {
+          console.error(err);
+          alert("Failed to add coin.");
+        }
+      });
     }
-
-    async function requestAdmin() {
-      try {
-        const res = await fetch("/api/user/request-admin", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        alert(data.message);
-        fetchProfile();
-      } catch (err) { console.error(err); }
-    }
-
-    async function addCoin() {
-      try {
-        const res = await fetch("/api/admin/coin", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ ...form, IssuedOn: Number(form.IssuedOn) })
-        });
-        const data = await res.json();
-        alert(data.success ? "Coin added!" : data.message);
-      } catch (err) { console.error(err); }
-    }
-
-    function renderPage() {
-      if (!token) {
-        contentEl.innerHTML = "<p>Please log in to access this page.</p>";
-        return;
-      }
-
-      if (user.role === "admin") {
-        contentEl.innerHTML = `
-          <h2>Add a Coin</h2>
-          <input placeholder="Name" id="coinName" value="${form.Name}">
-          <input placeholder="Country" id="coinCountry" value="${form.Country}">
-          <input placeholder="FaceValue" id="coinFaceValue" value="${form.FaceValue}">
-          <input placeholder="Currency" id="coinCurrency" value="${form.Currency}">
-          <input placeholder="Link" id="coinLink" value="${form.Link}">
-          <input placeholder="Issued On" id="coinIssuedOn" value="${form.IssuedOn}">
-          <button class="seller-btn" id="addCoinBtn">Add Coin</button>
-        `;
-
-        document.getElementById("coinName").addEventListener("input", e => form.Name = e.target.value);
-        document.getElementById("coinCountry").addEventListener("input", e => form.Country = e.target.value);
-        document.getElementById("coinFaceValue").addEventListener("input", e => form.FaceValue = e.target.value);
-        document.getElementById("coinCurrency").addEventListener("input", e => form.Currency = e.target.value);
-        document.getElementById("coinLink").addEventListener("input", e => form.Link = e.target.value);
-        document.getElementById("coinIssuedOn").addEventListener("input", e => form.IssuedOn = e.target.value);
-
-        document.getElementById("addCoinBtn").addEventListener("click", addCoin);
-
-      } else {
-        contentEl.innerHTML = `
-          <p>You are a user. To add coins, request admin access.</p>
-          ${user.pendingAdmin ? 
-            '<p class="seller-message">Admin request pending...</p>' :
-            '<button class="seller-btn seller-btn-accent" id="requestAdminBtn">Request Admin</button>'
-          }
-        `;
-
-        const btn = document.getElementById("requestAdminBtn");
-        if (btn) btn.addEventListener("click", requestAdmin);
-      }
-    }
-
-    // Initial load
-    if (token) fetchProfile();
-    else renderPage();
   </script>
 
 </body>
