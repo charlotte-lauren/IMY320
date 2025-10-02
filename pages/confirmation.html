@@ -114,7 +114,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
@@ -128,65 +128,119 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Navbar & Footer
-fetch('../components/navbar.html').then(res => res.text()).then(html => document.getElementById('navbar').innerHTML = html);
-fetch('../components/footer.html').then(res => res.text()).then(html => document.getElementById('footer').innerHTML = html);
+// ----------------- Navbar & Footer -----------------
+fetch('../components/navbar.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('navbar').innerHTML = html;
+    setupNavbar();
+  });
 
-// Populate order summary from cart
-const orderList = document.getElementById('orderList');
-const orderTotal = document.getElementById('orderTotal');
+fetch('../components/footer.html')
+  .then(res => res.text())
+  .then(html => { document.getElementById('footer').innerHTML = html; });
 
+function setupNavbar() {
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+  if (!profileIcon || !dropdownMenu || !searchForm || !searchInput) return;
+
+  profileIcon.addEventListener('click', e => { e.stopPropagation(); dropdownMenu.classList.toggle('show'); });
+  dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+  onAuthStateChanged(auth, user => {
+    dropdownMenu.innerHTML = '';
+    if (user) {
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `
+        <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+        <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+      `;
+      dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
+        await signOut(auth);
+        localStorage.clear();
+        window.location.href = "../index.html";
+      });
+    } else {
+      profileIcon.src = '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+    }
+  });
+
+  searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query) return;
+    window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
+  });
+}
+
+// ----------------- Render Cart / Order -----------------
 function renderOrder() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  orderList.innerHTML = '';
-  if (cart.length === 0) {
+  const orderList = document.getElementById('orderList');
+  const orderTotal = document.getElementById('orderTotal');
+  const cart = JSON.parse(localStorage.getItem('checkoutCart') || '[]');
+
+  if (!cart.length) {
     orderList.innerHTML = '<p>Your cart is empty.</p>';
     orderTotal.textContent = '';
     return;
   }
 
   let total = 0;
-  cart.forEach(coin => {
-    const item = document.createElement('div');
-    item.className = 'cart-item';
-    item.innerHTML = `
-      <img src="${coin.img || 'coin.png'}" alt="${coin.Name}">
+  orderList.innerHTML = '';
+
+  cart.forEach(item => {
+    const quantity = item.quantity || 1;
+    const itemTotal = (Number(item.FaceValue) || 0) * quantity;
+    total += itemTotal;
+
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <img src="${item.img || 'coin.png'}" alt="${item.Name}">
       <div class="cart-item-details">
-        <h4>${coin.Name} ${coin.quantity > 1 ? '×'+coin.quantity : ''}</h4>
-        <p>${coin.Country}</p>
-        <p>${coin.FaceValue} ${coin.Currency || 'USD'}</p>
+        <h4>${item.Name} ${quantity > 1 ? `×${quantity}` : ''}</h4>
+        <p>${item.Country}</p>
+        <p>${item.FaceValue || 0} ${item.Currency || ''}</p>
       </div>
     `;
-    orderList.appendChild(item);
-    total += (coin.FaceValue || 0) * (coin.quantity || 1);
+    orderList.appendChild(div);
   });
 
-  orderTotal.textContent = `Total: ${total} ${cart[0]?.Currency || 'USD'}`;
+  orderTotal.textContent = `Total: ${total.toFixed(2)}`;
 }
 
-// Handle checkout form submission
+// ----------------- Checkout Form Submission -----------------
 const checkoutForm = document.getElementById('checkoutForm');
+
 checkoutForm.addEventListener('submit', e => {
   e.preventDefault();
 
-  // Save order temporarily for confirmation
-  localStorage.setItem('checkoutCart', localStorage.getItem('cart') || '[]');
-  localStorage.setItem('checkoutShipping', JSON.stringify(Object.fromEntries(new FormData(checkoutForm).entries())));
+  // Collect shipping info
+  const shippingData = Object.fromEntries(new FormData(checkoutForm).entries());
 
-  // Clear cart
-  localStorage.setItem('cart', '[]');
+  // Get current cart
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+  // Save to localStorage for confirmation page
+  localStorage.setItem('checkoutShipping', JSON.stringify(shippingData));
+  localStorage.setItem('checkoutCart', JSON.stringify(cart));
 
   // Redirect to confirmation page
   window.location.href = 'load.html';
 });
 
-// Ensure user is logged in
+
+// ----------------- Check Auth & Render -----------------
 onAuthStateChanged(auth, user => {
   if (!user) {
-    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to access checkout.</p>';
+    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to checkout.</p>';
     return;
   }
-
   renderOrder();
 });
 </script>

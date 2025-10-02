@@ -75,50 +75,54 @@
       apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
       authDomain: "curiocrow.firebaseapp.com",
       projectId: "curiocrow",
-      storageBucket: "curiocrow.firebasestorage.app",
+      storageBucket: "curiocrow.appspot.com",
       messagingSenderId: "570380745141",
       appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
     };
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
     const greetingEl = document.getElementById('greeting');
 
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        greetingEl.textContent = `Logged in as: ${user.email}`;
-      } else {
-        greetingEl.textContent = '';
-      }
+      if (user) greetingEl.textContent = `Logged in as: ${user.email}`;
+      else greetingEl.textContent = '';
     });
 
-    // Load Navbar
+    // ---------------- Navbar ----------------
     fetch('../components/navbar.html')
       .then(res => res.text())
       .then(html => {
         document.getElementById('navbar').innerHTML = html;
 
-        const userDropdown = document.querySelector('.user-dropdown');
-        const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
         const profileIcon = document.getElementById('profileIcon');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
 
-        if (!userDropdown || !dropdownMenu || !profileIcon) {
+        if (!profileIcon || !dropdownMenu || !searchForm || !searchInput) {
           console.error('Navbar elements missing');
           return;
         }
 
-        // Update dropdown content based on login state
-        onAuthStateChanged(auth, (user) => {
-          dropdownMenu.innerHTML = ''; // Clear previous content
+        // Profile Dropdown
+        profileIcon.addEventListener('click', e => {
+          e.stopPropagation();
+          dropdownMenu.classList.toggle('show');
+        });
+        dropdownMenu.addEventListener('click', e => e.stopPropagation());
+        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
 
+        onAuthStateChanged(auth, (user) => {
+          dropdownMenu.innerHTML = '';
           if (user) {
             profileIcon.src = user.photoURL || '../assets/UserIcon.png';
             dropdownMenu.innerHTML = `
               <a href="../pages/profile.html" class="dropdown-item">Profile</a>
               <button class="btn dropdown-item" id="logoutBtn">Logout</button>
             `;
-            const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
-            logoutBtn.addEventListener('click', async () => {
+            dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
               try {
                 await signOut(auth);
                 localStorage.clear();
@@ -130,19 +134,17 @@
             });
           } else {
             profileIcon.src = '../assets/UserIcon.png';
-            dropdownMenu.innerHTML = `
-              <a href="../pages/login.html" class="dropdown-item">Login</a>
-            `;
+            dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
           }
         });
 
-        // Dropdown toggle logic
-        profileIcon.addEventListener('click', (e) => {
-          e.stopPropagation();
-          dropdownMenu.classList.toggle('show');
+        // Search Bar
+        searchForm.addEventListener('submit', e => {
+          e.preventDefault();
+          const query = searchInput.value.trim();
+          if (!query) return;
+          window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
         });
-        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-        dropdownMenu.addEventListener('click', e => e.stopPropagation());
       })
       .catch(err => console.error('Error loading navbar:', err));
 
@@ -152,7 +154,7 @@
       .then(html => document.getElementById('footer').innerHTML = html)
       .catch(err => console.error('Error loading footer:', err));
 
-    // Carousel scrolling
+    // ---------------- Carousel ----------------
     const carousel = document.getElementById('featured-carousel');
     const scrollAmount = 236; // card width + gap
     window.scrollLeft = () => carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });

@@ -159,13 +159,22 @@
       const userDropdown = document.querySelector('.user-dropdown');
       const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
       const profileIcon = document.getElementById('profileIcon');
+      const searchForm = document.getElementById('searchForm');
+      const searchInput = document.getElementById('searchInput');
 
-      if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
+      if (!userDropdown || !dropdownMenu || !profileIcon || !searchForm || !searchInput) 
+        return console.error('Navbar elements missing');
 
-      // Update dropdown based on login state
+      // -------- Profile Dropdown ----------
+      profileIcon.addEventListener('click', e => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+      });
+      dropdownMenu.addEventListener('click', e => e.stopPropagation());
+      document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
       onAuthStateChanged(auth, (user) => {
         dropdownMenu.innerHTML = '';
-
         if (user) {
           profileIcon.src = user.photoURL || 'assets/UserIcon.png';
           dropdownMenu.innerHTML = `
@@ -189,13 +198,13 @@
         }
       });
 
-      // Dropdown toggle
-      profileIcon.addEventListener('click', e => {
-        e.stopPropagation();
-        dropdownMenu.classList.toggle('show');
+      // -------- Search Bar ----------
+      searchForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+        if (!query) return;
+        window.location.href = `pages/coins.html?search=${encodeURIComponent(query)}`;
       });
-      document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-      dropdownMenu.addEventListener('click', e => e.stopPropagation());
     })
     .catch(err => console.error('Error loading navbar:', err));
 
@@ -204,6 +213,7 @@
     .then(res => res.text())
     .then(html => document.getElementById('footer').innerHTML = html)
     .catch(err => console.error('Error loading footer:', err));
+
 </script>
 
 </body>

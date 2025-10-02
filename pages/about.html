@@ -113,6 +113,7 @@
 
   </div>
 
+
   <!-- Footer -->
   <div id="footer"></div>
 
@@ -132,7 +133,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Load Navbar dynamically
+    // ---------- Navbar ----------
     fetch('../components/navbar.html')
       .then(res => res.text())
       .then(html => {
@@ -141,19 +142,23 @@
         const userDropdown = document.querySelector('.user-dropdown');
         const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
         const profileIcon = userDropdown.querySelector('.profile-icon');
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
 
-        if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
+        if (!userDropdown || !dropdownMenu || !profileIcon || !searchForm || !searchInput) {
+          console.error('Navbar elements missing');
+          return;
+        }
 
-        // Update dropdown dynamically based on user login state
-        onAuthStateChanged(auth, (user) => {
-          dropdownMenu.innerHTML = ''; // Clear previous content
+        // ---------- Profile Dropdown ----------
+        onAuthStateChanged(auth, user => {
+          dropdownMenu.innerHTML = '';
           if (user) {
             profileIcon.src = user.photoURL || '../assets/UserIcon.png';
             dropdownMenu.innerHTML = `
               <a href="profile.html" class="dropdown-item">Profile</a>
               <button class="btn dropdown-item" id="logoutBtn">Logout</button>
             `;
-
             const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
             logoutBtn.addEventListener('click', async () => {
               try {
@@ -171,23 +176,29 @@
           }
         });
 
-        // Dropdown toggle
+        // Toggle dropdown visibility
         profileIcon.addEventListener('click', e => {
           e.stopPropagation();
           dropdownMenu.classList.toggle('show');
         });
-
-        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
         dropdownMenu.addEventListener('click', e => e.stopPropagation());
+        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+        // ---------- Search ----------
+        searchForm.addEventListener('submit', e => {
+          e.preventDefault();
+          const query = searchInput.value.trim();
+          if (!query) return;
+          window.location.href = `coins.html?search=${encodeURIComponent(query)}`;
+        });
       })
       .catch(err => console.error('Error loading navbar:', err));
 
-    // Load Footer dynamically
+    // ---------- Footer ----------
     fetch('../components/footer.html')
       .then(res => res.text())
       .then(html => document.getElementById('footer').innerHTML = html)
       .catch(err => console.error('Error loading footer:', err));
   </script>
-
 </body>
 </html>

@@ -45,65 +45,75 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Load Navbar
+// ---------- Navbar & Footer ----------
 fetch('../components/navbar.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('navbar').innerHTML = html;
-
-    const userDropdown = document.querySelector('.user-dropdown');
-    const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
-    const profileIcon = userDropdown.querySelector('.profile-icon');
-
-    if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
-
-    // Observe auth state and update navbar
-    onAuthStateChanged(auth, (user) => {
-      dropdownMenu.innerHTML = '';
-      if (user) {
-        profileIcon.src = user.photoURL || '../assets/UserIcon.png';
-        dropdownMenu.innerHTML = `
-          <a href="../pages/profile.html" class="dropdown-item">Profile</a>
-          <button class="btn dropdown-item" id="logoutBtn">Logout</button>
-        `;
-        const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
-        logoutBtn.addEventListener('click', async () => {
-          try {
-            await signOut(auth);
-            localStorage.clear();
-            window.location.href = "../index.html";
-          } catch (err) {
-            console.error("Logout failed:", err);
-            alert("Failed to log out. Try again.");
-          }
-        });
-      } else {
-        profileIcon.src = '../assets/UserIcon.png';
-        dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
-      }
-    });
-
-    // Dropdown toggle logic
-    profileIcon.addEventListener('click', e => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle('show');
-    });
-    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-    dropdownMenu.addEventListener('click', e => e.stopPropagation());
+    setupNavbar();
   })
   .catch(err => console.error('Error loading navbar:', err));
 
-// Load Footer
 fetch('../components/footer.html')
   .then(res => res.text())
   .then(html => document.getElementById('footer').innerHTML = html)
   .catch(err => console.error('Error loading footer:', err));
 
-// Cart logic
+function setupNavbar() {
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+
+  if (!profileIcon || !dropdownMenu || !searchForm || !searchInput) return;
+
+  // Profile dropdown
+  profileIcon.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+  dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+  // Firebase auth state
+  onAuthStateChanged(auth, user => {
+    dropdownMenu.innerHTML = '';
+    if (user) {
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `
+        <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+        <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+      `;
+      const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          localStorage.clear();
+          window.location.href = "../index.html";
+        } catch (err) {
+          console.error("Logout failed:", err);
+          alert("Failed to log out. Try again.");
+        }
+      });
+    } else {
+      profileIcon.src = '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+    }
+  });
+
+  // Search bar
+  searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query) return;
+    window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
+  });
+}
+
+// ---------- Cart Logic ----------
 const cartGrid = document.getElementById('cartGrid');
 const usernameEl = document.getElementById('username');
 const checkoutBtn = document.getElementById('checkoutBtn');
-const checkoutMessageEl = document.getElementById('checkoutMessage');
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -149,14 +159,11 @@ function removeFromCart(coinId) {
 }
 
 checkoutBtn.addEventListener('click', () => {
-  // Save current cart for confirmation page
   localStorage.setItem('checkoutCart', JSON.stringify(cart));
-  
-  // Navigate to confirmation page
   window.location.href = 'confirmation.html';
 });
 
-// Populate username & avatar + ensure cart only visible if logged in
+// Show cart only if logged in
 onAuthStateChanged(auth, user => {
   if (!user) {
     document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your cart.</p>';
@@ -164,7 +171,6 @@ onAuthStateChanged(auth, user => {
   }
 
   usernameEl.textContent = `${user.displayName || 'User'}'s Cart`;
-
   localStorage.setItem('user', JSON.stringify({ username: user.displayName, img: user.photoURL }));
 
   renderCart();

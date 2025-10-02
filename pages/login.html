@@ -17,14 +17,12 @@
       <h2>Welcome</h2>
       <p class="subheading" id="subheading">Log in to continue</p>
 
-      <!-- Email is always required -->
       <div class="floating-label">
         <input type="email" id="email" placeholder="Email">
         <label>Email</label>
         <p class="feedback" id="emailError"></p>
       </div>
 
-      <!-- Username only for registration -->
       <div class="floating-label" id="usernameField" style="display:none;">
         <input type="text" id="username" placeholder="Username (optional)">
         <label>Username</label>
@@ -33,13 +31,35 @@
 
       <div class="floating-label">
         <input type="password" id="password" placeholder="Password">
-        <label>Password <span id="passwordScore" class="coin-tooltip"></span></label>
+        <label>Password</label>
+        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+          <!-- Eye Open -->
+          <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <!-- Eye Closed -->
+          <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.41 21.41 0 0 1 5.06-5.94"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
         <p class="feedback" id="passwordError"></p>
       </div>
 
       <div class="floating-label" id="confirmField" style="display:none;">
         <input type="password" id="confirmPassword" placeholder="Confirm Password">
-        <label>Confirm Password <span id="confirmScore" class="coin-tooltip"></span></label>
+        <label>Confirm Password</label>
+        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+          <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.41 21.41 0 0 1 5.06-5.94"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
         <p class="feedback" id="confirmError"></p>
       </div>
 
@@ -76,7 +96,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
   authDomain: "curiocrow.firebaseapp.com",
   projectId: "curiocrow",
-  storageBucket: "curiocrow.firebasestorage.app",
+  storageBucket: "curiocrow.appspot.com",
   messagingSenderId: "570380745141",
   appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
 };
@@ -87,61 +107,72 @@ const auth = getAuth(app);
 // Ensure login persistence
 setPersistence(auth, browserLocalPersistence);
 
-// Load Navbar dynamically
+// ---------- Navbar & Footer ----------
 fetch('../components/navbar.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('navbar').innerHTML = html;
-
-    const userDropdown = document.querySelector('.user-dropdown');
-    const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
-    const profileIcon = userDropdown.querySelector('.profile-icon');
-
-    if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
-
-    // Show login/logout dynamically
-    onAuthStateChanged(auth, (user) => {
-      dropdownMenu.innerHTML = '';
-      if (user) {
-        profileIcon.src = user.photoURL || 'assets/UserIcon.png';
-        dropdownMenu.innerHTML = `
-          <a href="profile.html" class="dropdown-item">Profile</a>
-          <button class="btn dropdown-item" id="logoutBtn">Logout</button>
-        `;
-        const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
-        logoutBtn.addEventListener('click', async () => {
-          try {
-            await signOut(auth);
-            localStorage.clear();
-            window.location.href = "home.html";
-          } catch(err) {
-            console.error("Logout failed:", err);
-            alert("Failed to log out. Try again.");
-          }
-        });
-      } else {
-        profileIcon.src = 'assets/UserIcon.png';
-        dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item">Login</a>`;
-      }
-    });
-
-    // Dropdown toggle
-    profileIcon.addEventListener('click', e => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle('show');
-    });
-    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-    dropdownMenu.addEventListener('click', e => e.stopPropagation());
+    setupNavbar();
   })
   .catch(err => console.error('Error loading navbar:', err));
 
-// Load Footer dynamically
 fetch('../components/footer.html')
   .then(res => res.text())
   .then(html => document.getElementById('footer').innerHTML = html)
   .catch(err => console.error('Error loading footer:', err));
 
-/* Login/Register Logic */
+function setupNavbar() {
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+
+  if (!profileIcon || !dropdownMenu || !searchForm || !searchInput) return;
+
+  // Profile dropdown
+  profileIcon.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+  dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+  // Firebase auth
+  onAuthStateChanged(auth, user => {
+    dropdownMenu.innerHTML = '';
+    if (user) {
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `
+        <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+        <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+      `;
+      const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          localStorage.clear();
+          window.location.href = "home.html";
+        } catch (err) {
+          console.error("Logout failed:", err);
+          alert("Failed to log out. Try again.");
+        }
+      });
+    } else {
+      profileIcon.src = '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+    }
+  });
+
+  // Search bar
+  searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query) return;
+    window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
+  });
+}
+
+// ---------- Login/Register ----------
 const coinEmoji = '🪙';
 let isRegister = false;
 
@@ -222,6 +253,25 @@ loginForm.addEventListener('submit', async e => {
     messageEl.style.color = 'red';
     messageEl.textContent = error.message;
   }
+});
+
+// ---------- Password visibility toggle ----------
+document.querySelectorAll('.toggle-password').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = btn.closest('.floating-label').querySelector('input');
+    const openEye = btn.querySelector('.eye-open');
+    const closedEye = btn.querySelector('.eye-closed');
+
+    if (input.type === 'password') {
+      input.type = 'text';
+      openEye.style.display = 'none';
+      closedEye.style.display = 'block';
+    } else {
+      input.type = 'password';
+      openEye.style.display = 'block';
+      closedEye.style.display = 'none';
+    }
+  });
 });
 </script>
 </body>

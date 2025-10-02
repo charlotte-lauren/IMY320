@@ -40,11 +40,10 @@
   .current .circle { background: orange; }
   .pending .circle { background: lightgray; }
 
-  /* connector lines between steps */
   .pipeline-step::after {
     content: "";
     position: absolute;
-    top: 12px; /* center with circle */
+    top: 12px;
     left: 50%;
     width: 100%;
     height: 3px;
@@ -52,13 +51,8 @@
     z-index: 0;
   }
 
-  .pipeline-step.completed::after {
-    background: green;
-  }
-
-  .pipeline-step:last-child::after {
-    display: none;
-  }
+  .pipeline-step.completed::after { background: green; }
+  .pipeline-step:last-child::after { display: none; }
 </style>
 </head>
 <body>
@@ -107,16 +101,75 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Navbar & Footer
-fetch('../components/navbar.html').then(r => r.text()).then(html => document.getElementById('navbar').innerHTML = html);
-fetch('../components/footer.html').then(r => r.text()).then(html => document.getElementById('footer').innerHTML = html);
+// ---------- Navbar & Footer ----------
+fetch('../components/navbar.html')
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById('navbar').innerHTML = html;
+    setupNavbar();
+  });
 
-// Get orderId from URL
+fetch('../components/footer.html')
+  .then(r => r.text())
+  .then(html => document.getElementById('footer').innerHTML = html);
+
+// Navbar setup function
+function setupNavbar() {
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+
+  if (!profileIcon || !dropdownMenu || !searchForm || !searchInput) return;
+
+  // Profile dropdown
+  profileIcon.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+  dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+  // Firebase auth
+  onAuthStateChanged(auth, user => {
+    dropdownMenu.innerHTML = '';
+    if (user) {
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `
+        <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+        <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+      `;
+      const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          localStorage.clear();
+          window.location.href = "../index.html";
+        } catch (err) {
+          console.error("Logout failed:", err);
+          alert("Failed to log out. Try again.");
+        }
+      });
+    } else {
+      profileIcon.src = '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+    }
+  });
+
+  // Search bar
+  searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query) return;
+    window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
+  });
+}
+
+// ---------- Order Details ----------
 function getOrderIdFromURL() {
   return new URLSearchParams(window.location.search).get('id');
 }
 
-// Load order data
 async function loadOrder() {
   const orderId = getOrderIdFromURL();
   if (!orderId) return alert("Order ID missing");
@@ -126,7 +179,8 @@ async function loadOrder() {
   if (!orderSnap.exists()) return alert("Order not found");
 
   const order = orderSnap.data();
-  document.getElementById('orderDate').textContent = `Order Date: ${order.createdAt?.toDate().toLocaleString() || "Unknown"}`;
+  document.getElementById('orderDate').textContent =
+    `Order Date: ${order.createdAt?.toDate().toLocaleString() || "Unknown"}`;
 
   const itemsDiv = document.getElementById('orderItems');
   itemsDiv.innerHTML = order.items.map(item => `

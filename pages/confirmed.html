@@ -67,14 +67,12 @@
   <p>Thank you for your purchase! Your order has been successfully placed.</p>
 
   <div class="confirmation-container">
-    <!-- Left Panel: Coins Ordered -->
     <div class="order-summary">
       <h2>Coins Ordered</h2>
       <div id="orderList"></div>
       <h3 id="orderTotal"></h3>
     </div>
 
-    <!-- Right Panel: Shipping Information -->
     <div class="shipping-info">
       <h2>Shipping Information</h2>
       <div id="shippingDetails"></div>
@@ -89,7 +87,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 // Firebase config
@@ -105,16 +103,75 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Navbar & Footer
-fetch('../components/navbar.html').then(res => res.text()).then(html => document.getElementById('navbar').innerHTML = html);
-fetch('../components/footer.html').then(res => res.text()).then(html => document.getElementById('footer').innerHTML = html);
+// ---------- Navbar & Footer ----------
+fetch('../components/navbar.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('navbar').innerHTML = html;
+    setupNavbar(); // attach dropdown + search functionality
+  });
 
-// Elements
+fetch('../components/footer.html')
+  .then(res => res.text())
+  .then(html => document.getElementById('footer').innerHTML = html);
+
+// Setup navbar: profile dropdown + search bar
+function setupNavbar() {
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+
+  if (!profileIcon || !dropdownMenu || !searchForm || !searchInput) return;
+
+  // Profile dropdown
+  profileIcon.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+  dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+  // Firebase auth
+  onAuthStateChanged(auth, user => {
+    dropdownMenu.innerHTML = '';
+    if (user) {
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `
+        <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+        <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+      `;
+      const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          localStorage.clear();
+          window.location.href = "../index.html";
+        } catch (err) {
+          console.error("Logout failed:", err);
+          alert("Failed to log out. Try again.");
+        }
+      });
+    } else {
+      profileIcon.src = '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+    }
+  });
+
+  // Search bar
+  searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query) return;
+    window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
+  });
+}
+
+// ---------- Order Confirmation ----------
 const orderList = document.getElementById('orderList');
 const orderTotal = document.getElementById('orderTotal');
 const shippingDetails = document.getElementById('shippingDetails');
 
-// Render order summary and shipping info
 function renderConfirmation(cart, shipping) {
   orderList.innerHTML = '';
   shippingDetails.innerHTML = '';
@@ -141,8 +198,8 @@ function renderConfirmation(cart, shipping) {
     orderTotal.textContent = `Total: ${total} ${cart[0]?.Currency || 'USD'}`;
   }
 
-  // Shipping info (exclude payment fields)
-  const excludedFields = ["Cardname", "Cardnumber", "Expiry", "Cvv"];
+  // Shipping info (exclude payment)
+  const excludedFields = ["Cardname","Cardnumber","Expiry","Cvv"];
   for (const [key, value] of Object.entries(shipping)) {
     if (!excludedFields.includes(key)) {
       const p = document.createElement('p');
@@ -152,7 +209,6 @@ function renderConfirmation(cart, shipping) {
   }
 }
 
-// Save order to Firestore (without payment fields)
 async function saveOrderToFirestore(cart, shipping, userEmail) {
   try {
     const { CardName, CardNumber, Expiry, Cvv, ...safeShipping } = shipping;
@@ -174,17 +230,12 @@ onAuthStateChanged(auth, async user => {
     return;
   }
 
-  // Retrieve cart and shipping info from localStorage
   const cart = JSON.parse(localStorage.getItem('checkoutCart')) || [];
   const shipping = JSON.parse(localStorage.getItem('checkoutShipping')) || {};
 
-  // Render on page
   renderConfirmation(cart, shipping);
-
-  // Save order without sensitive fields
   await saveOrderToFirestore(cart, shipping, user.email);
 
-  // Clear localStorage (cart & shipping info)
   localStorage.removeItem('checkoutCart');
   localStorage.removeItem('checkoutShipping');
   localStorage.removeItem('cart');

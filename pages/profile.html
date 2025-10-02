@@ -9,47 +9,14 @@
 <link rel="stylesheet" href="../css/Footer.css">
 <link rel="stylesheet" href="../css/ProfilePage.css">
 <style>
-  .avatar-options {
-    display: flex;
-    gap: 10px;
-    margin-top: 5px;
-  }
-  .avatar-choice {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid transparent;
-    object-fit: cover;
-    transition: border 0.2s;
-  }
-  .avatar-choice.selected {
-    border-color: #FFD700;
-  }
-  .orders {
-    margin-top: 2rem;
-  }
-  .order-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background: #f9f9f9;
-  }
-  .order-items {
-    margin-top: 0.5rem;
-  }
-  .order-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
-  }
-  .order-item img {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    margin-right: 0.75rem;
-  }
+  .avatar-options { display: flex; gap: 10px; margin-top: 5px; }
+  .avatar-choice { width: 60px; height: 60px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; object-fit: cover; transition: border 0.2s; }
+  .avatar-choice.selected { border-color: #FFD700; }
+  .orders { margin-top: 2rem; }
+  .order-card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; background: #f9f9f9; }
+  .order-items { margin-top: 0.5rem; }
+  .order-item { display: flex; align-items: center; margin-bottom: 0.5rem; }
+  .order-item img { width: 50px; height: 50px; object-fit: contain; margin-right: 0.75rem; }
 </style>
 </head>
 <body>
@@ -66,12 +33,10 @@
 
   <!-- Edit profile form -->
   <section class="profile-edit" id="profileEdit" style="display:none;">
-    <label>
-      Username:
+    <label>Username:
       <input type="text" id="usernameInput">
     </label>
-    <label>
-      Select Avatar:
+    <label>Select Avatar:
       <div id="avatarOptions" class="avatar-options">
         <img src="../assets/avatars/avatar1.png" class="avatar-choice" data-url="../assets/avatars/avatar1.png">
         <img src="../assets/avatars/avatar2.png" class="avatar-choice" data-url="../assets/avatars/avatar2.png">
@@ -128,8 +93,19 @@ fetch('../components/navbar.html')
     const userDropdown = document.querySelector('.user-dropdown');
     const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
     const profileIcon = userDropdown.querySelector('.profile-icon');
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput');
 
-    if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
+    if (!userDropdown || !dropdownMenu || !profileIcon || !searchForm || !searchInput) 
+      return console.error('Navbar elements missing');
+
+    // Profile dropdown
+    profileIcon.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+    dropdownMenu.addEventListener('click', e => e.stopPropagation());
+    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
 
     onAuthStateChanged(auth, (user) => {
       dropdownMenu.innerHTML = '';
@@ -155,12 +131,13 @@ fetch('../components/navbar.html')
       }
     });
 
-    profileIcon.addEventListener('click', e => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle('show');
+    // Search bar
+    searchForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const query = searchInput.value.trim();
+      if (!query) return;
+      window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
     });
-    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-    dropdownMenu.addEventListener('click', e => e.stopPropagation());
   });
 
 // ---------------- Footer ----------------
@@ -194,7 +171,7 @@ onAuthStateChanged(auth, async user => {
   profileAvatar.src = user.photoURL || '../assets/coin.png';
   usernameInput.value = user.displayName || "";
 
-  // ---------------- Load Wishlist from Firestore ----------------
+  // Wishlist
   async function renderWishlist() {
     wishlistGrid.innerHTML = '<p>Loading wishlist...</p>';
     try {
@@ -207,7 +184,6 @@ onAuthStateChanged(auth, async user => {
       }
 
       wishlistGrid.innerHTML = '';
-
       for (const docSnap of wishlistSnap.docs) {
         const wishlistItem = docSnap.data();
         const coinRef = doc(db, "coins", wishlistItem.coinId);
@@ -229,7 +205,6 @@ onAuthStateChanged(auth, async user => {
             </div>
           </div>
         `;
-
         card.querySelector('.profile-btn-secondary').addEventListener('click', async () => {
           try {
             await deleteDoc(doc(db, "wishlist", docSnap.id));
@@ -239,7 +214,6 @@ onAuthStateChanged(auth, async user => {
             alert("Failed to remove item.");
           }
         });
-
         wishlistGrid.appendChild(card);
       }
     } catch (err) {
@@ -250,7 +224,7 @@ onAuthStateChanged(auth, async user => {
 
   renderWishlist();
 
-  // ---------------- Fetch Orders ----------------
+  // Orders
   try {
     const q = query(collection(db, "orders"), where("userEmail", "==", user.email), orderBy("createdAt", "desc"));
     const snapshot = await getDocs(q);
@@ -262,22 +236,22 @@ onAuthStateChanged(auth, async user => {
       snapshot.forEach(doc => {
         const order = doc.data();
         const orderDiv = document.createElement('div');
-orderDiv.className = "order-card";
-orderDiv.innerHTML = `
-  <h3>Order on ${order.createdAt?.toDate().toLocaleString() || "Unknown date"}</h3>
-  <div class="order-items">
-    ${order.items.map(item => `
-      <div class="order-item">
-        <img src="${item.img || '../assets/coin.png'}" alt="${item.Name}">
-        <div>
-          <strong>${item.Name}</strong> × ${item.quantity || 1}<br>
-          ${item.FaceValue} ${item.Currency || ""}
-        </div>
-      </div>
-    `).join("")}
-  </div>
-  <a href="order.html?id=${doc.id}" class="profile-btn">View Order</a>
-`;
+        orderDiv.className = "order-card";
+        orderDiv.innerHTML = `
+          <h3>Order on ${order.createdAt?.toDate().toLocaleString() || "Unknown date"}</h3>
+          <div class="order-items">
+            ${order.items.map(item => `
+              <div class="order-item">
+                <img src="${item.img || '../assets/coin.png'}" alt="${item.Name}">
+                <div>
+                  <strong>${item.Name}</strong> × ${item.quantity || 1}<br>
+                  ${item.FaceValue} ${item.Currency || ""}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+          <a href="order.html?id=${doc.id}" class="profile-btn">View Order</a>
+        `;
         ordersList.appendChild(orderDiv);
       });
     }

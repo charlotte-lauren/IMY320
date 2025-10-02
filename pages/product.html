@@ -37,7 +37,7 @@
         </div>
 
         <div class="buttons">
-          <button class="btn add-to-collection">Add to Collection</button>
+          <button class="btn add-to-collection">Add to Cart</button>
           <button class="btn add-to-wishlist">Add to Wishlist</button>
         </div>
 
@@ -53,19 +53,9 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-import { 
-  getFirestore, 
-  doc, 
-  getDoc, 
-  addDoc, 
-  collection, 
-  query, 
-  where, 
-  getDocs, 
-  deleteDoc 
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection as fbCollection, query, where, getDocs, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-// Firebase config
+// ---------------- Firebase Config ----------------
 const firebaseConfig = {
   apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
   authDomain: "curiocrow.firebaseapp.com",
@@ -82,44 +72,62 @@ const db = getFirestore(app);
 // ---------------- Navbar & Footer ----------------
 fetch('../components/navbar.html')
   .then(res => res.text())
-  .then(html => {
-    document.getElementById('navbar').innerHTML = html;
-    const userDropdown = document.querySelector('.user-dropdown');
-    const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
-    const profileIcon = userDropdown.querySelector('img');
-    if (!userDropdown || !dropdownMenu || !profileIcon) return;
-
-    onAuthStateChanged(auth, user => {
-      dropdownMenu.innerHTML = '';
-      if (user) {
-        profileIcon.src = user.photoURL || '../assets/UserIcon.png';
-        dropdownMenu.innerHTML = `
-          <a href="profile.html" class="dropdown-item">Profile</a>
-          <button class="btn dropdown-item" id="logoutBtn">Logout</button>
-        `;
-        dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
-          await signOut(auth);
-          window.location.href = "../index.html";
-        });
-      } else {
-        profileIcon.src = '../assets/UserIcon.png';
-        dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item">Login</a>`;
-      }
-    });
-
-    profileIcon.addEventListener('click', e => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle('show');
-    });
-    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-    dropdownMenu.addEventListener('click', e => e.stopPropagation());
-  });
+  .then(html => { document.getElementById('navbar').innerHTML = html; setupNavbar(); })
+  .catch(err => console.error('Error loading navbar:', err));
 
 fetch('../components/footer.html')
-  .then(r => r.text())
-  .then(html => document.getElementById('footer').innerHTML = html);
+  .then(res => res.text())
+  .then(html => { document.getElementById('footer').innerHTML = html; })
+  .catch(err => console.error('Error loading footer:', err));
+
+function setupNavbar() {
+  const profileIcon = document.getElementById('profileIcon');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+
+  if (!profileIcon || !dropdownMenu) return;
+
+  profileIcon.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+  dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+  onAuthStateChanged(auth, user => {
+    dropdownMenu.innerHTML = '';
+    if (user) {
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `
+        <a href="profile.html" class="dropdown-item">Profile</a>
+        <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+      `;
+      dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
+        await signOut(auth);
+        localStorage.clear();
+        window.location.href = "../index.html";
+      });
+    } else {
+      profileIcon.src = '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item">Login</a>`;
+    }
+  });
+
+  if (searchForm && searchInput) {
+    searchForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const queryStr = searchInput.value.trim();
+      if (!queryStr) return;
+      window.location.href = `coins.html?search=${encodeURIComponent(queryStr)}`;
+    });
+  }
+}
 
 // ---------------- Load Coin Data ----------------
+let coinDataLoaded = false;
+let coinData = {};
+
 function getCoinIdFromURL() {
   return new URLSearchParams(window.location.search).get('id');
 }
@@ -132,47 +140,77 @@ async function loadCoin() {
   if (!coinSnap.exists()) { alert("Coin not found"); return; }
   const coin = coinSnap.data();
 
-  document.querySelector('.coin-image img').src = coin.Link || '../assets/coin.png';
-  document.querySelector('.coin-title').textContent = coin.Name || 'Unknown Coin';
+  coinData = {
+    _id: coinId,
+    Name: coin.Name || 'Unknown Coin',
+    img: coin.Link || '../assets/coin.png',
+    FaceValue: coin.FaceValue || 0,
+    Currency: coin.Currency || '',
+    Country: coin.Country || '',
+    quantity: 1
+  };
+  coinDataLoaded = true;
+
+  document.querySelector('.coin-image img').src = coinData.img;
+  document.querySelector('.coin-title').textContent = coinData.Name;
   document.querySelector('.coin-description').textContent = coin.Description || '';
-  document.querySelector('.coin-price').textContent = coin.FaceValue || '';
-  document.querySelector('.coin-country').textContent = coin.Country || '';
+  document.querySelector('.coin-price').textContent = coinData.FaceValue;
+  document.querySelector('.coin-country').textContent = coinData.Country;
   document.querySelector('.coin-series').textContent = coin.Series || '';
   document.querySelector('.coin-shape').textContent = coin.Shape || '';
   document.querySelector('.coin-metal').textContent = coin.MetalComposition ? coin.MetalComposition.join(', ') : '';
 }
 
-// ---------------- Wishlist / Collection ----------------
+// ---------------- Add to Cart / Wishlist ----------------
 onAuthStateChanged(auth, async user => {
-  const addToCollectionBtn = document.querySelector('.add-to-collection');
+  const addToCartBtn = document.querySelector('.add-to-collection');
   const addToWishlistBtn = document.querySelector('.add-to-wishlist');
+  const coinId = getCoinIdFromURL();
 
+  if (!addToCartBtn || !addToWishlistBtn) return;
+
+  // ----- Add to Cart -----
+  addToCartBtn.addEventListener('click', () => {
+    if (!coinDataLoaded) {
+      alert("Please wait for the coin to load.");
+      return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let existing = cart.find(c => c._id === coinData._id);
+
+    if (existing) {
+      existing.quantity += 1;
+      alert("Increased quantity in cart!");
+    } else {
+      cart.push({...coinData}); // clone to avoid mutation
+      alert("Added to cart!");
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+  });
+
+  // ----- Wishlist -----
   if (!user) {
-    addToCollectionBtn.disabled = true;
     addToWishlistBtn.disabled = true;
     return;
   }
 
-  const coinId = getCoinIdFromURL();
-
   async function toggleWishlist() {
     try {
-      // Check if coin is already in wishlist
-      const q = query(collection(db, "wishlist"), 
+      const q = query(fbCollection(db, "wishlist"), 
                       where("userEmail", "==", user.email),
                       where("coinId", "==", coinId));
       const snapshot = await getDocs(q);
 
       if (!snapshot.empty) {
-        // Already in wishlist: remove
         for (const docSnap of snapshot.docs) {
           await deleteDoc(doc(db, "wishlist", docSnap.id));
         }
         alert("Coin removed from your wishlist!");
         addToWishlistBtn.textContent = "Add to Wishlist";
       } else {
-        // Not in wishlist: add
-        await addDoc(collection(db, "wishlist"), {
+        await addDoc(fbCollection(db, "wishlist"), {
           userEmail: user.email,
           coinId: coinId,
           addedAt: new Date()
@@ -186,16 +224,12 @@ onAuthStateChanged(auth, async user => {
     }
   }
 
-  // Initialize button text based on current wishlist state
-  const initialQuery = query(collection(db, "wishlist"), 
+  // Initialize wishlist button text
+  const initialQuery = query(fbCollection(db, "wishlist"), 
                              where("userEmail", "==", user.email),
                              where("coinId", "==", coinId));
   const initialSnap = await getDocs(initialQuery);
   if (!initialSnap.empty) addToWishlistBtn.textContent = "Remove from Wishlist";
-
-  addToCollectionBtn.addEventListener('click', () => {
-    alert("Collection feature not hooked up yet!");
-  });
 
   addToWishlistBtn.addEventListener('click', toggleWishlist);
 });

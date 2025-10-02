@@ -34,7 +34,7 @@
       apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
       authDomain: "curiocrow.firebaseapp.com",
       projectId: "curiocrow",
-      storageBucket: "curiocrow.firebasestorage.app",
+      storageBucket: "curiocrow.appspot.com",
       messagingSenderId: "570380745141",
       appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
     };
@@ -54,17 +54,30 @@
         const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
         const profileIcon = userDropdown.querySelector('.profile-icon');
 
+        // Profile dropdown
         profileIcon.addEventListener('click', e => {
           e.stopPropagation();
           dropdownMenu.classList.toggle('show');
         });
-        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
         dropdownMenu.addEventListener('click', e => e.stopPropagation());
+        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+        // Search bar
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        if (searchForm && searchInput) {
+          searchForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (!query) return;
+            window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
+          });
+        }
 
         onAuthStateChanged(auth, async (user) => {
           dropdownMenu.innerHTML = '';
           if (user) {
-            profileIcon.src = user.photoURL || 'assets/UserIcon.png';
+            profileIcon.src = user.photoURL || '../assets/UserIcon.png';
             dropdownMenu.innerHTML = `
               <a href="../pages/profile.html" class="dropdown-item">Profile</a>
               <button class="btn dropdown-item" id="logoutBtn">Logout</button>
@@ -76,7 +89,7 @@
 
             renderPage(user);
           } else {
-            profileIcon.src = 'assets/UserIcon.png';
+            profileIcon.src = '../assets/UserIcon.png';
             dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
             contentEl.innerHTML = "<p>Please log in to access this page.</p>";
           }
@@ -134,7 +147,6 @@
 
       document.getElementById("addCoinBtn").addEventListener("click", async () => {
         try {
-          // Split metals into array
           const metalsArray = form.MetalComposition.split(',').map(m => m.trim()).filter(m => m);
 
           await addDoc(collection(db, "coins"), {

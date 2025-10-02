@@ -76,62 +76,78 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // Load Navbar
+  // ---------- Load Navbar ----------
   fetch('../components/navbar.html')
     .then(res => res.text())
     .then(html => {
       document.getElementById('navbar').innerHTML = html;
-
-      const userDropdown = document.querySelector('.user-dropdown');
-      const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
-      const profileIcon = userDropdown.querySelector('.profile-icon');
-
-      if (!userDropdown || !dropdownMenu || !profileIcon)
-        return console.error('Navbar elements missing');
-
-      // Persist login state & update dropdown
-      onAuthStateChanged(auth, (user) => {
-        dropdownMenu.innerHTML = '';
-        if (user) {
-          profileIcon.src = user.photoURL || '../assets/UserIcon.png';
-          dropdownMenu.innerHTML = `
-            <a href="../pages/profile.html" class="dropdown-item">Profile</a>
-            <button class="btn dropdown-item" id="logoutBtn">Logout</button>
-          `;
-          const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
-          logoutBtn.addEventListener('click', async () => {
-            try {
-              await signOut(auth);
-              localStorage.clear();
-              window.location.href = "../index.html";
-            } catch (err) {
-              console.error("Logout failed:", err);
-              alert("Failed to log out. Try again.");
-            }
-          });
-        } else {
-          profileIcon.src = '../assets/UserIcon.png';
-          dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
-        }
-      });
-
-      // Dropdown toggle
-      profileIcon.addEventListener('click', e => {
-        e.stopPropagation();
-        dropdownMenu.classList.toggle('show');
-      });
-      document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-      dropdownMenu.addEventListener('click', e => e.stopPropagation());
+      setupNavbar();
     })
     .catch(err => console.error('Error loading navbar:', err));
 
-  // Load Footer
+  function setupNavbar() {
+  const userDropdown = document.querySelector('.user-dropdown');
+  const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+  const profileIcon = userDropdown.querySelector('.profile-icon');
+
+  // Search elements
+  const searchForm = document.querySelector('.search-container'); // <- use querySelector
+  const searchInput = searchForm.querySelector('.search-bar');
+
+  if (!userDropdown || !dropdownMenu || !profileIcon || !searchForm || !searchInput)
+    return console.error('Navbar elements missing');
+
+  // Profile dropdown logic
+  profileIcon.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+  dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+  onAuthStateChanged(auth, user => {
+    dropdownMenu.innerHTML = '';
+    if (user) {
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `
+        <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+        <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+      `;
+      const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          localStorage.clear();
+          window.location.href = "../index.html";
+        } catch (err) {
+          console.error("Logout failed:", err);
+          alert("Failed to log out. Try again.");
+        }
+      });
+    } else {
+      profileIcon.src = '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+    }
+  });
+
+  // --- Search bar logic (attach after navbar is loaded) ---
+  searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query) return;
+    // Use relative path to coins.html
+    window.location.href = '../pages/coins.html?search=' + encodeURIComponent(query);
+  });
+}
+
+
+  // ---------- Load Footer ----------
   fetch('../components/footer.html')
     .then(res => res.text())
     .then(html => document.getElementById('footer').innerHTML = html)
     .catch(err => console.error('Error loading footer:', err));
 
-  // Newsletter form functionality
+  // ---------- Newsletter form ----------
   const form = document.getElementById('newsletterForm');
   const emailInput = document.getElementById('emailInput');
   const thankYouMessage = document.getElementById('thankYouMessage');

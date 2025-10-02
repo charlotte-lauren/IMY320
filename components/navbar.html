@@ -19,9 +19,10 @@
     </div>
 
     <!-- Search -->
-    <form class="search-container" onsubmit="event.preventDefault(); alert('Search triggered!');">
-      <input type="text" class="search-bar" placeholder="Search...">
-    </form>
+<form class="search-container" id="searchForm">
+  <input type="text" id="searchInput" class="search-bar" placeholder="Search...">
+</form>
+
 
     <!-- Cart -->
     <a href="../pages/purchase.html" class="icon-button">
@@ -54,29 +55,27 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 document.addEventListener('DOMContentLoaded', () => {
   const profileIcon = document.getElementById('profileIcon');
   const dropdownMenu = document.querySelector('.dropdown-menu');
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+
   if (!profileIcon || !dropdownMenu) return console.error('Dropdown elements missing');
 
   const auth = getAuth();
 
-  // Toggle dropdown visibility on profile icon click
+  // ---------------- Profile Dropdown ----------------
   profileIcon.addEventListener('click', (e) => {
     e.stopPropagation();
     dropdownMenu.classList.toggle('show');
   });
 
-  // Close dropdown when clicking outside
   document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-
-  // Prevent dropdown click from closing itself
   dropdownMenu.addEventListener('click', e => e.stopPropagation());
 
-  // Dynamically update dropdown content
   onAuthStateChanged(auth, (user) => {
     dropdownMenu.innerHTML = ''; // clear previous content
 
     if (user) {
-      // Logged-in: Profile + Logout
-      profileIcon.src = user.photoURL || '../assets/UserIcon.png'; // show user photo if available
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
       dropdownMenu.innerHTML = `
         <a href="../pages/profile.html" class="dropdown-item">Profile</a>
         <button class="btn dropdown-item" id="logoutBtn">Logout</button>
@@ -93,13 +92,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     } else {
-      // Not logged-in: show default icon + Login link
       profileIcon.src = '../assets/UserIcon.png';
       dropdownMenu.innerHTML = `
         <a href="../pages/login.html" class="dropdown-item">Login</a>
       `;
     }
   });
+
+  // ---------------- Search Bar ----------------
+  // ---------------- Search Bar ----------------
+searchForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const query = searchInput.value.trim();
+  if (!query) return;
+  console.log(query);
+  // Always redirect to coins page from any current page
+  window.location.href = '/pages/coins.html?search=' + encodeURIComponent(query);
+});
+
 });
 </script>
 
