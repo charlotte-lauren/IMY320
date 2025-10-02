@@ -74,106 +74,65 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ---------- Navbar & Footer ----------
-    fetch('../components/navbar.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('navbar').innerHTML = html;
-
-        const userDropdown = document.querySelector('.user-dropdown');
-        const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
-        const profileIcon = userDropdown.querySelector('.profile-icon');
-
-        if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
-
-        onAuthStateChanged(auth, user => {
-          dropdownMenu.innerHTML = '';
-          if (user) {
-            profileIcon.src = user.photoURL || '../assets/UserIcon.png';
-            dropdownMenu.innerHTML = `
-              <a href="profile.html" class="dropdown-item">Profile</a>
-              <button class="btn dropdown-item" id="logoutBtn">Logout</button>
-            `;
-            const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
-            logoutBtn.addEventListener('click', async () => {
-              try {
-                await signOut(auth);
-                window.location.href = "../index.html";
-              } catch (err) {
-                console.error(err);
-                alert("Failed to log out.");
-              }
-            });
-          } else {
-            profileIcon.src = '../assets/UserIcon.png';
-            dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item">Login</a>`;
-          }
-        });
-
-        // Dropdown toggle
-        profileIcon.addEventListener('click', e => {
-          e.stopPropagation();
-          dropdownMenu.classList.toggle('show');
-        });
-        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-        dropdownMenu.addEventListener('click', e => e.stopPropagation());
-      });
-
-    fetch('../components/footer.html')
-      .then(res => res.text())
-      .then(html => document.getElementById('footer').innerHTML = html);
+    // Navbar & Footer
+    fetch('../components/navbar.html').then(r => r.text()).then(html => {
+      document.getElementById('navbar').innerHTML = html;
+    });
+    fetch('../components/footer.html').then(r => r.text()).then(html => {
+      document.getElementById('footer').innerHTML = html;
+    });
 
     // ---------- Coins & Filters ----------
     const coinListEl = document.getElementById('coinList');
     let allCoins = [];
+    let allDocIds = [];
     const activeFilters = { Metal: new Set(), Country: new Set(), Shape: new Set() };
 
     async function loadCoins() {
-  try {
-    const snapshot = await getDocs(collection(db, "coins"));
-    const coins = [];
-    const docIds = [];
+      try {
+        const snapshot = await getDocs(collection(db, "coins"));
+        const coins = [];
+        const docIds = [];
 
-    snapshot.docs.forEach(doc => {
-      coins.push(doc.data());
-      docIds.push(doc.id);
-    });
+        snapshot.docs.forEach(doc => {
+          coins.push(doc.data());
+          docIds.push(doc.id);
+        });
 
-    allCoins = coins;
+        allCoins = coins;
+        allDocIds = docIds;
 
-    populateFilters(allCoins);
-    renderCoins(allCoins, docIds); // pass doc IDs
-  } catch (err) {
-    console.error(err);
-    coinListEl.innerHTML = "<p>Failed to load coins from database.</p>";
-  }
-}
-
+        populateFilters(allCoins);
+        renderCoins(allCoins, allDocIds);
+      } catch (err) {
+        console.error(err);
+        coinListEl.innerHTML = "<p>Failed to load coins from database.</p>";
+      }
+    }
 
     function renderCoins(coins, docIds) {
-  coinListEl.innerHTML = '';
-  coins.forEach((coin, index) => {
-    const metals = coin.MetalComposition ? coin.MetalComposition.join(', ') : '';
-    const docId = docIds[index]; // Get the Firestore document ID
-    const coinHTML = `
-      <div class="coin-row-list">
-        <div class="coin-info-list">
-          <img src="${coin.Link || '../assets/coin.png'}" alt="${coin.Name}" class="coin-img-list">
-          <div class="coin-text-list">
-            <h3>${coin.Name}</h3>
-            <p>${coin.Country} - ${coin.FaceValue} ${coin.Currency}</p>
-            <p>Series: ${coin.Series || ''}, Shape: ${coin.Shape || ''}</p>
-            <p>Metal: ${metals}</p>
-            <p>${coin.Description || ''}</p>
+      coinListEl.innerHTML = '';
+      coins.forEach((coin, index) => {
+        const metals = coin.MetalComposition ? coin.MetalComposition.join(', ') : '';
+        const docId = docIds ? docIds[index] : ''; // ensure docId exists
+        const coinHTML = `
+          <div class="coin-row-list">
+            <div class="coin-info-list">
+              <img src="${coin.Link || '../assets/coin.png'}" alt="${coin.Name}" class="coin-img-list">
+              <div class="coin-text-list">
+                <h3>${coin.Name}</h3>
+                <p>${coin.Country} - ${coin.FaceValue} ${coin.Currency}</p>
+                <p>Series: ${coin.Series || ''}, Shape: ${coin.Shape || ''}</p>
+                <p>Metal: ${metals}</p>
+                <p>${coin.Description || ''}</p>
+              </div>
+            </div>
+            <a href="product.html?id=${docId}" class="btn-product-view">View</a>
           </div>
-        </div>
-        <a href="product.html?id=${docId}" class="btn-product-view">View</a>
-      </div>
-    `;
-    coinListEl.innerHTML += coinHTML;
-  });
-}
-
+        `;
+        coinListEl.innerHTML += coinHTML;
+      });
+    }
 
     function populateFilters(coins) {
       const metalsSet = new Set();
@@ -213,18 +172,20 @@
       document.querySelector('.reset-btn').addEventListener('click', () => {
         Object.keys(activeFilters).forEach(key => activeFilters[key].clear());
         document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
-        renderCoins(allCoins);
+        renderCoins(allCoins, allDocIds);
       });
     }
 
     function applyFilters() {
-      const filteredCoins = allCoins.filter(coin => {
+      const filteredCoins = allCoins.filter((coin, index) => {
         const metalMatch = activeFilters.Metal.size === 0 || (coin.MetalComposition && coin.MetalComposition.some(m => activeFilters.Metal.has(m)));
         const countryMatch = activeFilters.Country.size === 0 || activeFilters.Country.has(coin.Country);
         const shapeMatch = activeFilters.Shape.size === 0 || activeFilters.Shape.has(coin.Shape);
         return metalMatch && countryMatch && shapeMatch;
       });
-      renderCoins(filteredCoins);
+      // Pass filtered indices to preserve docIds for 'View' links
+      const filteredDocIds = filteredCoins.map(c => allDocIds[allCoins.indexOf(c)]);
+      renderCoins(filteredCoins, filteredDocIds);
     }
 
     loadCoins();

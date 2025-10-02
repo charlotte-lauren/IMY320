@@ -34,7 +34,6 @@
           <div class="attribute"><strong>Series:</strong> <span class="coin-series"></span></div>
           <div class="attribute"><strong>Shape:</strong> <span class="coin-shape"></span></div>
           <div class="attribute"><strong>Metal:</strong> <span class="coin-metal"></span></div>
-          <div class="attribute"><strong>Era:</strong> <span class="coin-era"></span></div>
         </div>
 
         <div class="buttons">
@@ -46,7 +45,6 @@
 
     </div>
   </div>
-
 </div>
 
 <!-- Footer -->
@@ -55,7 +53,17 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import { 
+  getFirestore, 
+  doc, 
+  getDoc, 
+  addDoc, 
+  collection, 
+  query, 
+  where, 
+  getDocs, 
+  deleteDoc 
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -79,7 +87,6 @@ fetch('../components/navbar.html')
     const userDropdown = document.querySelector('.user-dropdown');
     const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
     const profileIcon = userDropdown.querySelector('img');
-
     if (!userDropdown || !dropdownMenu || !profileIcon) return;
 
     onAuthStateChanged(auth, user => {
@@ -119,60 +126,24 @@ function getCoinIdFromURL() {
 
 async function loadCoin() {
   const coinId = getCoinIdFromURL();
-  if (!coinId) {
-    alert("Coin ID missing in URL");
-    return;
-  }
-
+  if (!coinId) { alert("Coin ID missing in URL"); return; }
   const coinRef = doc(db, "coins", coinId);
   const coinSnap = await getDoc(coinRef);
-
-  if (!coinSnap.exists()) {
-    alert("Coin not found");
-    return;
-  }
-
+  if (!coinSnap.exists()) { alert("Coin not found"); return; }
   const coin = coinSnap.data();
 
-  // Image
-  const coinImg = document.querySelector('.coin-image img');
-  coinImg.src = coin.Link || '../assets/coin.png';
-  coinImg.alt = coin.Name || 'Coin Image';
-
-  // Basic info
+  document.querySelector('.coin-image img').src = coin.Link || '../assets/coin.png';
   document.querySelector('.coin-title').textContent = coin.Name || 'Unknown Coin';
   document.querySelector('.coin-description').textContent = coin.Description || '';
   document.querySelector('.coin-price').textContent = coin.FaceValue || '';
-
-  // Attributes
   document.querySelector('.coin-country').textContent = coin.Country || '';
   document.querySelector('.coin-series').textContent = coin.Series || '';
   document.querySelector('.coin-shape').textContent = coin.Shape || '';
   document.querySelector('.coin-metal').textContent = coin.MetalComposition ? coin.MetalComposition.join(', ') : '';
-  
-  // Only show Era if it's a valid number/string
-  const era = coin.IssuedOn;
-  document.querySelector('.coin-era').textContent = (!isNaN(era) && era) ? era : '';
 }
 
-// ---------------- Collection / Wishlist ----------------
-function getCoinFromPage() {
-  return {
-    _id: getCoinIdFromURL(),
-    Name: document.querySelector('.coin-title').textContent,
-    Country: document.querySelector('.coin-country').textContent,
-    Series: document.querySelector('.coin-series').textContent,
-    Shape: document.querySelector('.coin-shape').textContent,
-    MetalComposition: document.querySelector('.coin-metal').textContent.split(',').map(m => m.trim()),
-    Description: document.querySelector('.coin-description').textContent,
-    FaceValue: document.querySelector('.coin-price').textContent,
-    Currency: 'USD',
-    img: document.querySelector('.coin-image img').src,
-    quantity: 1
-  };
-}
-
-onAuthStateChanged(auth, user => {
+// ---------------- Wishlist / Collection ----------------
+onAuthStateChanged(auth, async user => {
   const addToCollectionBtn = document.querySelector('.add-to-collection');
   const addToWishlistBtn = document.querySelector('.add-to-wishlist');
 
@@ -182,24 +153,51 @@ onAuthStateChanged(auth, user => {
     return;
   }
 
-  function addItem(storageKey) {
-    const coin = getCoinFromPage();
-    let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-    const existing = items.find(c => c._id === coin._id);
-    if (existing) existing.quantity += 1;
-    else items.push(coin);
-    localStorage.setItem(storageKey, JSON.stringify(items));
+  const coinId = getCoinIdFromURL();
+
+  async function toggleWishlist() {
+    try {
+      // Check if coin is already in wishlist
+      const q = query(collection(db, "wishlist"), 
+                      where("userEmail", "==", user.email),
+                      where("coinId", "==", coinId));
+      const snapshot = await getDocs(q);
+
+      if (!snapshot.empty) {
+        // Already in wishlist: remove
+        for (const docSnap of snapshot.docs) {
+          await deleteDoc(doc(db, "wishlist", docSnap.id));
+        }
+        alert("Coin removed from your wishlist!");
+        addToWishlistBtn.textContent = "Add to Wishlist";
+      } else {
+        // Not in wishlist: add
+        await addDoc(collection(db, "wishlist"), {
+          userEmail: user.email,
+          coinId: coinId,
+          addedAt: new Date()
+        });
+        alert("Coin added to your wishlist!");
+        addToWishlistBtn.textContent = "Remove from Wishlist";
+      }
+    } catch (err) {
+      console.error("Error toggling wishlist:", err);
+      alert("Failed to update wishlist.");
+    }
   }
 
+  // Initialize button text based on current wishlist state
+  const initialQuery = query(collection(db, "wishlist"), 
+                             where("userEmail", "==", user.email),
+                             where("coinId", "==", coinId));
+  const initialSnap = await getDocs(initialQuery);
+  if (!initialSnap.empty) addToWishlistBtn.textContent = "Remove from Wishlist";
+
   addToCollectionBtn.addEventListener('click', () => {
-    addItem('cart');
-    alert('Coin added to your collection!');
+    alert("Collection feature not hooked up yet!");
   });
 
-  addToWishlistBtn.addEventListener('click', () => {
-    addItem('wishlist');
-    alert('Coin added to your wishlist!');
-  });
+  addToWishlistBtn.addEventListener('click', toggleWishlist);
 });
 
 loadCoin();

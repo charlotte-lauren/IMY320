@@ -26,6 +26,30 @@
   .avatar-choice.selected {
     border-color: #FFD700;
   }
+  .orders {
+    margin-top: 2rem;
+  }
+  .order-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: #f9f9f9;
+  }
+  .order-items {
+    margin-top: 0.5rem;
+  }
+  .order-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .order-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-right: 0.75rem;
+  }
 </style>
 </head>
 <body>
@@ -61,9 +85,16 @@
     <button class="profile-btn profile-btn-secondary" id="cancelEditBtn">Cancel</button>
   </section>
 
+  <!-- Wishlist -->
   <section class="wishlist">
     <h2>Wishlist</h2>
     <div class="wishlist-grid" id="wishlistGrid"></div>
+  </section>
+
+  <!-- Orders -->
+  <section class="orders">
+    <h2>Your Orders</h2>
+    <div id="ordersList"><p>Loading your orders...</p></div>
   </section>
 </div>
 
@@ -73,6 +104,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
@@ -85,8 +117,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-// Load Navbar
+// ---------------- Navbar ----------------
 fetch('../components/navbar.html')
   .then(res => res.text())
   .then(html => {
@@ -98,7 +131,6 @@ fetch('../components/navbar.html')
 
     if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
 
-    // Update navbar based on auth state
     onAuthStateChanged(auth, (user) => {
       dropdownMenu.innerHTML = '';
       if (user) {
@@ -111,7 +143,6 @@ fetch('../components/navbar.html')
         logoutBtn.addEventListener('click', async () => {
           try {
             await signOut(auth);
-            localStorage.clear();
             window.location.href = "../index.html";
           } catch (err) {
             console.error("Logout failed:", err);
@@ -124,23 +155,20 @@ fetch('../components/navbar.html')
       }
     });
 
-    // Dropdown toggle logic
     profileIcon.addEventListener('click', e => {
       e.stopPropagation();
       dropdownMenu.classList.toggle('show');
     });
     document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
     dropdownMenu.addEventListener('click', e => e.stopPropagation());
-  })
-  .catch(err => console.error('Error loading navbar:', err));
+  });
 
-// Load Footer
+// ---------------- Footer ----------------
 fetch('../components/footer.html')
   .then(r => r.text())
-  .then(html => document.getElementById('footer').innerHTML = html)
-  .catch(err => console.error('Error loading footer:', err));
+  .then(html => document.getElementById('footer').innerHTML = html);
 
-// Profile logic
+// ---------------- Profile Logic ----------------
 const profileUsername = document.getElementById('profileUsername');
 const profileAvatar = document.getElementById('profileAvatar');
 const wishlistGrid = document.getElementById('wishlistGrid');
@@ -150,16 +178,12 @@ const usernameInput = document.getElementById('usernameInput');
 const saveProfileBtn = document.getElementById('saveProfileBtn');
 const cancelEditBtn = document.getElementById('cancelEditBtn');
 const avatarChoices = document.querySelectorAll('.avatar-choice');
-
-const defaultWishlist = [
-  { _id: '1', Name: 'Roman Denarius', Country: 'Rome', 'Issued on': '200 BC', FaceValue: '1', Currency: 'Denarius', img: '' },
-  { _id: '2', Name: 'Greek Drachma', Country: 'Greece', FaceValue: '5', Currency: 'Drachma', img: '' }
-];
+const ordersList = document.getElementById('ordersList');
 
 let currentUser;
 let selectedAvatar = null;
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async user => {
   if (!user) {
     document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your profile.</p>';
     return;
@@ -170,53 +194,103 @@ onAuthStateChanged(auth, user => {
   profileAvatar.src = user.photoURL || '../assets/coin.png';
   usernameInput.value = user.displayName || "";
 
-  let wishlist = JSON.parse(localStorage.getItem('wishlist')) || defaultWishlist;
+  // ---------------- Load Wishlist from Firestore ----------------
+  async function renderWishlist() {
+    wishlistGrid.innerHTML = '<p>Loading wishlist...</p>';
+    try {
+      const wishlistQuery = query(collection(db, "wishlist"), where("userEmail", "==", user.email));
+      const wishlistSnap = await getDocs(wishlistQuery);
 
-  function slugify(text) {
-    return text.toString().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)+/g,'');
-  }
+      if (wishlistSnap.empty) {
+        wishlistGrid.innerHTML = '<p style="text-align:center;">Your wishlist is empty.</p>';
+        return;
+      }
 
-  function renderWishlist() {
-    wishlistGrid.innerHTML = '';
-    if (wishlist.length === 0) {
-      wishlistGrid.innerHTML = '<p style="text-align:center;">Your wishlist is empty.</p>';
-      return;
-    }
+      wishlistGrid.innerHTML = '';
 
-    wishlist.forEach(coin => {
-      const card = document.createElement('div');
-      card.className = 'wishlist-card';
-      card.innerHTML = `
-        <img src="${coin.img || '../assets/coin.png'}" alt="${coin.Name}" class="wishlist-img">
-        <div class="wishlist-info">
-          <h3>${coin.Name}</h3>
-          <p>${coin.Country} ${coin['Issued on'] ? '('+coin['Issued on']+')' : ''}</p>
-          <div class="wishlist-price">${coin.FaceValue ? coin.FaceValue+' '+coin.Currency : 'N/A'}</div>
-          <div class="wishlist-actions">
-            <a href="/product/${slugify(coin.Name)}" class="profile-btn">View</a>
-            <button class="profile-btn profile-btn-secondary">Remove</button>
+      for (const docSnap of wishlistSnap.docs) {
+        const wishlistItem = docSnap.data();
+        const coinRef = doc(db, "coins", wishlistItem.coinId);
+        const coinSnap = await getDoc(coinRef);
+        if (!coinSnap.exists()) continue;
+        const coin = coinSnap.data();
+
+        const card = document.createElement('div');
+        card.className = 'wishlist-card';
+        card.innerHTML = `
+          <img src="${coin.Link || '../assets/coin.png'}" alt="${coin.Name}" class="wishlist-img">
+          <div class="wishlist-info">
+            <h3>${coin.Name}</h3>
+            <p>${coin.Country} ${coin.IssuedOn ? '('+coin.IssuedOn+')' : ''}</p>
+            <div class="wishlist-price">${coin.FaceValue ? coin.FaceValue+' '+(coin.Currency || 'USD') : 'N/A'}</div>
+            <div class="wishlist-actions">
+              <a href="product.html?id=${docSnap.data().coinId}" class="profile-btn">View</a>
+              <button class="profile-btn profile-btn-secondary">Remove</button>
+            </div>
           </div>
-        </div>
-      `;
-      card.querySelector('.profile-btn-secondary').addEventListener('click', () => removeFromWishlist(coin._id));
-      wishlistGrid.appendChild(card);
-    });
-  }
+        `;
 
-  function removeFromWishlist(coinId) {
-    wishlist = wishlist.filter(c => c._id !== coinId);
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
-    renderWishlist();
+        card.querySelector('.profile-btn-secondary').addEventListener('click', async () => {
+          try {
+            await deleteDoc(doc(db, "wishlist", docSnap.id));
+            renderWishlist();
+          } catch (err) {
+            console.error("Failed to remove from wishlist:", err);
+            alert("Failed to remove item.");
+          }
+        });
+
+        wishlistGrid.appendChild(card);
+      }
+    } catch (err) {
+      console.error("Error loading wishlist:", err);
+      wishlistGrid.innerHTML = '<p>Failed to load wishlist.</p>';
+    }
   }
 
   renderWishlist();
+
+  // ---------------- Fetch Orders ----------------
+  try {
+    const q = query(collection(db, "orders"), where("userEmail", "==", user.email), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      ordersList.innerHTML = "<p>You have no orders yet.</p>";
+    } else {
+      ordersList.innerHTML = "";
+      snapshot.forEach(doc => {
+        const order = doc.data();
+        const orderDiv = document.createElement('div');
+orderDiv.className = "order-card";
+orderDiv.innerHTML = `
+  <h3>Order on ${order.createdAt?.toDate().toLocaleString() || "Unknown date"}</h3>
+  <div class="order-items">
+    ${order.items.map(item => `
+      <div class="order-item">
+        <img src="${item.img || '../assets/coin.png'}" alt="${item.Name}">
+        <div>
+          <strong>${item.Name}</strong> × ${item.quantity || 1}<br>
+          ${item.FaceValue} ${item.Currency || ""}
+        </div>
+      </div>
+    `).join("")}
+  </div>
+  <a href="order.html?id=${doc.id}" class="profile-btn">View Order</a>
+`;
+        ordersList.appendChild(orderDiv);
+      });
+    }
+  } catch (err) {
+    console.error("Error fetching orders:", err);
+    ordersList.innerHTML = "<p>Failed to load your orders.</p>";
+  }
 });
 
-// Toggle edit form
+// ---------------- Edit Profile ----------------
 editProfileBtn.addEventListener('click', () => profileEdit.style.display = 'block');
 cancelEditBtn.addEventListener('click', () => profileEdit.style.display = 'none');
 
-// Select avatar
 avatarChoices.forEach(img => {
   img.addEventListener('click', () => {
     avatarChoices.forEach(i => i.classList.remove('selected'));
@@ -225,20 +299,12 @@ avatarChoices.forEach(img => {
   });
 });
 
-// Save profile changes
 saveProfileBtn.addEventListener('click', async () => {
   if (!currentUser) return;
-
   const photoURL = selectedAvatar || currentUser.photoURL || '../assets/coin.png';
-
-  await updateProfile(currentUser, {
-    displayName: usernameInput.value,
-    photoURL: photoURL
-  });
-
+  await updateProfile(currentUser, { displayName: usernameInput.value, photoURL });
   profileUsername.textContent = usernameInput.value;
   profileAvatar.src = photoURL;
-
   profileEdit.style.display = 'none';
   alert("Profile updated!");
 });

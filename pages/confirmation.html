@@ -8,24 +8,105 @@
 <link rel="stylesheet" href="../css/Navbar.css">
 <link rel="stylesheet" href="../css/Footer.css">
 <link rel="stylesheet" href="../css/PurchasePage.css">
+<style>
+  /* Two-panel layout */
+  .checkout-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin: 2rem;
+  }
+  .order-summary, .checkout-form-container {
+    flex: 1;
+    min-width: 300px;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+  }
+  .order-summary h2, .checkout-form-container h2 {
+    margin-bottom: 1rem;
+  }
+  .cart-item {
+    display: flex;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+  }
+  .cart-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-right: 1rem;
+  }
+  .cart-item-details h4 {
+    margin: 0 0 0.25rem 0;
+  }
+  .cart-item-details p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .checkout-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .checkout-form input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .checkout-submit {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+</style>
 </head>
 <body>
 
 <!-- Navbar -->
 <div id="navbar"></div>
 
-<div class="purchase-page">
-  <h1>Purchase Confirmation</h1>
-  <p class="confirmation-message">Thank you for your purchase! (Simulation only, no data saved.)</p>
+<div class="checkout-page">
+  <h1>Checkout</h1>
+  <p>This is a simulation; no data is saved.</p>
 
-  <section class="purchase-details">
-    <h2>Order Summary</h2>
-    <div class="purchase-grid" id="purchaseGrid"></div>
+  <div class="checkout-container">
+    <!-- Left Panel: Order Summary -->
+    <div class="order-summary">
+      <h2>Your Order</h2>
+      <div id="orderList"></div>
+      <h3 id="orderTotal"></h3>
+    </div>
 
-    <div class="purchase-total" id="purchaseTotal"></div>
+    <!-- Right Panel: Form -->
+    <div class="checkout-form-container">
+      <h2>Shipping & Payment</h2>
+      <form id="checkoutForm" class="checkout-form">
+        <fieldset>
+          <legend>Shipping Information</legend>
+          <label>Full Name:<input type="text" name="Fullname" required></label>
+          <label>Address Line 1:<input type="text" name="Address1" required></label>
+          <label>Address Line 2:<input type="text" name="Address2"></label>
+          <label>City:<input type="text" name="city" required></label>
+          <label>State / Province:<input type="text" name="Province" required></label>
+          <label>Postal Code:<input type="text" name="Zip" required></label>
+          <label>Country:<input type="text" name="Country" required></label>
+        </fieldset>
 
-    <a href="coins.html" class="btn continue-shopping">Continue Shopping</a>
-  </section>
+        <fieldset>
+          <legend>Payment Information</legend>
+          <label>Cardholder Name:<input type="text" name="Cardname" required></label>
+          <label>Card Number:<input type="text" name="Cardnumber" required pattern="\d{13,19}" placeholder="13-19 digits"></label>
+          <label>Expiry Date:<input type="month" name="Expiry" required></label>
+          <label>CVV:<input type="text" name="Cvv" required pattern="\d{3,4}" placeholder="3-4 digits"></label>
+        </fieldset>
+
+        <button type="submit" class="btn checkout-submit">Place Order</button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <!-- Footer -->
@@ -33,9 +114,8 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
   authDomain: "curiocrow.firebaseapp.com",
@@ -44,100 +124,70 @@ const firebaseConfig = {
   messagingSenderId: "570380745141",
   appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Navbar
-fetch('../components/navbar.html')
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById('navbar').innerHTML = html;
-    const userDropdown = document.querySelector('.user-dropdown');
-    const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
-    const profileIcon = userDropdown.querySelector('.profile-icon');
+// Navbar & Footer
+fetch('../components/navbar.html').then(res => res.text()).then(html => document.getElementById('navbar').innerHTML = html);
+fetch('../components/footer.html').then(res => res.text()).then(html => document.getElementById('footer').innerHTML = html);
 
-    if (!userDropdown || !dropdownMenu || !profileIcon) return;
+// Populate order summary from cart
+const orderList = document.getElementById('orderList');
+const orderTotal = document.getElementById('orderTotal');
 
-    onAuthStateChanged(auth, user => {
-      dropdownMenu.innerHTML = '';
-      if (user) {
-        profileIcon.src = user.photoURL || '../assets/UserIcon.png';
-        dropdownMenu.innerHTML = `
-          <a href="../pages/profile.html" class="dropdown-item">Profile</a>
-          <button class="btn dropdown-item" id="logoutBtn">Logout</button>
-        `;
-        dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
-          await signOut(auth);
-          window.location.href = "../index.html";
-        });
-      } else {
-        profileIcon.src = '../assets/UserIcon.png';
-        dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
-      }
-    });
-
-    profileIcon.addEventListener('click', e => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle('show');
-    });
-    document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-    dropdownMenu.addEventListener('click', e => e.stopPropagation());
-  });
-
-// Footer
-fetch('../components/footer.html')
-  .then(res => res.text())
-  .then(html => document.getElementById('footer').innerHTML = html);
-
-// ------------------- Purchase Page Logic -------------------
-const purchaseGrid = document.getElementById('purchaseGrid');
-const purchaseTotalEl = document.getElementById('purchaseTotal');
-
-onAuthStateChanged(auth, user => {
-  if (!user) {
-    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your purchases.</p>';
-    return;
-  }
-
+function renderOrder() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  orderList.innerHTML = '';
   if (cart.length === 0) {
-    purchaseGrid.innerHTML = '<p style="text-align:center;">Your cart was empty.</p>';
-    purchaseTotalEl.textContent = '';
+    orderList.innerHTML = '<p>Your cart is empty.</p>';
+    orderTotal.textContent = '';
     return;
   }
 
   let total = 0;
-  purchaseGrid.innerHTML = '';
-
   cart.forEach(coin => {
-    const quantity = coin.quantity || 1;
-    const price = parseFloat(coin.FaceValue) || 0;
-    const subtotal = price * quantity;
-    total += subtotal;
-
-    const card = document.createElement('div');
-    card.className = 'purchase-card';
-    card.innerHTML = `
-      <img src="${coin.img || '../assets/coin.png'}" alt="${coin.Name}" class="purchase-img">
-      <div class="purchase-info">
-        <h3>${coin.Name}</h3>
-        <p>Country: ${coin.Country}</p>
-        <p>Series: ${coin.Series || 'N/A'}</p>
-        <p>Shape: ${coin.Shape || 'N/A'}</p>
-        <p>Metal: ${coin.MetalComposition ? coin.MetalComposition.join(', ') : 'N/A'}</p>
-        <p>Era: ${coin.IssuedOn || 'N/A'}</p>
-        <p>Quantity: ${quantity}</p>
-        <p>Price per item: ${price} ${coin.Currency || 'USD'}</p>
-        <p>Subtotal: ${subtotal} ${coin.Currency || 'USD'}</p>
+    const item = document.createElement('div');
+    item.className = 'cart-item';
+    item.innerHTML = `
+      <img src="${coin.img || 'coin.png'}" alt="${coin.Name}">
+      <div class="cart-item-details">
+        <h4>${coin.Name} ${coin.quantity > 1 ? '×'+coin.quantity : ''}</h4>
+        <p>${coin.Country}</p>
+        <p>${coin.FaceValue} ${coin.Currency || 'USD'}</p>
       </div>
     `;
-    purchaseGrid.appendChild(card);
+    orderList.appendChild(item);
+    total += (coin.FaceValue || 0) * (coin.quantity || 1);
   });
 
-  purchaseTotalEl.innerHTML = `<h3>Total: ${total.toFixed(2)} ${cart[0]?.Currency || 'USD'}</h3>`;
+  orderTotal.textContent = `Total: ${total} ${cart[0]?.Currency || 'USD'}`;
+}
 
-  // Clear cart after checkout (simulation)
-  localStorage.setItem('cart', JSON.stringify([]));
+// Handle checkout form submission
+const checkoutForm = document.getElementById('checkoutForm');
+checkoutForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  // Save order temporarily for confirmation
+  localStorage.setItem('checkoutCart', localStorage.getItem('cart') || '[]');
+  localStorage.setItem('checkoutShipping', JSON.stringify(Object.fromEntries(new FormData(checkoutForm).entries())));
+
+  // Clear cart
+  localStorage.setItem('cart', '[]');
+
+  // Redirect to confirmation page
+  window.location.href = 'load.html';
+});
+
+// Ensure user is logged in
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to access checkout.</p>';
+    return;
+  }
+
+  renderOrder();
 });
 </script>
 

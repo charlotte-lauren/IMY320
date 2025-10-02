@@ -149,10 +149,11 @@ function removeFromCart(coinId) {
 }
 
 checkoutBtn.addEventListener('click', () => {
-  cart = [];
-  localStorage.setItem('cart', JSON.stringify(cart));
-  checkoutMessageEl.textContent = "Thank you for your purchase! (Simulation only)";
-  renderCart();
+  // Save current cart for confirmation page
+  localStorage.setItem('checkoutCart', JSON.stringify(cart));
+  
+  // Navigate to confirmation page
+  window.location.href = 'confirmation.html';
 });
 
 // Populate username & avatar + ensure cart only visible if logged in

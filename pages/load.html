@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processing Order - CurioCrow</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: #f9f9f9;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  .loading-container {
+    text-align: center;
+  }
+  .spinner {
+    margin: 2rem auto;
+    width: 70px;
+    height: 70px;
+    border: 8px solid #ddd;
+    border-top: 8px solid #007BFF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .loading-text {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-container">
+  <div class="spinner"></div>
+  <p class="loading-text">Processing your order... Please wait</p>
+</div>
+
+<script>
+// Pick random wait time between 30s and 90s
+const minTime = 30000;   // 30 seconds
+const maxTime = 90000;   // 1.5 minutes
+const waitTime = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+
+// Redirect after wait
+setTimeout(() => {
+  window.location.href = "confirmed.html"; // where to send them after
+}, waitTime);
+</script>
+
+</body>
+</html>

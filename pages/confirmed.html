@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmation - CurioCrow</title>
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/Navbar.css">
+<link rel="stylesheet" href="../css/Footer.css">
+<link rel="stylesheet" href="../css/PurchasePage.css">
+<style>
+  .confirmation-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin: 2rem;
+  }
+  .order-summary, .shipping-info {
+    flex: 1;
+    min-width: 300px;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+  }
+  .order-summary h2, .shipping-info h2 {
+    margin-bottom: 1rem;
+  }
+  .cart-item {
+    display: flex;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+  }
+  .cart-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-right: 1rem;
+  }
+  .cart-item-details h4 {
+    margin: 0 0 0.25rem 0;
+  }
+  .cart-item-details p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .home-btn {
+    margin-top: 2rem;
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    text-decoration: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div id="navbar"></div>
+
+<div class="confirmation-page">
+  <h1>Order Placed!</h1>
+  <p>Thank you for your purchase! Your order has been successfully placed.</p>
+
+  <div class="confirmation-container">
+    <!-- Left Panel: Coins Ordered -->
+    <div class="order-summary">
+      <h2>Coins Ordered</h2>
+      <div id="orderList"></div>
+      <h3 id="orderTotal"></h3>
+    </div>
+
+    <!-- Right Panel: Shipping Information -->
+    <div class="shipping-info">
+      <h2>Shipping Information</h2>
+      <div id="shippingDetails"></div>
+    </div>
+  </div>
+
+  <a href="../pages/home.html" class="home-btn">Return to Home</a>
+</div>
+
+<!-- Footer -->
+<div id="footer"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+  authDomain: "curiocrow.firebaseapp.com",
+  projectId: "curiocrow",
+  storageBucket: "curiocrow.appspot.com",
+  messagingSenderId: "570380745141",
+  appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Navbar & Footer
+fetch('../components/navbar.html').then(res => res.text()).then(html => document.getElementById('navbar').innerHTML = html);
+fetch('../components/footer.html').then(res => res.text()).then(html => document.getElementById('footer').innerHTML = html);
+
+// Elements
+const orderList = document.getElementById('orderList');
+const orderTotal = document.getElementById('orderTotal');
+const shippingDetails = document.getElementById('shippingDetails');
+
+// Render order summary and shipping info
+function renderConfirmation(cart, shipping) {
+  orderList.innerHTML = '';
+  shippingDetails.innerHTML = '';
+
+  if (cart.length === 0) {
+    orderList.innerHTML = '<p>No items found in your order.</p>';
+    orderTotal.textContent = '';
+  } else {
+    let total = 0;
+    cart.forEach(coin => {
+      const item = document.createElement('div');
+      item.className = 'cart-item';
+      item.innerHTML = `
+        <img src="${coin.img || 'coin.png'}" alt="${coin.Name}">
+        <div class="cart-item-details">
+          <h4>${coin.Name} ${coin.quantity > 1 ? '×'+coin.quantity : ''}</h4>
+          <p>${coin.Country}</p>
+          <p>${coin.FaceValue} ${coin.Currency || 'USD'}</p>
+        </div>
+      `;
+      orderList.appendChild(item);
+      total += (coin.FaceValue || 0) * (coin.quantity || 1);
+    });
+    orderTotal.textContent = `Total: ${total} ${cart[0]?.Currency || 'USD'}`;
+  }
+
+  // Shipping info (exclude payment fields)
+  const excludedFields = ["Cardname", "Cardnumber", "Expiry", "Cvv"];
+  for (const [key, value] of Object.entries(shipping)) {
+    if (!excludedFields.includes(key)) {
+      const p = document.createElement('p');
+      p.textContent = `${key.replace(/([A-Z])/g, ' $1')}: ${value}`;
+      shippingDetails.appendChild(p);
+    }
+  }
+}
+
+// Save order to Firestore (without payment fields)
+async function saveOrderToFirestore(cart, shipping, userEmail) {
+  try {
+    const { CardName, CardNumber, Expiry, Cvv, ...safeShipping } = shipping;
+    await addDoc(collection(db, "orders"), {
+      userEmail,
+      items: cart,
+      shipping: safeShipping,
+      createdAt: serverTimestamp()
+    });
+  } catch (err) {
+    console.error("Failed to save order:", err);
+  }
+}
+
+// Main
+onAuthStateChanged(auth, async user => {
+  if (!user) {
+    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your order.</p>';
+    return;
+  }
+
+  // Retrieve cart and shipping info from localStorage
+  const cart = JSON.parse(localStorage.getItem('checkoutCart')) || [];
+  const shipping = JSON.parse(localStorage.getItem('checkoutShipping')) || {};
+
+  // Render on page
+  renderConfirmation(cart, shipping);
+
+  // Save order without sensitive fields
+  await saveOrderToFirestore(cart, shipping, user.email);
+
+  // Clear localStorage (cart & shipping info)
+  localStorage.removeItem('checkoutCart');
+  localStorage.removeItem('checkoutShipping');
+  localStorage.removeItem('cart');
+});
+</script>
+
+</body>
+</html>
