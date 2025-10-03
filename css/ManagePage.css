@@ -1,0 +1,89 @@
+/* Manage Page Styling */
+
+.manage-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #F2EFED; /* neutral background */
+  color: #1A1F2B;
+}
+
+.manage-page h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #305F72; /* secondary */
+}
+
+.manage-page p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #305F72;
+}
+
+/* Requests list */
+.manage-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.manage-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #305F72;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.manage-list li:hover {
+  transform: translateY(-3px);
+}
+
+/* Username */
+.manage-username {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #1A1F2B;
+}
+
+/* Buttons */
+.manage-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.manage-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Approve button */
+.manage-btn-approve {
+  background-color: #305F72; /* secondary */
+  color: #F2EFED;
+}
+
+.manage-btn-approve:hover {
+  background-color: #1A1F2B; /* primary */
+}
+
+/* Reject button */
+.manage-btn-reject {
+  background-color: #B87332; /* accent */
+  color: #F2EFED;
+}
+
+.manage-btn-reject:hover {
+  background-color: #7DA0AE; /* background */
+}
