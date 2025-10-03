@@ -31,15 +31,19 @@
     z-index: 0;
 }
 
-.about-header {
+.header-content {
   position: relative;
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   overflow: hidden;
+    z-index: 1;
+    max-width: 80%;
+    margin: 0 auto;
+    flex-direction: column;
 }
 
 .overlay {
@@ -64,7 +68,9 @@
 
 .header-content .subtitle {
   margin-top: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); 
+  /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);  */
+      font-size: calc(0.5rem + 1vw);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* Lighter for smaller text */
 }
 
 
