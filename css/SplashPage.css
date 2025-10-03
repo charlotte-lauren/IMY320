@@ -1,4 +1,8 @@
 /* ===================== Overall Page Grid ===================== */
+/* html, body {
+  overflow-x: hidden;
+} */
+
 .splash {
   display: grid;
   grid-template-rows: auto auto auto auto auto auto auto; /* Sections stacked */
@@ -7,6 +11,8 @@
   background-color: #F2EFED;
   color: #1A1F2B;
   overflow-x: hidden;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 /* Container utility for spacing */
