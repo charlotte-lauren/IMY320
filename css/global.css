@@ -18,6 +18,8 @@ html, body {
   overflow-x: hidden;
   max-width: 100%;
   margin: 0 auto;
+  background: #F2EFED;
+  overflow-y: overlay; 
 }
 
 * {
@@ -168,18 +170,18 @@ a:hover{
 }
 
 
-/* Scrollbar styles */
-
-::-webkit-scrollbar { /* Arc, Chrome, Edge, Safari */
+/* WebKit scrollbar styling */
+::-webkit-scrollbar {
   width: 10px;
+  background: #1A1F2B; /* gutter */
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #1A1F2B; /* gutter */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #7da0ae94; /* semi-transparent */
+  background: #7da0ae94; /* semi-transparent thumb */
   border-radius: 100px;
 }
 
@@ -190,6 +192,6 @@ a:hover{
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #7da0ae94 transparent;
-  outline: 1px solid red;
+  scrollbar-color: #7da0ae94 #1A1F2B; /* thumb | track */
 }
+
