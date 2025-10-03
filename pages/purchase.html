@@ -19,9 +19,11 @@
       <h1 id="username">User's Cart</h1>
     </section>
 
-    <p class="checkout-message" id="checkoutMessage"></p>
+    <div class="cart-grid-section">
+      <p class="checkout-message" id="checkoutMessage"></p>
 
-    <div class="cart-grid" id="cartGrid"></div>
+      <div class="cart-grid" id="cartGrid"></div>
+    </div>
 
     <button class="btn checkout-btn" id="checkoutBtn" style="display:none;">Checkout</button>
   </div>
@@ -136,11 +138,13 @@ function renderCart() {
     card.innerHTML = `
       <img src="${coin.img || 'coin.png'}" alt="${coin.Name}" class="cart-img">
       <div class="cart-info">
-        <h3>${coin.Name} ${coin.quantity > 1 ? `×${coin.quantity}` : ''}</h3>
-        <p>${coin.Country} ${coin['Issued on'] ? '('+coin['Issued on']+')' : ''}</p>
-        <div class="cart-price">${coin.FaceValue ? (coin.FaceValue * coin.quantity)+' '+coin.Currency : 'N/A'}</div>
+        <div class="cart-words">
+          <h3>${coin.Name} ${coin.quantity > 1 ? `×${coin.quantity}` : ''}</h3>
+          <p>${coin.Country} ${coin['Issued on'] ? '('+coin['Issued on']+')' : ''}</p>
+          <div class="cart-price">${coin.FaceValue ? (coin.FaceValue * coin.quantity)+' '+coin.Currency : 'N/A'}</div>
+        </div>
         <div class="cart-actions">
-          <a href="/product/${slugify(coin.Name)}" class="btn">View</a>
+          <a href="product.html?id=${coin.Name}" class="btn">View</a>
           <button class="btn secondary">Remove</button>
         </div>
       </div>
