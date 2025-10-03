@@ -8,6 +8,25 @@
     color: #222;
 }
 
+.header-content {
+  color: #99c3d3;
+  background-color: #305F72;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* .header-content h1 {
+  margin-bottom: 0.5rem;
+} */
+
+.header-content p {
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
 /******************** Newsletter section ********************/
 .newsletter {
   padding: 4rem 2rem 1rem 2rem;
