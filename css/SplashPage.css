@@ -62,7 +62,7 @@ header.container-s {
     padding: 0rem 6rem;
     flex-direction: row-reverse;
     overflow: hidden;
-    /* flex-wrap: wrap; */
+    flex-wrap: wrap;
     justify-content: center;
     align-content: center;
 }
@@ -70,10 +70,12 @@ header.container-s {
 .hero-section:before {
   content: "";
   position: absolute;
-  left: 5%;
+  left: 0%;
+  /* left: 5%; */
   top: 10%;
-  width: 100px;
-  height: 200px;
+  /* width: 100px; */
+  width: calc(10rem + 10vw);
+  height: 250px;
   background: url('../assets/DarkFeather.png') no-repeat center/contain;
   transform: rotate(-120deg); /* rotate individually */
   z-index: -1; /* behind the text */
@@ -84,7 +86,8 @@ header.container-s {
   position: absolute;
   left: 75%;
   bottom: 20%;
-  width: 600px;
+  width: calc(20rem + 10vw);
+  /* width: 600px; */
   height: 600px;
   background: url('../assets/BlueFeather.png') no-repeat center/contain;
   transform: rotate(60deg); /* rotate individually */
@@ -97,17 +100,18 @@ header.container-s {
   gap: 1rem;
 }
 .hero-text h1{
-  font-size: 4rem;
+  font-size: calc(3rem + 1vw);;
 }
 .hero-subtitle {
-  /* font-size: 2rem; */
+  font-size: calc(1rem + 1vw);;
   flex-wrap: wrap;
   color: #305F72;
   margin-bottom: 2rem;
 }
 .hero-img {
-  width: 100%;
-  max-width: 500px;
+  /* width: 100%; */
+  /* max-width: 500px; */
+  width: calc(20rem + 10vw);
   height: auto;
   margin-top: 1rem;
   display: flex;
@@ -291,17 +295,17 @@ hr {
 .feather-right { 
   right: 5%; 
   transform: rotate(250deg); 
-  width: clamp(200px, 45vw, 200px);
+  width: calc(3rem + 10vw);
 } 
 .feather-left { 
   left: 5%; 
-  top: -20%; 
+  top: -15%; 
   transform: scaleX(-1) rotate(150deg); 
-  width: clamp(250px, 45vw, 300px);
+  width:  calc(8rem + 10vw);
 } 
 .feather-middle-right { 
   right: 5%;
   bottom: -15%; 
   transform: scaleX(-1) rotate(230deg); 
-  width: clamp(215px, 45vw, 150px);
+  width:  calc(4rem + 10vw);
 }
