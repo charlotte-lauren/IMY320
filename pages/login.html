@@ -19,19 +19,19 @@
 
     <div class="floating-label">
       <input type="email" id="email" placeholder="Email">
-      <label>Email</label>
+      <label for="email">Email</label>
       <p class="feedback" id="emailError"></p>
     </div>
 
     <div class="floating-label" id="usernameField" style="display:none;">
       <input type="text" id="username" placeholder="Username (optional)">
-      <label>Username</label>
+      <label for="username">Username</label>
       <p class="feedback" id="usernameError"></p>
     </div>
 
     <div class="floating-label">
       <input type="password" id="password" placeholder="Password">
-      <label>Password
+      <label for="password">Password
         <span class="coin-tooltip" id="passwordCoins" style="display:none;">
           <span id="coinDisplay">🪙🪙🪙🪙</span>
           <span class="tooltip-text">
@@ -44,7 +44,7 @@
 
     <div class="floating-label" id="confirmField" style="display:none;">
       <input type="password" id="confirmPassword" placeholder="Confirm Password">
-      <label>Confirm Password
+      <label for="confirmPassword">Confirm Password
         <span class="coin-tooltip" id="confirmCoins" style="display:none;">
           <span id="confirmCoinDisplay">🪙🪙🪙🪙</span>
           <span class="tooltip-text">Coins shown only if password matches and earns same rewards</span>
@@ -59,11 +59,11 @@
       </label>
     </div>
 
-    <button type="submit" class="btn-login" id="submitBtn">Log In</button>
+    <button type="submit" class="btn btn-login" id="submitBtn">Log In</button>
     <div class="register-link" id="toggleLink">
       <p>Don't have an account? <a href="#" id="toggleMode">Register here</a></p>
     </div>
-    <p id="message" style="color:#fff; text-align:center; margin-top:10px;"></p>
+    <p id="message" style="text-align:center; margin-top:10px;"></p>
   </form>
 </div>
 
@@ -92,6 +92,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence);
+
+/* ---------------- NAVBAR & FOOTER ---------------- */
+  // Load Navbar
+  fetch('../components/navbar.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('navbar').innerHTML = html;
+    })
+    .catch(err => console.error('Error loading navbar:', err));
+
+  // Load Footer
+  fetch('../components/footer.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('footer').innerHTML = html)
+    .catch(err => console.error('Error loading footer:', err));
 
 /* ---------------- FORM LOGIC ---------------- */
 const coinEmoji = '🪙';
@@ -159,7 +174,7 @@ loginForm.addEventListener('submit', async e => {
   const password = passwordEl.value;
 
   if (!email || !password) {
-    messageEl.style.color = 'red';
+    messageEl.style.color = '#f28028';
     messageEl.textContent = 'Email and password are required.';
     return;
   }
@@ -167,7 +182,7 @@ loginForm.addEventListener('submit', async e => {
   try {
     if (isRegister) {
       if (password !== confirmEl.value) {
-        messageEl.style.color = 'red';
+        messageEl.style.color = '#f28028';
         messageEl.textContent = 'Passwords do not match.';
         return;
       }
@@ -189,7 +204,7 @@ loginForm.addEventListener('submit', async e => {
     }, 1000);
 
   } catch (error) {
-    messageEl.style.color = 'red';
+    messageEl.style.color = '#f28028';
     messageEl.textContent = error.message;
   }
 });

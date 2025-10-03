@@ -1,20 +1,17 @@
-  body {
+  /* -------------- Fonts --------------*/
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
+
+body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #1A1F2B;
+    background-color: #F2EFED;
     color: #C8D9E2;
+
   }
 
   .container {
-    display: flex;
-    height: 100%;
-    width: 100vw;
-    padding-bottom: 30px;
-  }
-
-  .left-panel {
+    min-height: 100vh;
     flex: 1;
-    background-color: #305F72;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,19 +19,9 @@
     padding: 40px;
   }
 
-  .right-panel {
-    flex: 1;
-    background-color: #1A1F2B;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .form-box {
+  #loginForm {
     width: 80%;
-    max-width: 400px;
+    max-width: 450px;
     background-color: #305F72;
     padding: 40px;
     padding-top: 5px;
@@ -44,22 +31,7 @@
     padding-bottom: 5px;
   }
 
-  .logo-login {
-    display: flex;
-    justify-content: center;
-    margin-bottom: -40px;
-    margin-top: -20px;
-  }
-
-  .logo-login img {
-    max-width: 120px;
-    height: auto;
-  }
-
-  /* -------------- Fonts --------------*/
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
-
-  .form-box h2 {
+  #loginForm h2 {
     margin-bottom: 5px;
     text-align: center;
     color: #F2EFED;
@@ -68,7 +40,7 @@
     font-family: 'Cinzel', serif;
   }
 
-  .form-box p.subheading {
+  #loginForm p.subheading {
     text-align: center;
     margin-top: 0;
     margin-bottom: 20px;
@@ -78,13 +50,14 @@
   /* Floating label styles */
   .floating-label {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     color: #C8D9E2;
   }
 
   .feedback {
     margin-bottom: -15px;
     margin-top: 5px;
+    color: #d47861;
   }
 
   .floating-label input {
@@ -164,7 +137,7 @@
     opacity: 1;
   }
 
-  .password-row {
+  /* .password-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -183,7 +156,7 @@
 .forgot-password a:hover {
   text-decoration: underline;
   color: #B87332;
-}
+} */
 
 .signin-row {
   display: flex;
@@ -191,6 +164,7 @@
   align-items: center;
   margin-top: 12px;
   width: 100%;
+  padding: 10px 0px;
 }
 
 .stay-signed-in {
@@ -204,7 +178,7 @@
     font-weight: 400;
   }
 
-  .custom-checkbox {
+  #staySignedIn {
     appearance: none;
     width: 16px;
     height: 16px;
@@ -216,11 +190,11 @@
     cursor: pointer;
   }
 
-  .custom-checkbox:checked {
+  #staySignedIn:checked {
     background-color: #C8D9E2;
   }
 
-  .custom-checkbox:checked::after {
+  #staySignedIn:checked::after {
     content: '';
     position: absolute;
     left: 4px;
@@ -251,12 +225,12 @@
 
   .register-link a:hover {
     text-decoration: underline;
-    color: #a5622d;
+    color: #d49361;
   }
 
   .register-link button:hover{
     text-decoration: underline;
-    color: #a5622d;
+    color: #d49361;
   }
 
   input:-webkit-autofill {
@@ -270,50 +244,11 @@
     color: white !important;
   }
 
-.google-btn {
-  background: transparent;
-  border: 2px solid #7DA0AE;
-  color: #7DA0AE;
-  padding: 15px 60px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: transform 0.1s ease-out;
+.btn-login {
   width: 100%;
-}
-.google-btn:hover {
-  background: #7DA0AE;
-  color: #F2EFED;
-  text-decoration: none;
-  border: 2px solid #7DA0AE;
-}
-.google-btn:active {
-  background: #7DA0AE;
-  color: #F2EFED;
-  text-decoration: none;
-  border: 2px solid #7DA0AE;
-  transform: scale(0.90); /* Shrinks the button to 90% of its original size */
+  margin-top: 20px;
 }
 
-  .google-icon {
-    height: 20px;
-    width: 20px;
-    margin-right: 12px;
-    color: #7DA0AE;
-  }
-
-  .or-container {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 16px 0;
-    color: white;
-    font-size: 0.9rem;
-  }
-
-  .or-container::before,
-  .or-container::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1.5px solid white; /* solid line */
-    margin: 0 10px;
-  }
+#message {
+  padding: 10px 0px;
+}
