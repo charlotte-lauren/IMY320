@@ -16,10 +16,12 @@
 
   <!-- Hero Section -->
   <section class="hero">
-    <h1>Discover & Collect Rare Coins From Around the World</h1>
-    <p>Your journey to the perfect collection starts here.</p>
-    <div class="greeting" id="greeting"></div>
-    <a href="coins.html" class="btn">Explore Marketplace</a>
+    <div class="hero-content">
+      <h1>Discover & Collect Rare Coins From Around the World</h1>
+      <p>Your journey to the perfect collection starts here.</p>
+      <div class="greeting" id="greeting"></div>
+      <a href="coins.html" class="btn hero-btns">Explore Marketplace</a>
+    </div>
   </section>
 
   <!-- Featured Coins -->
@@ -29,11 +31,11 @@
     </div>
 
     <div class="carousel-wrapper">
-      <button class="nav-btn left" onclick="scrollLeft()">&#9664;</button>
+      <!-- <button class="nav-btn left" onclick="scrollLeft()">&#9664;</button> -->
 
       <div class="carousel" id="featured-carousel">
         <a href="product.html" class="coin-card">
-          <img src="../assets/coin.png" alt="Roman Coin">
+          <img src="../assets/coin.png" alt="Roman Coin" class="coin-img">
           <div class="coin-info">
             <h3>Roman Denarius</h3>
             <p>Rome (50 BC)</p>
@@ -42,7 +44,7 @@
         </a>
 
         <a href="product.html" class="coin-card">
-          <img src="../assets/coin.png" alt="Greek Coin">
+          <img src="../assets/coin.png" alt="Greek Coin" class="coin-img">
           <div class="coin-info">
             <h3>Greek Drachma</h3>
             <p>Greece (100 BC)</p>
@@ -59,7 +61,7 @@
         </a>
       </div>
 
-      <button class="nav-btn right" onclick="scrollRight()">&#9654;</button>
+      <!-- <button class="nav-btn right" onclick="scrollRight()">&#9654;</button> -->
     </div>
   </section>
 

@@ -100,10 +100,10 @@ header.container-s {
   gap: 1rem;
 }
 .hero-text h1{
-  font-size: calc(3rem + 1vw);;
+  font-size: calc(3rem + 1vw);
 }
 .hero-subtitle {
-  font-size: calc(1rem + 1vw);;
+  font-size: calc(1rem + 1vw);
   flex-wrap: wrap;
   color: #305F72;
   margin-bottom: 2rem;
