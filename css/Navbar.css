@@ -3,16 +3,16 @@
 
 /* ---------------- Global Styles ---------------- */
 html, body {
-  overflow-x: hidden;
-  max-width: 100%;
-  margin: 0 auto;
+  /* overflow-x: hidden; */
+  /* max-width: 100%; */
+  /* margin: 0 auto; */
 }
 
 body {
   width: 100%;
   margin: 0;
   font-family: Arial, sans-serif;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   max-width: 100%;
   margin: 0 auto;
 }

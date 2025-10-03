@@ -190,11 +190,11 @@ loginForm.addEventListener('submit', async e => {
       await updateProfile(userCredential.user, {
         displayName: usernameEl.value.trim() || 'User'
       });
-      messageEl.style.color = 'green';
+      messageEl.style.color = '#7DA0AE';
       messageEl.textContent = `Registered as ${usernameEl.value.trim() || email}`;
     } else {
       await signInWithEmailAndPassword(auth, email, password);
-      messageEl.style.color = 'green';
+      messageEl.style.color = '#7DA0AE';
       messageEl.textContent = `Logged in as ${email}`;
     }
 

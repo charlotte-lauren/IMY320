@@ -1,16 +1,21 @@
   /* -------------- Fonts --------------*/
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
 
+html, body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
     background-color: #F2EFED;
     color: #C8D9E2;
-
+    display: flex;
+  flex-direction: column;
   }
 
   .container {
-    min-height: 100vh;
     flex: 1;
     display: flex;
     justify-content: center;

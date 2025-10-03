@@ -173,15 +173,15 @@ a:hover{
 /* WebKit scrollbar styling */
 ::-webkit-scrollbar {
   width: 10px;
-  background: #1A1F2B; /* gutter */
+  background: #1A1F2B;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1A1F2B; /* gutter */
+  background: #1A1F2B;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #7da0ae94; /* semi-transparent thumb */
+  background: #7da0ae94; /* semi-transparent */
   border-radius: 100px;
 }
 
@@ -192,6 +192,5 @@ a:hover{
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #7da0ae94 #1A1F2B; /* thumb | track */
+  scrollbar-color: #7da0ae94 #1A1F2B;
 }
-
