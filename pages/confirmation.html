@@ -7,30 +7,35 @@
 <link rel="stylesheet" href="../css/global.css">
 <link rel="stylesheet" href="../css/Navbar.css">
 <link rel="stylesheet" href="../css/Footer.css">
-<link rel="stylesheet" href="../css/PurchasePage.css">
+<link rel="stylesheet" href="../css/ConfirmationPage.css">
 <style>
   /* Two-panel layout */
   .checkout-container {
     display: flex;
     gap: 2rem;
     flex-wrap: wrap;
-    margin: 2rem;
+    /* margin: 2rem; */
+    margin: 4rem auto;
+    width: 80%;
+    color: #1A1F2B;
   }
   .order-summary, .checkout-form-container {
     flex: 1;
     min-width: 300px;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #f9f9f9;
+    padding: 0 2rem 2rem 2rem;
+    gap: 1rem;
+    background-color: #e7e7e7;
   }
   .order-summary h2, .checkout-form-container h2 {
     margin-bottom: 1rem;
   }
+  .order-summary {
+    height: 100%;
+  }
   .cart-item {
     display: flex;
     margin-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
     padding-bottom: 0.5rem;
   }
   .cart-item img {
@@ -38,6 +43,7 @@
     height: 60px;
     object-fit: contain;
     margin-right: 1rem;
+    border-radius: 999px;
   }
   .cart-item-details h4 {
     margin: 0 0 0.25rem 0;
@@ -49,17 +55,41 @@
   .checkout-form label {
     display: block;
     margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #1A1F2B;
+  }
+  legend {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: #1A1F2B;
+
+  }
+  fieldset {
+    margin-top: 1rem;
   }
   .checkout-form input {
     width: 100%;
     padding: 0.5rem;
     margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    background-color: transparent;
+    border: 2px solid #1A1F2B;
+        color: #1A1F2B;
+    font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  }
+  .checkout-form input:focus {
+      box-shadow: 0 0 0 2px #B87332; /* subtle orange border glow */
+  border: 2px solid #B87332;
+  outline: none;
   }
   .checkout-submit {
     display: block;
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
+    margin-top: 2rem;
   }
 </style>
 </head>
@@ -69,8 +99,11 @@
 <div id="navbar"></div>
 
 <div class="checkout-page">
-  <h1>Checkout</h1>
-  <p>This is a simulation; no data is saved.</p>
+  <div class="header-content">
+    <h1>Checkout</h1>
+    <p>This is a simulation; no data is saved.</p>
+  </div>
+
 
   <div class="checkout-container">
     <!-- Left Panel: Order Summary -->
