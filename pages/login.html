@@ -8,36 +8,6 @@
 <link rel="stylesheet" href="../css/Navbar.css">
 <link rel="stylesheet" href="../css/Footer.css">
 <link rel="stylesheet" href="../css/LoginPage.css">
-<style>
-  /* Tooltip styles */
-  .coin-tooltip {
-    position: relative;
-    display: inline-block;
-    cursor: help;
-    margin-left: 6px;
-  }
-  .coin-tooltip .tooltip-text {
-    visibility: hidden;
-    width: 220px;
-    background-color: #1A1F2B;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 6px;
-    position: absolute;
-    z-index: 1000;
-    bottom: 125%;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-size: 0.8rem;
-  }
-  .coin-tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-  }
-</style>
 </head>
 <body>
 <div id="navbar"></div>
@@ -100,12 +70,37 @@
 <div id="footer"></div>
 
 <script type="module">
+/* ---------------- FIREBASE ---------------- */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { 
+  getAuth, 
+  setPersistence, 
+  browserLocalPersistence,
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  updateProfile 
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+  authDomain: "curiocrow.firebaseapp.com",
+  projectId: "curiocrow",
+  storageBucket: "curiocrow.firebasestorage.app",
+  messagingSenderId: "570380745141",
+  appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence);
+
+/* ---------------- FORM LOGIC ---------------- */
 const coinEmoji = '🪙';
 let isRegister = false;
 
 const loginForm = document.getElementById('loginForm');
 const emailEl = document.getElementById('email');
 const passwordEl = document.getElementById('password');
+const usernameEl = document.getElementById('username');
 const confirmEl = document.getElementById('confirmPassword');
 const usernameField = document.getElementById('usernameField');
 const confirmField = document.getElementById('confirmField');
@@ -126,7 +121,6 @@ function getPasswordScore(password) {
   if (password.length > 8) score++;
   return score;
 }
-
 function updateCoins() {
   if (!isRegister) return;
   const score = getPasswordScore(passwordEl.value);
@@ -141,7 +135,6 @@ function updateCoins() {
     confirmCoins.style.display = 'none';
   }
 }
-
 passwordEl.addEventListener('input', updateCoins);
 confirmEl.addEventListener('input', updateCoins);
 
@@ -156,28 +149,49 @@ function toggleRegister() {
   passwordCoins.style.display = 'none';
   confirmCoins.style.display = 'none';
 }
+toggleMode.addEventListener('click', e => { e.preventDefault(); toggleRegister(); });
 
-toggleMode.addEventListener('click', e => {
-  e.preventDefault();
-  toggleRegister();
-});
-
-loginForm.addEventListener('submit', e => {
+loginForm.addEventListener('submit', async e => {
   e.preventDefault();
   messageEl.textContent = '';
-  // Simplified validation for demo
-  if (!emailEl.value || !passwordEl.value) {
+
+  const email = emailEl.value.trim();
+  const password = passwordEl.value;
+
+  if (!email || !password) {
     messageEl.style.color = 'red';
     messageEl.textContent = 'Email and password are required.';
     return;
   }
-  if (isRegister && passwordEl.value !== confirmEl.value) {
+
+  try {
+    if (isRegister) {
+      if (password !== confirmEl.value) {
+        messageEl.style.color = 'red';
+        messageEl.textContent = 'Passwords do not match.';
+        return;
+      }
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(userCredential.user, {
+        displayName: usernameEl.value.trim() || 'User'
+      });
+      messageEl.style.color = 'green';
+      messageEl.textContent = `Registered as ${usernameEl.value.trim() || email}`;
+    } else {
+      await signInWithEmailAndPassword(auth, email, password);
+      messageEl.style.color = 'green';
+      messageEl.textContent = `Logged in as ${email}`;
+    }
+
+    // Redirect on success
+    setTimeout(() => {
+      window.location.href = "../pages/home.html";
+    }, 1000);
+
+  } catch (error) {
     messageEl.style.color = 'red';
-    messageEl.textContent = 'Passwords do not match.';
-    return;
+    messageEl.textContent = error.message;
   }
-  messageEl.style.color = 'green';
-  messageEl.textContent = isRegister ? 'Registered!' : 'Logged in!';
 });
 </script>
 </body>
