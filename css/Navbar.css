@@ -2,11 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap'); /* Cinzel */
 
 /* ---------------- Global Styles ---------------- */
-html, body {
-  /* overflow-x: hidden; */
-  /* max-width: 100%; */
-  /* margin: 0 auto; */
-}
 
 body {
   width: 100%;

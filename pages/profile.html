@@ -9,14 +9,14 @@
 <link rel="stylesheet" href="../css/Footer.css">
 <link rel="stylesheet" href="../css/ProfilePage.css">
 <style>
-  .avatar-options { display: flex; gap: 10px; margin-top: 5px; }
-  .avatar-choice { width: 60px; height: 60px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; object-fit: cover; transition: border 0.2s; }
-  .avatar-choice.selected { border-color: #FFD700; }
+  .avatar-options { display: flex; gap: 0.5rem 1rem; margin-top: 1rem; margin-bottom: 1rem; flex-wrap: wrap; flex-direction: row;  align-items: center; justify-content: center;}
+  .avatar-choice { width: calc(5rem + 1vw); height: calc(5rem + 1vw); border-radius: 999px; cursor: pointer; border: 2px solid transparent; object-fit: cover; transition: border 0.2s; }
+  .avatar-choice.selected { border-color: #B87332; }
+  .avatar-choice:hover { border-color: #7DA0AE; }
   .orders { margin-top: 2rem; }
-  .order-card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; background: #f9f9f9; }
   .order-items { margin-top: 0.5rem; }
   .order-item { display: flex; align-items: center; margin-bottom: 0.5rem; }
-  .order-item img { width: 50px; height: 50px; object-fit: contain; margin-right: 0.75rem; }
+  .order-item img { width: 50px; height: 50px; object-fit: contain; margin-right: 0.75rem; border-radius: 999px; }
 
   /* Popup Notification */
   .popup-notification {
@@ -49,8 +49,10 @@
 
 <div class="profile-page">
   <section class="profile-header">
-    <img src="../assets/coin.png" alt="User" class="profile-avatar" id="profileAvatar">
-    <h1 class="profile-username" id="profileUsername">User</h1>
+    <div class="profile-display">
+      <img src="../assets/coin.png" alt="User" class="profile-avatar" id="profileAvatar">
+      <h1 class="profile-username" id="profileUsername">User</h1>
+    </div>
     <button class="profile-btn" id="editProfileBtn">Edit Profile</button>
   </section>
 
@@ -69,8 +71,10 @@
         <img src="../assets/avatars/avatar6.png" class="avatar-choice" data-url="../assets/avatars/avatar6.png">
       </div>
     </label>
-    <button class="profile-btn" id="saveProfileBtn">Save</button>
-    <button class="profile-btn profile-btn-secondary" id="cancelEditBtn">Cancel</button>
+    <div class="profile-btns">
+      <button class="profile-btn" id="saveProfileBtn">Save</button>
+      <button class="profile-btn profile-btn-secondary" id="cancelEditBtn">Cancel</button>
+    </div>
   </section>
 
   <!-- Wishlist -->
@@ -210,7 +214,7 @@ onAuthStateChanged(auth, async user => {
       const wishlistSnap = await getDocs(wishlistQuery);
 
       if (wishlistSnap.empty) {
-        wishlistGrid.innerHTML = '<p style="text-align:center;">Your wishlist is empty.</p>';
+        wishlistGrid.innerHTML = '<p class="not-logged-in" style="text-align:center;">Your wishlist is empty.</p>';
         return;
       }
 
@@ -262,7 +266,7 @@ onAuthStateChanged(auth, async user => {
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
-      ordersList.innerHTML = "<p>You have no orders yet.</p>";
+      ordersList.innerHTML = `<p class="not-logged-in">You have no orders yet.</p>`;
     } else {
       ordersList.innerHTML = "";
       snapshot.forEach(doc => {
@@ -270,8 +274,9 @@ onAuthStateChanged(auth, async user => {
         const orderDiv = document.createElement('div');
         orderDiv.className = "order-card";
         orderDiv.innerHTML = `
-          <h3>Order on ${order.createdAt?.toDate().toLocaleString() || "Unknown date"}</h3>
           <div class="order-items">
+            <h3 class="order-time">Order on ${order.createdAt?.toDate().toLocaleString() || "Unknown date"}</h3>
+
             ${order.items.map(item => `
               <div class="order-item">
                 <img src="${item.img || '../assets/coin.png'}" alt="${item.Name}">
@@ -294,7 +299,7 @@ onAuthStateChanged(auth, async user => {
 });
 
 // ---------------- Edit Profile ----------------
-editProfileBtn.addEventListener('click', () => profileEdit.style.display = 'block');
+editProfileBtn.addEventListener('click', () => profileEdit.style.display = 'flex');
 cancelEditBtn.addEventListener('click', () => profileEdit.style.display = 'none');
 
 avatarChoices.forEach(img => {
