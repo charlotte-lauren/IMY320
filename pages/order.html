@@ -7,18 +7,32 @@
 <link rel="stylesheet" href="../css/global.css">
 <link rel="stylesheet" href="../css/Navbar.css">
 <link rel="stylesheet" href="../css/Footer.css">
+<link rel="stylesheet" href="../css/Order.css">
 <style>
-  .order-page { padding: 2rem; }
+  /* .order-page { padding: 2rem; } */
   .order-item { display: flex; align-items: center; margin-bottom: 1rem; }
   .order-item img { width: 50px; height: 50px; object-fit: contain; margin-right: 1rem; }
 
   .order-pipeline {
     display: flex;
     gap: 0;
-    margin-top: 2rem;
+    margin: 2rem auto 1rem auto;
     align-items: center;
     justify-content: space-between;
     position: relative;
+    flex-direction: column;
+    width: 100%;
+    max-width: 80%;
+  }
+
+  .order-pipeline h2 {
+    width: 100%;
+  }
+
+  .pipeline {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
   }
 
   .pipeline-step {
@@ -36,8 +50,8 @@
     position: relative;
   }
 
-  .completed .circle { background: green; }
-  .current .circle { background: orange; }
+  .completed .circle { background: #7DA0AE; }
+  .current .circle { background: #B87332; }
   .pending .circle { background: lightgray; }
 
   .pipeline-step::after {
@@ -51,7 +65,7 @@
     z-index: 0;
   }
 
-  .pipeline-step.completed::after { background: green; }
+  .pipeline-step.completed::after { background: #7DA0AE; }
   .pipeline-step:last-child::after { display: none; }
 </style>
 </head>
@@ -60,25 +74,34 @@
 <div id="navbar"></div>
 
 <div class="order-page">
-  <h1>Order Details</h1>
-  <p id="orderDate"></p>
-  <div id="orderItems"></div>
-
-  <h2>Order Pipeline</h2>
+  <div class="header-content">
+    <h1>Order Details</h1>
+  </div>
+  
   <div class="order-pipeline">
-    <div class="pipeline-step completed">
-      <div class="circle"></div>
-      <div>Confirmed</div>
-    </div>
-    <div class="pipeline-step current">
-      <div class="circle"></div>
-      <div>Shipment</div>
-    </div>
-    <div class="pipeline-step pending">
-      <div class="circle"></div>
-      <div>Delivery <span id="eta"></span></div>
+    <h2>Order Pipeline</h2>
+    <div class="pipeline">
+      <div class="pipeline-step completed">
+        <div class="circle"></div>
+        <div>Confirmed</div>
+      </div>
+      <div class="pipeline-step current">
+        <div class="circle"></div>
+        <div>Shipment</div>
+      </div>
+      <div class="pipeline-step pending">
+        <div class="circle"></div>
+        <div>Delivery <span id="eta"></span></div>
+      </div>
     </div>
   </div>
+
+  <div class="order-card">
+    <p id="orderDate"></p>
+    <div id="orderItems">
+    </div>
+  </div>
+
 </div>
 
 <div id="footer"></div>
