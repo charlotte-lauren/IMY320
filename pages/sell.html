@@ -123,7 +123,7 @@
           } else {
             profileIcon.src = '../assets/UserIcon.png';
             dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
-            contentEl.innerHTML = "<p>Please log in to access this page.</p>";
+            contentEl.innerHTML = `<p class="not-logged-in">Please log in to access this page.</p>`;
           }
         });
       })
@@ -137,18 +137,20 @@
     // ---------------- Seller Page Render ----------------
     function renderPage(user) {
       contentEl.innerHTML = `
-        <h2>Add a Coin</h2>
-        <input placeholder="Name" id="coinName">
-        <input placeholder="Country" id="coinCountry">
-        <input placeholder="Description" id="coinDescription">
-        <input placeholder="FaceValue" id="coinFaceValue">
-        <input placeholder="Currency" id="coinCurrency">
-        <input placeholder="Series" id="coinSeries">
-        <input placeholder="Shape" id="coinShape">
-        <input placeholder="Metal Composition (separate metals with commas)" id="coinMetal">
-        <input placeholder="Link" id="coinLink">
-        <input placeholder="Issued On" id="coinIssuedOn">
-        <button class="seller-btn" id="addCoinBtn">Add Coin</button>
+        <div class="seller-inputs">
+          <h2>Add a Coin</h2>
+          <input placeholder="Name" id="coinName">
+          <input placeholder="Country" id="coinCountry">
+          <input placeholder="Description" id="coinDescription">
+          <input placeholder="FaceValue" id="coinFaceValue">
+          <input placeholder="Currency" id="coinCurrency">
+          <input placeholder="Series" id="coinSeries">
+          <input placeholder="Shape" id="coinShape">
+          <input placeholder="Metal Composition (separate metals with commas)" id="coinMetal">
+          <input placeholder="Link" id="coinLink">
+          <input placeholder="Issued On" id="coinIssuedOn">
+          <button class="seller-btn" id="addCoinBtn">Add Coin</button>
+        </div?
       `;
 
       const form = {

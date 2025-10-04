@@ -7,6 +7,7 @@
   font-family: Arial, sans-serif;
   background-color: #F2EFED; /* neutral background */
   color: #1A1F2B; /* primary text */
+  min-height: 100vh;
 }
 
 .seller-page h1 {
@@ -29,7 +30,7 @@
 }
 
 /* Inputs */
-.seller-page input {
+/* .seller-page input {
   display: block;
   width: 100%;
   padding: 0.6rem;
@@ -42,15 +43,15 @@
 }
 
 .seller-page input:focus {
-  border-color: #B87332; /* accent on focus */
+  border-color: #B87332;
   box-shadow: 0 0 4px rgba(184, 115, 50, 0.5);
   outline: none;
-}
+} */
 
 /* Buttons */
 .seller-btn {
   padding: 0.6rem 1.2rem;
-  border-radius: 6px;
+  border-radius: 999px;
   background-color: #305F72; /* secondary */
   color: #F2EFED; /* neutral text */
   border: none;
@@ -58,6 +59,7 @@
   font-size: 1rem;
   margin-top: 1rem;
   transition: background-color 0.2s ease, transform 0.1s ease;
+  width: fit-content;
 }
 
 .seller-btn:hover {
@@ -82,3 +84,30 @@
   background-color: #7DA0AE; /* background highlight */
   color: #1A1F2B;
 }
+
+  .seller-inputs input {
+    width: 80%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    background-color: transparent;
+    border: 2px solid #1A1F2B;
+        color: #1A1F2B;
+    font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  }
+  .seller-inputs input:focus {
+      box-shadow: 0 0 0 2px #B87332; /* subtle orange border glow */
+  border: 2px solid #B87332;
+  outline: none;
+  }
+
+  .seller-inputs {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    align-items: flex-start;
+    align-content: center;
+    flex-wrap: wrap;
+  }

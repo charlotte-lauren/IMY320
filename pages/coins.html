@@ -239,15 +239,15 @@
         if (coin.Shape) shapesSet.add(coin.Shape);
       });
 
-      document.getElementById('metalFilters').innerHTML = Array.from(metalsSet).map(m => `<button class="dropdown-item" data-type="Metal">${m}</button>`).join('');
-      document.getElementById('countryFilters').innerHTML = Array.from(countriesSet).map(c => `<button class="dropdown-item" data-type="Country">${c}</button>`).join('');
-      document.getElementById('shapeFilters').innerHTML = Array.from(shapesSet).map(s => `<button class="dropdown-item" data-type="Shape">${s}</button>`).join('');
+      document.getElementById('metalFilters').innerHTML = Array.from(metalsSet).map(m => `<button class="dropdown-item-filter" data-type="Metal">${m}</button>`).join('');
+      document.getElementById('countryFilters').innerHTML = Array.from(countriesSet).map(c => `<button class="dropdown-item-filter" data-type="Country">${c}</button>`).join('');
+      document.getElementById('shapeFilters').innerHTML = Array.from(shapesSet).map(s => `<button class="dropdown-item-filter" data-type="Shape">${s}</button>`).join('');
 
       attachFilterLogic();
     }
 
     function attachFilterLogic() {
-      document.querySelectorAll('.dropdown-item').forEach(btn => {
+      document.querySelectorAll('.dropdown-item-filter').forEach(btn => {
         btn.addEventListener('click', () => {
           const type = btn.getAttribute('data-type');
           const value = btn.textContent;
@@ -266,7 +266,7 @@
 
       document.querySelector('.reset-btn').addEventListener('click', () => {
         Object.keys(activeFilters).forEach(key => activeFilters[key].clear());
-        document.querySelectorAll('.dropdown-item').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.dropdown-item-filter').forEach(btn => btn.classList.remove('active'));
         displayedCount = 0;
         renderCoinsPage();
       });

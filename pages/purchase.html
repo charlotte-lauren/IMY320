@@ -170,7 +170,7 @@ checkoutBtn.addEventListener('click', () => {
 // Show cart only if logged in
 onAuthStateChanged(auth, user => {
   if (!user) {
-    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your cart.</p>';
+    document.body.innerHTML = '<p class="not-logged-in" style="text-align:center; margin-top:50px;">Please log in to view your cart.</p>';
     return;
   }
 

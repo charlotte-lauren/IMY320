@@ -71,7 +71,7 @@
   gap: 8px;
 }
 
-.dropdown-item {
+.dropdown-item-filter {
   padding: 6px 20px;
   background: #305F72;
   border: 1px solid #ccc;
@@ -79,13 +79,15 @@
   cursor: pointer;
   font-size: 0.9rem;
   transition: background 0.2s, color 0.2s;
+  color: white;
+  margin: 5px;
 }
 
-.dropdown-item:hover {
+.dropdown-item-filter:hover {
   background: #326275b1;
 }
 
-.dropdown-item.active {
+.dropdown-item-filter.active {
   background: #b37341;
   color: white;
   border-color: #8c552f;

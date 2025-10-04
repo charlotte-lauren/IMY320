@@ -12,9 +12,9 @@
     align-items: center;
     height: 100vh;
     margin: 0;
-    background: #f9f9f9;
+    background: #F2EFED;
     font-family: Arial, sans-serif;
-    color: #333;
+    color: #1A1F2B;
   }
   .loading-container {
     text-align: center;
@@ -23,8 +23,8 @@
     margin: 2rem auto;
     width: 70px;
     height: 70px;
-    border: 8px solid #ddd;
-    border-top: 8px solid #007BFF;
+    border: 8px solid #1A1F2B;
+    border-top: 8px solid #B87332;
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
@@ -47,8 +47,8 @@
 
 <script>
 // Pick random wait time between 30s and 90s
-const minTime = 30000;   // 30 seconds
-const maxTime = 90000;   // 1.5 minutes
+const minTime = 5000;   // 5 seconds
+const maxTime = 30000;   // 30 minutes
 const waitTime = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
 
 // Redirect after wait

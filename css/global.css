@@ -194,3 +194,10 @@ a:hover{
   scrollbar-width: thin;
   scrollbar-color: #7da0ae94 #1A1F2B;
 }
+
+.not-logged-in {
+  margin: 0 auto;
+  color: #1A1F2B;
+  font-size: 1.5rem;
+  padding: 2rem;
+}

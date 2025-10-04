@@ -7,55 +7,7 @@
 <link rel="stylesheet" href="../css/global.css">
 <link rel="stylesheet" href="../css/Navbar.css">
 <link rel="stylesheet" href="../css/Footer.css">
-<link rel="stylesheet" href="../css/PurchasePage.css">
-<style>
-  .confirmation-container {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin: 2rem;
-  }
-  .order-summary, .shipping-info {
-    flex: 1;
-    min-width: 300px;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #f9f9f9;
-  }
-  .order-summary h2, .shipping-info h2 {
-    margin-bottom: 1rem;
-  }
-  .cart-item {
-    display: flex;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 0.5rem;
-  }
-  .cart-item img {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    margin-right: 1rem;
-  }
-  .cart-item-details h4 {
-    margin: 0 0 0.25rem 0;
-  }
-  .cart-item-details p {
-    margin: 0;
-    font-size: 0.9rem;
-  }
-  .home-btn {
-    margin-top: 2rem;
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    text-decoration: none;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 6px;
-  }
-</style>
+<link rel="stylesheet" href="../css/ConfirmedPage.css">
 </head>
 <body>
 
@@ -63,8 +15,11 @@
 <div id="navbar"></div>
 
 <div class="confirmation-page">
-  <h1>Order Placed!</h1>
-  <p>Thank you for your purchase! Your order has been successfully placed.</p>
+  <div class="header-content">
+    <h1>Order Placed!</h1>
+    <p>Thank you for your purchase! Your order has been successfully placed.</p>
+  </div>
+
 
   <div class="confirmation-container">
     <div class="order-summary">
@@ -79,7 +34,7 @@
     </div>
   </div>
 
-  <a href="../pages/home.html" class="home-btn">Return to Home</a>
+  <a href="../pages/home.html" class="btn home-btn">Return to Home</a>
 </div>
 
 <!-- Footer -->
@@ -226,7 +181,7 @@ async function saveOrderToFirestore(cart, shipping, userEmail) {
 // Main
 onAuthStateChanged(auth, async user => {
   if (!user) {
-    document.body.innerHTML = '<p style="text-align:center; margin-top:50px;">Please log in to view your order.</p>';
+    document.body.innerHTML = '<p class="not-logged-in" style="text-align:center; margin-top:50px;">Please log in to view your order.</p>';
     return;
   }
 

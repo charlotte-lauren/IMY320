@@ -8,7 +8,7 @@
     color: #1A1F2B;
 }
 
-.header-content {
+/* .header-content {
   color: #99c3d3;
   background-color: #305F72;
   height: 100%;
@@ -16,16 +16,75 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+} */
+
+.parallax-bg {
+  background-image: url('../assets/AboutUsHeader.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 500px;
+  position: relative;
+}
+
+.parallax-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 31, 43, 0.7);
+    z-index: 0;
+}
+
+.header-content {
+  position: relative;
+  height: 100%;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+    z-index: 1;
+    max-width: 80%;
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+.overlay {
+  /* background-color: rgba(0, 0, 0, 0.3); */
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+  color: #F2EFED;
+}
+
+.header-content h1 {
+  text-shadow: 0 3px 7px rgba(0, 0, 0, 0.8); /* Soft black shadow */
+}
+
+.header-content p {
+  margin-top: 0.5rem;
+  /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);  */
+      font-size: calc(0.5rem + 1vw);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* Lighter for smaller text */
 }
 
 /* .header-content h1 {
   margin-bottom: 0.5rem;
 } */
 
-.header-content p {
+/* .header-content p {
   margin-top: 0;
   margin-bottom: 2rem;
-}
+} */
 
 /******************** Newsletter section ********************/
 .newsletter {
