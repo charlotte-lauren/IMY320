@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community - CurioCrow</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="../css/Footer.css">
+  <link rel="stylesheet" href="../css/UnderConstruction.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <div class="construction-page">
+        <div class="construction-header">
+            <div class="logo-img">
+                <img src="../assets/LogoCBG.png" alt="Logo" />
+            </div>
+            <h1>CurioCrow</h1>
+            <p>We're dusting off the shelves...</p>
+        </div>
+
+        <div class="construction-note">
+          Our virtual cabinet of curiosities is still being arranged. <br />
+          Soon, you’ll be able to catalogue your collection, track your treasures,
+          and swap stories with fellow collectors.
+          <br /><br />
+          Until then, keep your coins close, and your curiosity closer.
+        </div>
+
+        <a href="../pages/home.html" class="btn back-link">← Back to Home</a>
+
+  </div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+    authDomain: "curiocrow.firebaseapp.com",
+    projectId: "curiocrow",
+    storageBucket: "curiocrow.appspot.com",
+    messagingSenderId: "570380745141",
+    appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // ---------- Load Navbar ----------
+  fetch('/components/navbar.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('navbar').innerHTML = html;
+      setupNavbar();
+    })
+    .catch(err => console.error('Error loading navbar:', err));
+
+  function setupNavbar() {
+  const userDropdown = document.querySelector('.user-dropdown');
+  const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+  const profileIcon = userDropdown.querySelector('.profile-icon');
+
+  // Search elements
+  const searchForm = document.querySelector('.search-container'); // <- use querySelector
+  const searchInput = searchForm.querySelector('.search-bar');
+
+  if (!userDropdown || !dropdownMenu || !profileIcon || !searchForm || !searchInput)
+    return console.error('Navbar elements missing');
+
+  // Profile dropdown logic
+  profileIcon.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+  dropdownMenu.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+  onAuthStateChanged(auth, user => {
+    dropdownMenu.innerHTML = '';
+    if (user) {
+      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `
+        <a href="../pages/profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
+        <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+      `;
+      const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          localStorage.clear();
+          window.location.href = "../index.html";
+        } catch (err) {
+          console.error("Logout failed:", err);
+          alert("Failed to log out. Try again.");
+        }
+      });
+    } else {
+      profileIcon.src = '../assets/UserIcon.png';
+      dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item dropdown-item-profile">Login</a>`;
+    }
+  });
+
+  // --- Search bar logic (attach after navbar is loaded) ---
+  searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (!query) return;
+    // Use relative path to coins.html
+    window.location.href = '../pages/coins.html?search=' + encodeURIComponent(query);
+  });
+}
+
+
+  // ---------- Load Footer ----------
+  fetch('/components/footer.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('footer').innerHTML = html)
+    .catch(err => console.error('Error loading footer:', err));
+
+</script>
+</body>
+</html>
