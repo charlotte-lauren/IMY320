@@ -50,11 +50,12 @@
 .hero p {
     font-size: calc(0.5rem + 1vw);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* Lighter for smaller text */
+    margin-bottom: 3rem;
 }
 
-.hero-btns {
-  margin-top: 3rem;
-}
+/* .hero-btns {
+  margin-top: 5rem;
+} */
 
 section.featured {
     margin-bottom: 5rem;

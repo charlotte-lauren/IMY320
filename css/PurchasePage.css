@@ -103,3 +103,11 @@ html, body {
     margin: 0 auto;
     margin-right: 6rem;
 }
+
+.cart-not-logged-in {
+  margin: 0 auto;
+  text-align: center;
+  color: #1A1F2B;
+  max-width: 60%;
+  background-color: #F2EFED;
+}

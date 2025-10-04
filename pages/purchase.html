@@ -46,6 +46,8 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+      const notLoggedIn = document.getElementById("cart-grid-section");
+
 
 // ---------- Navbar & Footer ----------
 fetch('../components/navbar.html')
@@ -170,7 +172,15 @@ checkoutBtn.addEventListener('click', () => {
 // Show cart only if logged in
 onAuthStateChanged(auth, user => {
   if (!user) {
-    document.body.innerHTML = '<p class="not-logged-in" style="text-align:center; margin-top:50px;">Please log in to view your cart.</p>';
+    // document.getElementById('navbar').innerHTML = html;
+    // setupNavbar();
+    document.body.innerHTML = `
+    <div class="cart-not-logged-in">
+      <p class="cart-grid-section not-logged-in" style="text-align:center;">Please log in to view your cart.</p> 
+      <a href="../pages/home.html" class="btn back-link">← Back to Home</a>
+    </div>`;
+      // notLoggedIn.innerHTML = `<p class="not-logged-in">Please log in to view your cart.</p>`;
+    // document.getElementById('footer').innerHTML = html;
     return;
   }
 

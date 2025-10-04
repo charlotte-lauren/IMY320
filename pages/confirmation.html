@@ -273,7 +273,10 @@ checkoutForm.addEventListener('submit', e => {
 // ----------------- Check Auth & Render -----------------
 onAuthStateChanged(auth, user => {
   if (!user) {
+    document.getElementById('navbar').innerHTML = html;
+    setupNavbar();
     document.body.innerHTML = '<p class="not-logged-in" style="text-align:center; margin-top:50px;">Please log in to checkout.</p>';
+    document.getElementById('footer').innerHTML = html;
     return;
   }
   renderOrder();
