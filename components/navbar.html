@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (user) {
       profileIcon.src = user.photoURL || '../assets/UserIcon.png';
       dropdownMenu.innerHTML = `
-        <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+        <a href="../pages/profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
         <button class="btn dropdown-item" id="logoutBtn">Logout</button>
       `;
       const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       profileIcon.src = '../assets/UserIcon.png';
       dropdownMenu.innerHTML = `
-        <a href="../pages/login.html" class="dropdown-item">Login</a>
+        <a href="../pages/login.html" class=" dropdown-item dropdown-item-profile">Login</a>
       `;
     }
   });

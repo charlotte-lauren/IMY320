@@ -111,7 +111,7 @@
           if (user) {
             profileIcon.src = user.photoURL || '../assets/UserIcon.png';
             dropdownMenu.innerHTML = `
-              <a href="../pages/profile.html" class="dropdown-item">Profile</a>
+              <a href="../pages/profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
               <button class="btn dropdown-item" id="logoutBtn">Logout</button>
             `;
             dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
@@ -122,7 +122,7 @@
             renderPage(user);
           } else {
             profileIcon.src = '../assets/UserIcon.png';
-            dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item">Login</a>`;
+            dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item dropdown-item-profile">Login</a>`;
             contentEl.innerHTML = `<p class="not-logged-in">Please log in to access this page.</p>`;
           }
         });

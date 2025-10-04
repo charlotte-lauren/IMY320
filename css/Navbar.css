@@ -194,9 +194,10 @@ a {
   text-align: center;
 }
 
-.dropdown-item:hover {
+.dropdown-item-profile:hover {
   border-radius: 999px;
   color: #F2EFED;
+  background-color: #90b3c19b;
 }
 
 /* ---------------- Icons ---------------- */

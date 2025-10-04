@@ -58,7 +58,7 @@
         if (user) {
           profileIcon.src = user.photoURL || 'assets/UserIcon.png';
           dropdownMenu.innerHTML = `
-            <a href="profile.html" class="dropdown-item">Profile</a>
+            <a href="profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
             <button class="btn dropdown-item" id="logoutBtn">Logout</button>
           `;
           const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
@@ -74,7 +74,7 @@
           });
         } else {
           profileIcon.src = 'assets/UserIcon.png';
-          dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item">Login</a>`;
+          dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item dropdown-item-profile">Login</a>`;
         }
       });
 
