@@ -41,7 +41,7 @@
   </div>
 
   <div class="navbar-bottom">
-    <a href="../pages/home.html" class="nav-link active">Home</a>
+    <a href="../pages/home.html" class="nav-link">Home</a>
     <a href="../pages/coins.html" class="nav-link">Coins Directory</a>
     <a href="../pages/sell.html" class="nav-link">Sell</a>
     <a href="../pages/about.html" class="nav-link">About</a>
@@ -100,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ---------------- Search Bar ----------------
-  // ---------------- Search Bar ----------------
 searchForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const query = searchInput.value.trim();
@@ -110,6 +109,19 @@ searchForm.addEventListener('submit', (e) => {
   window.location.href = '/pages/coins.html?search=' + encodeURIComponent(query);
 });
 
+});
+
+const currentPath = window.location.pathname.split("/").pop(); // e.g., "community.html"
+
+document.querySelectorAll(".navbar-bottom .nav-link").forEach(link => {
+  const linkPath = link.getAttribute("href").split("/").pop(); // e.g., "community.html"
+
+  if (linkPath === currentPath) {
+    console.log("Active link set:", linkPath);
+    link.classList.add(" active");
+  } else {
+    link.classList.remove(" active");
+  }
 });
 </script>
 

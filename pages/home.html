@@ -19,7 +19,7 @@
     <div class="hero-content">
       <h1>Discover & Collect Rare Coins From Around the World</h1>
       <p>Your journey to the perfect collection starts here.</p>
-      <div class="greeting" id="greeting"></div>
+      <!--<div class="greeting" id="greeting"></div>-->
       <a href="coins.html" class="btn hero-btns">Explore Marketplace</a>
     </div>
   </section>
@@ -94,60 +94,72 @@
 
     // ---------------- Navbar ----------------
     fetch('../components/navbar.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('navbar').innerHTML = html;
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('navbar').innerHTML = html;
 
-        const profileIcon = document.getElementById('profileIcon');
-        const dropdownMenu = document.querySelector('.dropdown-menu');
-        const searchForm = document.getElementById('searchForm');
-        const searchInput = document.getElementById('searchInput');
+      const profileIcon = document.getElementById('profileIcon');
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+      const searchForm = document.getElementById('searchForm');
+      const searchInput = document.getElementById('searchInput');
 
-        if (!profileIcon || !dropdownMenu || !searchForm || !searchInput) {
-          console.error('Navbar elements missing');
-          return;
+      if (!profileIcon || !dropdownMenu || !searchForm || !searchInput) {
+        console.error('Navbar elements missing');
+        return;
+      }
+
+      // Profile Dropdown
+      profileIcon.addEventListener('click', e => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+      });
+      dropdownMenu.addEventListener('click', e => e.stopPropagation());
+      document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+      onAuthStateChanged(auth, (user) => {
+        dropdownMenu.innerHTML = '';
+        if (user) {
+          profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+          dropdownMenu.innerHTML = `
+            <a href="../pages/profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
+            <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+          `;
+          dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
+            try {
+              await signOut(auth);
+              localStorage.clear();
+              window.location.href = "../index.html";
+            } catch (err) {
+              console.error("Logout failed:", err);
+              alert("Failed to log out. Try again.");
+            }
+          });
+        } else {
+          profileIcon.src = '../assets/UserIcon.png';
+          dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item dropdown-item-profile">Login</a>`;
         }
+      });
 
-        // Profile Dropdown
-        profileIcon.addEventListener('click', e => {
-          e.stopPropagation();
-          dropdownMenu.classList.toggle('show');
-        });
-        dropdownMenu.addEventListener('click', e => e.stopPropagation());
-        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+      // Search Bar
+      searchForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+        if (!query) return;
+        window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
+      });
 
-        onAuthStateChanged(auth, (user) => {
-          dropdownMenu.innerHTML = '';
-          if (user) {
-            profileIcon.src = user.photoURL || '../assets/UserIcon.png';
-            dropdownMenu.innerHTML = `
-              <a href="../pages/profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
-              <button class="btn dropdown-item" id="logoutBtn">Logout</button>
-            `;
-            dropdownMenu.querySelector('#logoutBtn').addEventListener('click', async () => {
-              try {
-                await signOut(auth);
-                localStorage.clear();
-                window.location.href = "../index.html";
-              } catch (err) {
-                console.error("Logout failed:", err);
-                alert("Failed to log out. Try again.");
-              }
-            });
-          } else {
-            profileIcon.src = '../assets/UserIcon.png';
-            dropdownMenu.innerHTML = `<a href="../pages/login.html" class="dropdown-item dropdown-item-profile">Login</a>`;
-          }
-        });
-
-        // Search Bar
-        searchForm.addEventListener('submit', e => {
-          e.preventDefault();
-          const query = searchInput.value.trim();
-          if (!query) return;
-          window.location.href = `../pages/coins.html?search=${encodeURIComponent(query)}`;
-        });
-      })
+      // ---------------- Active Link Highlight ----------------
+      const currentPath = window.location.pathname.split("/").pop(); // e.g., "home.html"
+      document.querySelectorAll(".navbar-bottom .nav-link").forEach(link => {
+        const linkPath = link.getAttribute("href").split("/").pop();
+        if (linkPath === currentPath) {
+          console.log("Active link set:", linkPath);
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
+    })
       .catch(err => console.error('Error loading navbar:', err));
 
     // Load Footer

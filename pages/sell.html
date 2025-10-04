@@ -126,6 +126,17 @@
             contentEl.innerHTML = `<p class="not-logged-in">Please log in to access this page.</p>`;
           }
         });
+
+        const currentPath = window.location.pathname.split("/").pop(); // e.g., "home.html"
+      document.querySelectorAll(".navbar-bottom .nav-link").forEach(link => {
+        const linkPath = link.getAttribute("href").split("/").pop();
+        if (linkPath === currentPath) {
+          console.log("Active link set:", linkPath);
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
       })
       .catch(err => console.error('Error loading navbar:', err));
 
