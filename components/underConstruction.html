@@ -54,7 +54,7 @@
   const auth = getAuth(app);
 
   // ---------- Load Navbar ----------
-  fetch('/components/navbar.html')
+  fetch('../components/navbar.html')
     .then(res => res.text())
     .then(html => {
       document.getElementById('navbar').innerHTML = html;
@@ -119,7 +119,7 @@
 
 
   // ---------- Load Footer ----------
-  fetch('/components/footer.html')
+  fetch('../components/footer.html')
     .then(res => res.text())
     .then(html => document.getElementById('footer').innerHTML = html)
     .catch(err => console.error('Error loading footer:', err));
