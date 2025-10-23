@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       profileIcon.src = '../assets/UserIcon.png';
       dropdownMenu.innerHTML = `
-        <a href="../pages/login.html" class=" dropdown-item dropdown-item-profile">Login</a>
+        <a href="pages/login.html" class=" dropdown-item dropdown-item-profile">Login</a>
       `;
     }
   });
@@ -108,7 +108,7 @@ searchForm.addEventListener('submit', (e) => {
   if (!query) return;
   console.log(query);
   // Always redirect to coins page from any current page
-  window.location.href = '/pages/coins.html?search=' + encodeURIComponent(query);
+  window.location.href = 'pages/coins.html?search=' + encodeURIComponent(query);
 });
 
 });
