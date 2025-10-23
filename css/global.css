@@ -21,6 +21,7 @@ html, body {
   background: #F2EFED;
   overflow-y: overlay; 
   scroll-behavior: smooth;
+  letter-spacing: 1px;
 }
 
 * {

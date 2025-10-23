@@ -15,7 +15,7 @@ body {
     footer {
       background-color: #305F72; /* fallback if footer-colored not used */
       color: white;
-      padding: 20px 0;
+      padding: 20px 0 50px 0;
       text-align: center;
       overflow-x: hidden;
     }
@@ -28,12 +28,12 @@ body {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 20px;
     }
 
     .footer-links a,
     .footer-socials a {
-      margin: 0 10px;
+      margin: 0 20px;
       color: white;
       text-decoration: none;
     }
@@ -41,4 +41,5 @@ body {
     .footer-links a:hover,
     .footer-socials a:hover {
       text-decoration: underline;
+      color: #e7b07c;
     }
