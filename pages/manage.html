@@ -1,177 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Admin Requests - CurioCrow</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manage Coins - CurioCrow</title>
+
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/Navbar.css">
   <link rel="stylesheet" href="../css/Footer.css">
-  <link rel="stylesheet" href="../css/ManagePage.css">
+
+  <style>
+    /* Basic layout */
+    .manage-list { display:flex; flex-direction:column; gap:1rem; padding:1rem; }
+    .coin-row-list {
+      display:flex;
+      justify-content:space-between;
+      background:#f8f8f8;
+      padding:1rem;
+      border-radius:10px;
+      align-items:center;
+      gap:1rem;
+    }
+
+    .coin-info {
+      display:flex;
+      align-items:flex-start;
+      gap:1rem;
+      flex:1;
+    }
+    .coin-info img {
+      width:96px;
+      height:96px;
+      object-fit:cover;
+      border-radius:8px;
+      border:1px solid #ddd;
+      background:#fff;
+    }
+    .coin-text {
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .manage-actions { display:flex; gap:.5rem; align-items:center; }
+    .manage-actions button { padding:.4rem .7rem; cursor:pointer; }
+
+    /* Modal */
+    .modal {
+      position:fixed;
+      inset:0;
+      display:none;
+      background:rgba(0,0,0,0.5);
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+    }
+    .modal.show { display:flex; }
+    .modal-content {
+      background:#fff;
+      padding:1.25rem;
+      border-radius:10px;
+      width:420px;
+      max-height:90vh;
+      overflow:auto;
+      box-shadow:0 8px 30px rgba(0,0,0,0.15);
+    }
+    .modal-content input, .modal-content textarea {
+      width:100%;
+      padding:.5rem;
+      margin-bottom:.6rem;
+      border:1px solid #ddd;
+      border-radius:6px;
+      box-sizing:border-box;
+    }
+    .modal-actions { display:flex; justify-content:flex-end; gap:.6rem; margin-top:.5rem; }
+
+    /* Confirm modal small adjustments */
+    #confirmModal .modal-content { width:360px; text-align:center; }
+
+    /* Popup */
+    .popup {
+      position:fixed; top:20px; right:20px;
+      background:#fff; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.12);
+      padding:.9rem 1.1rem; font-weight:500; z-index:2000;
+      opacity:0; transform:translateY(-10px); transition:opacity .25s, transform .25s;
+      display:flex; align-items:center; gap:.6rem;
+    }
+    .popup.show { opacity:1; transform:translateY(0); }
+    .popup.success { border-left:4px solid #28a745; }
+    .popup.error { border-left:4px solid #dc3545; }
+    .popup .close-btn { background:none; border:none; cursor:pointer; font-size:1.1rem; color:#444; margin-left:.6rem; }
+
+    /* small responsive */
+    @media (max-width:520px) {
+      .modal-content { width:92vw; }
+      .coin-info img { width:72px; height:72px; }
+    }
+  </style>
 </head>
 <body>
 
   <!-- Navbar -->
   <div id="navbar"></div>
 
-  <div class="manage-page">
-    <h1>Pending Admin Requests</h1>
-    <p id="noRequestsMsg" style="display:none;">No pending requests.</p>
-    <ul class="manage-list" id="pendingList"></ul>
-  </div>
+  <main class="catalogue-page" style="padding:1rem;">
+    <div class="catalogue-header"><h1>Manage Coins</h1></div>
+    <div id="manageList" class="manage-list">Loading...</div>
+  </main>
 
-  <!-- Footer -->
   <div id="footer"></div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+  <!-- Edit Modal -->
+  <div class="modal" id="editModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+      <h3 id="editTitle">Edit Coin</h3>
 
-  // Firebase setup
-  const firebaseConfig = {
-    apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
-    authDomain: "curiocrow.firebaseapp.com",
-    projectId: "curiocrow",
-    storageBucket: "curiocrow.firebasestorage.app",
-    messagingSenderId: "570380745141",
-    appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
-  };
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+      <input type="text" id="editName" placeholder="Name">
+      <input type="text" id="editCountry" placeholder="Country">
+      <textarea id="editDescription" placeholder="Description" rows="4"></textarea>
+      <input type="text" id="editFaceValue" placeholder="Face Value">
+      <input type="text" id="editCurrency" placeholder="Currency">
+      <input type="text" id="editSeries" placeholder="Series">
+      <input type="text" id="editShape" placeholder="Shape">
+      <input type="text" id="editMetal" placeholder="Metal Composition (comma-separated)">
+      <input type="text" id="editLink" placeholder="Image Link">
+      <input type="text" id="editIssuedOn" placeholder="Issued On (year)">
+      <div class="modal-actions">
+        <button id="saveEditBtn">Save</button>
+        <button id="closeModal">Cancel</button>
+      </div>
+    </div>
+  </div>
 
-  // Load Navbar
-  fetch('../components/navbar.html')
-    .then(res => res.text())
-    .then(html => {
+  <!-- Confirm Modal -->
+  <div class="modal" id="confirmModal" aria-hidden="true">
+    <div class="modal-content">
+      <h3>Confirm Action</h3>
+      <p id="confirmMessage">Are you sure?</p>
+      <div style="display:flex;justify-content:center;margin-top:8px;gap:.5rem;">
+        <button id="confirmYes">Yes</button>
+        <button id="confirmNo">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup container (to keep DOM tidy popups appended to body) -->
+  <div id="popupContainer" aria-hidden="true"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAvgqnAgdSQeGpgTMRMOvcaxB7fD8XbETk",
+      authDomain: "curiocrow.firebaseapp.com",
+      projectId: "curiocrow",
+      storageBucket: "curiocrow.appspot.com",
+      messagingSenderId: "570380745141",
+      appId: "1:570380745141:web:9df2526ec09b3f634e41fc"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Load navbar & footer
+    fetch('../components/navbar.html').then(r=>r.text()).then(html=>{
       document.getElementById('navbar').innerHTML = html;
+      // optional: run navbar setup if your navbar uses setup function
+      // safe attempt: if setupNavbar exists globally call it
+      try { if (typeof setupNavbar === 'function') setupNavbar(); } catch(e){/*ignore*/}
 
-      const userDropdown = document.querySelector('.user-dropdown');
-      const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
-      const profileIcon = userDropdown.querySelector('.profile-icon');
+      // The coins/coins.html setup in your other pages sets active link after fetch; do that here too:
+      const currentPath = window.location.pathname.split("/").pop();
+      document.querySelectorAll(".navbar-bottom .nav-link").forEach(link => {
+        const linkPath = (link.getAttribute("href") || "").split("/").pop();
+        if (linkPath === currentPath) link.classList.add("active");
+        else link.classList.remove("active");
+      });
+    }).catch(err=>console.error('Navbar load error',err));
 
-      if (!userDropdown || !dropdownMenu || !profileIcon) return console.error('Navbar elements missing');
+    fetch('../components/footer.html').then(r=>r.text()).then(html=>document.getElementById('footer').innerHTML = html).catch(err=>console.error(err));
 
-      // Monitor auth state
-      onAuthStateChanged(auth, (user) => {
-        dropdownMenu.innerHTML = '';
+    // Elements
+    const listEl = document.getElementById('manageList');
+    const editModal = document.getElementById('editModal');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmMessage = document.getElementById('confirmMessage');
+    const confirmYes = document.getElementById('confirmYes');
+    const confirmNo = document.getElementById('confirmNo');
 
-        if (user) {
-          profileIcon.src = user.photoURL || 'assets/UserIcon.png';
-          dropdownMenu.innerHTML = `
-            <a href="profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
-            <button class="btn dropdown-item" id="logoutBtn">Logout</button>
+    const closeModalBtn = document.getElementById('closeModal');
+    const saveEditBtn = document.getElementById('saveEditBtn');
+
+    let currentEditId = null;
+    let confirmCallback = null;
+
+    // Popup utility
+    function showPopup(message, type='success', duration=3000) {
+      const p = document.createElement('div');
+      p.className = `popup ${type}`;
+      p.innerHTML = `<span>${message}</span>`;
+      const close = document.createElement('button');
+      close.className = 'close-btn';
+      close.innerHTML = '&times;';
+      close.addEventListener('click', ()=> p.remove());
+      p.appendChild(close);
+      document.body.appendChild(p);
+      // show animation
+      requestAnimationFrame(()=> p.classList.add('show'));
+      // hide after duration
+      setTimeout(()=> {
+        p.classList.remove('show');
+        setTimeout(()=> p.remove(), 300);
+      }, duration);
+    }
+
+    function showConfirm(message, callback) {
+      confirmMessage.textContent = message;
+      confirmCallback = callback;
+      confirmModal.classList.add('show');
+    }
+
+    confirmYes.addEventListener('click', ()=> {
+      confirmModal.classList.remove('show');
+      if (confirmCallback) confirmCallback(true);
+    });
+    confirmNo.addEventListener('click', ()=> {
+      confirmModal.classList.remove('show');
+      if (confirmCallback) confirmCallback(false);
+    });
+
+    // Fetch & render coins (image + details)
+    async function loadManageCoins() {
+      try {
+        const snapshot = await getDocs(collection(db, "coins"));
+        listEl.innerHTML = '';
+        snapshot.forEach(docSnap => {
+          const coin = docSnap.data();
+          const id = docSnap.id;
+          const metals = coin.MetalComposition ? (Array.isArray(coin.MetalComposition) ? coin.MetalComposition.join(', ') : coin.MetalComposition) : '';
+          const imgSrc = coin.Link ? coin.Link : '../assets/coin.png';
+
+          // build row
+          const row = document.createElement('div');
+          row.className = 'coin-row-list';
+          row.innerHTML = `
+            <div class="coin-info">
+              <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(coin.Name || 'coin')}" onerror="this.src='../assets/coin.png'" />
+              <div class="coin-text">
+                <h3>${escapeHtml(coin.Name || 'Untitled')}</h3>
+                <div style="color:#666;font-size:.95rem">${escapeHtml(coin.Country || '')} ${coin.FaceValue ? ' - ' + escapeHtml(String(coin.FaceValue)) + ' ' + escapeHtml(coin.Currency || '') : ''}</div>
+                <div style="font-size:.9rem;color:#444">${escapeHtml(coin.Series || '')} ${coin.Shape ? ' • ' + escapeHtml(coin.Shape) : ''}</div>
+                <div style="font-size:.85rem;color:#444">Metals: ${escapeHtml(metals)}</div>
+                <div style="margin-top:.3rem;color:#333">${escapeHtml(coin.Description || '')}</div>
+              </div>
+            </div>
+            <div class="manage-actions">
+              <button class="btn-edit" data-id="${id}">Edit</button>
+              <button class="btn-delete" data-id="${id}">Delete</button>
+            </div>
           `;
-          const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
-          logoutBtn.addEventListener('click', async () => {
+          listEl.appendChild(row);
+        });
+
+        attachManageHandlers();
+      } catch (err) {
+        console.error('loadManageCoins error', err);
+        listEl.innerHTML = '<p>Failed to load coins from database.</p>';
+      }
+    }
+
+    function attachManageHandlers() {
+      document.querySelectorAll('.btn-edit').forEach(btn => {
+        btn.onclick = (e) => openEditModal(e.currentTarget.dataset.id);
+      });
+
+      document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.onclick = (e) => {
+          const id = e.currentTarget.dataset.id;
+          showConfirm('Are you sure you want to delete this coin?', async (confirmed) => {
+            if (!confirmed) return;
             try {
-              await signOut(auth);
-              localStorage.clear();
-              window.location.href = "../index.html";
+              await deleteDoc(doc(db, 'coins', id));
+              showPopup('Coin deleted', 'success');
+              loadManageCoins();
             } catch (err) {
-              console.error("Logout failed:", err);
-              alert("Failed to log out. Try again.");
+              console.error(err);
+              showPopup('Failed to delete coin', 'error');
             }
           });
-        } else {
-          profileIcon.src = 'assets/UserIcon.png';
-          dropdownMenu.innerHTML = `<a href="login.html" class="dropdown-item dropdown-item-profile">Login</a>`;
-        }
+        };
       });
-
-      // Dropdown toggle logic
-      profileIcon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dropdownMenu.classList.toggle('show');
-      });
-      document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
-      dropdownMenu.addEventListener('click', e => e.stopPropagation());
-    })
-    .catch(err => console.error('Error loading navbar:', err));
-
-  // Load Footer
-  fetch('../components/footer.html')
-    .then(res => res.text())
-    .then(html => document.getElementById('footer').innerHTML = html)
-    .catch(err => console.error('Error loading footer:', err));
-
-  // --- Manage Admin Requests logic ---
-  const token = localStorage.getItem("authToken");
-  const pendingListEl = document.getElementById("pendingList");
-  const noRequestsMsg = document.getElementById("noRequestsMsg");
-
-  async function fetchPending() {
-    try {
-      const res = await fetch("/api/admin/pending-requests", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      renderPending(data.pending || []);
-    } catch (err) { console.error(err); }
-  }
-
-  function renderPending(pending) {
-    pendingListEl.innerHTML = "";
-    if (pending.length === 0) {
-      noRequestsMsg.style.display = "block";
-      return;
     }
-    noRequestsMsg.style.display = "none";
 
-    pending.forEach(u => {
-      const li = document.createElement("li");
+    async function openEditModal(id) {
+      currentEditId = id;
+      try {
+        const ref = doc(db, 'coins', id);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) { showPopup('Coin not found', 'error'); return; }
+        const c = snap.data();
 
-      const usernameSpan = document.createElement("span");
-      usernameSpan.className = "manage-username";
-      usernameSpan.textContent = u.username;
+        // fill inputs
+        document.getElementById('editName').value = c.Name || '';
+        document.getElementById('editCountry').value = c.Country || '';
+        document.getElementById('editDescription').value = c.Description || '';
+        document.getElementById('editFaceValue').value = c.FaceValue || '';
+        document.getElementById('editCurrency').value = c.Currency || '';
+        document.getElementById('editSeries').value = c.Series || '';
+        document.getElementById('editShape').value = c.Shape || '';
+        document.getElementById('editMetal').value = Array.isArray(c.MetalComposition) ? c.MetalComposition.join(', ') : (c.MetalComposition || '');
+        document.getElementById('editLink').value = c.Link || '';
+        document.getElementById('editIssuedOn').value = c.IssuedOn || '';
 
-      const btnContainer = document.createElement("div");
+        editModal.classList.add('show');
+      } catch (err) {
+        console.error(err);
+        showPopup('Failed to load coin for editing', 'error');
+      }
+    }
 
-      const approveBtn = document.createElement("button");
-      approveBtn.className = "manage-btn manage-btn-approve";
-      approveBtn.textContent = "Approve";
-      approveBtn.addEventListener("click", () => approveAdmin(u._id));
-
-      const rejectBtn = document.createElement("button");
-      rejectBtn.className = "manage-btn manage-btn-reject";
-      rejectBtn.textContent = "Reject";
-      rejectBtn.addEventListener("click", () => rejectAdmin(u._id));
-
-      btnContainer.appendChild(approveBtn);
-      btnContainer.appendChild(rejectBtn);
-
-      li.appendChild(usernameSpan);
-      li.appendChild(btnContainer);
-
-      pendingListEl.appendChild(li);
+    saveEditBtn.addEventListener('click', async () => {
+      if (!currentEditId) return showPopup('No coin selected', 'error');
+      try {
+        const ref = doc(db, 'coins', currentEditId);
+        const updated = {
+          Name: document.getElementById('editName').value,
+          Country: document.getElementById('editCountry').value,
+          Description: document.getElementById('editDescription').value,
+          FaceValue: document.getElementById('editFaceValue').value,
+          Currency: document.getElementById('editCurrency').value,
+          Series: document.getElementById('editSeries').value,
+          Shape: document.getElementById('editShape').value,
+          MetalComposition: document.getElementById('editMetal').value.split(',').map(s => s.trim()).filter(Boolean),
+          Link: document.getElementById('editLink').value,
+          IssuedOn: document.getElementById('editIssuedOn').value
+        };
+        await updateDoc(ref, updated);
+        editModal.classList.remove('show');
+        showPopup('Coin updated', 'success');
+        loadManageCoins();
+      } catch (err) {
+        console.error(err);
+        showPopup('Failed to update coin', 'error');
+      }
     });
-  }
 
-  async function approveAdmin(userId) {
-    try {
-      const res = await fetch(`/api/admin/approve/${userId}`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      alert(data.message);
-      fetchPending();
-    } catch (err) { console.error(err); }
-  }
+    closeModalBtn.addEventListener('click', ()=> editModal.classList.remove('show'));
+    // close modals on ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        editModal.classList.remove('show');
+        confirmModal.classList.remove('show');
+      }
+    });
 
-  async function rejectAdmin(userId) {
-    try {
-      const res = await fetch(`/api/admin/reject/${userId}`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      alert(data.message);
-      fetchPending();
-    } catch (err) { console.error(err); }
-  }
+    // small helper to avoid XSS in innerHTML building
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
-  fetchPending();
-</script>
+    // initial load
+    loadManageCoins();
 
+  </script>
 </body>
 </html>

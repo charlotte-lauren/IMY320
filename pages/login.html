@@ -8,6 +8,25 @@
 <link rel="stylesheet" href="../css/Navbar.css">
 <link rel="stylesheet" href="../css/Footer.css">
 <link rel="stylesheet" href="../css/LoginPage.css">
+<style>
+  .password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #666;
+  }
+  .toggle-password:hover {
+    color: #222;
+  }
+</style>
 </head>
 <body>
 <div id="navbar"></div>
@@ -30,7 +49,10 @@
     </div>
 
     <div class="floating-label">
-      <input type="password" id="password" placeholder="Password">
+      <div class="password-wrapper">
+        <input type="password" id="password" placeholder="Password">
+        <button type="button" class="toggle-password" id="togglePassword" aria-label="Show or hide password">👁️</button>
+      </div>
       <label for="password">Password
         <span class="coin-tooltip" id="passwordCoins" style="display:none;">
           <span id="coinDisplay">🪙🪙🪙🪙</span>
@@ -43,7 +65,10 @@
     </div>
 
     <div class="floating-label" id="confirmField" style="display:none;">
-      <input type="password" id="confirmPassword" placeholder="Confirm Password">
+      <div class="password-wrapper">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password">
+        <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="Show or hide confirm password">👁️</button>
+      </div>
       <label for="confirmPassword">Confirm Password
         <span class="coin-tooltip" id="confirmCoins" style="display:none;">
           <span id="confirmCoinDisplay">🪙🪙🪙🪙</span>
@@ -70,7 +95,6 @@
 <div id="footer"></div>
 
 <script type="module">
-/* ---------------- FIREBASE ---------------- */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import { 
   getAuth, 
@@ -93,22 +117,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence);
 
-/* ---------------- NAVBAR & FOOTER ---------------- */
-  // Load Navbar
-  fetch('../components/navbar.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('navbar').innerHTML = html;
-    })
-    .catch(err => console.error('Error loading navbar:', err));
+// Navbar + Footer
+fetch('../components/navbar.html').then(r => r.text()).then(html => {
+  document.getElementById('navbar').innerHTML = html;
+});
+fetch('../components/footer.html').then(r => r.text()).then(html => {
+  document.getElementById('footer').innerHTML = html;
+});
 
-  // Load Footer
-  fetch('../components/footer.html')
-    .then(res => res.text())
-    .then(html => document.getElementById('footer').innerHTML = html)
-    .catch(err => console.error('Error loading footer:', err));
-
-/* ---------------- FORM LOGIC ---------------- */
 const coinEmoji = '🪙';
 let isRegister = false;
 
@@ -127,6 +143,22 @@ const passwordCoins = document.getElementById('passwordCoins');
 const coinDisplay = document.getElementById('coinDisplay');
 const confirmCoins = document.getElementById('confirmCoins');
 const confirmCoinDisplay = document.getElementById('confirmCoinDisplay');
+
+// Password show/hide functionality
+const togglePassword = document.getElementById('togglePassword');
+const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+
+togglePassword.addEventListener('click', () => {
+  const type = passwordEl.type === 'password' ? 'text' : 'password';
+  passwordEl.type = type;
+  togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+});
+
+toggleConfirmPassword.addEventListener('click', () => {
+  const type = confirmEl.type === 'password' ? 'text' : 'password';
+  confirmEl.type = type;
+  toggleConfirmPassword.textContent = type === 'password' ? '👁️' : '🙈';
+});
 
 function getPasswordScore(password) {
   let score = 0;
@@ -198,7 +230,6 @@ loginForm.addEventListener('submit', async e => {
       messageEl.textContent = `Logged in as ${email}`;
     }
 
-    // Redirect on success
     setTimeout(() => {
       window.location.href = "../pages/home.html";
     }, 1000);
