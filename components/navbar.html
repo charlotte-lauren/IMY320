@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Navbar - CurioCrow</title>
-<link rel="stylesheet" href="../css/Navbar.css">
+<link rel="stylesheet" href="css/Navbar.css">
 </head>
 <body>
 
@@ -13,8 +13,8 @@
   <div class="navbar-top">
     <!-- Logo -->
     <div class="c-nav-left logo-name">
-      <a href="../index.html" class="logo">
-        <img src="../assets/LogoCBG.png" alt="Logo" class="c-nav-logo">
+      <a href="index.html" class="logo">
+        <img src="assets/LogoCBG.png" alt="Logo" class="c-nav-logo">
         <span class="c-nav-name">CurioCrow</span>
       </a>
     </div>
@@ -26,14 +26,14 @@
 
 
     <!-- Cart -->
-    <a href="../pages/purchase.html" class="icon-button">
-      <img src="../assets/Cart.png" alt="Cart" class="cart-icon">
+    <a href="pages/purchase.html" class="icon-button">
+      <img src="assets/Cart.png" alt="Cart" class="cart-icon">
     </a>
 
     <!-- User Dropdown -->
     <div class="user-menu">
       <div class="user-dropdown">
-        <img src="../assets/UserIcon.png" alt="Profile" class="profile-icon" id="profileIcon">
+        <img src="assets/UserIcon.png" alt="Profile" class="profile-icon" id="profileIcon">
         <div class="dropdown-menu">
           <!-- Content dynamically inserted based on login state -->
         </div>
@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
     dropdownMenu.innerHTML = ''; // clear previous content
 
     if (user) {
-      profileIcon.src = user.photoURL || '../assets/UserIcon.png';
+      profileIcon.src = user.photoURL || 'assets/UserIcon.png';
       dropdownMenu.innerHTML = `
-        <a href="../pages/profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
+        <a href="pages/profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
         <button class="btn dropdown-item" id="logoutBtn">Logout</button>
       `;
       const logoutBtn = dropdownMenu.querySelector('#logoutBtn');
@@ -87,14 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
           await signOut(auth);
           localStorage.clear();
-          window.location.href = "../index.html";
+          window.location.href = "index.html";
         } catch (err) {
           console.error("Logout failed:", err);
           alert("Failed to log out. Try again.");
         }
       });
     } else {
-      profileIcon.src = '../assets/UserIcon.png';
+      profileIcon.src = 'assets/UserIcon.png';
       dropdownMenu.innerHTML = `
         <a href="pages/login.html" class=" dropdown-item dropdown-item-profile">Login</a>
       `;
