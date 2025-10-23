@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<base href="/IMY320/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Navbar - CurioCrow</title>
@@ -12,8 +13,8 @@
   <div class="navbar-top">
     <!-- Logo -->
     <div class="c-nav-left logo-name">
-      <a href="/index.html" class="logo">
-        <img src="/assets/LogoCBG.png" alt="Logo" class="c-nav-logo">
+      <a href="../index.html" class="logo">
+        <img src="../assets/LogoCBG.png" alt="Logo" class="c-nav-logo">
         <span class="c-nav-name">CurioCrow</span>
       </a>
     </div>
@@ -25,14 +26,14 @@
 
 
     <!-- Cart -->
-    <a href="/pages/purchase.html" class="icon-button">
-      <img src="/assets/Cart.png" alt="Cart" class="cart-icon">
+    <a href="../pages/purchase.html" class="icon-button">
+      <img src="../assets/Cart.png" alt="Cart" class="cart-icon">
     </a>
 
     <!-- User Dropdown -->
     <div class="user-menu">
       <div class="user-dropdown">
-        <img src="/assets/UserIcon.png" alt="Profile" class="profile-icon" id="profileIcon">
+        <img src="../assets/UserIcon.png" alt="Profile" class="profile-icon" id="profileIcon">
         <div class="dropdown-menu">
           <!-- Content dynamically inserted based on login state -->
         </div>
@@ -41,12 +42,12 @@
   </div>
 
   <div class="navbar-bottom">
-    <a href="/pages/home.html" class="nav-link">Home</a>
-    <a href="/pages/coins.html" class="nav-link">Coins Directory</a>
-    <a href="/pages/sell.html" class="nav-link">Sell</a>
-    <a href="/pages/manage.html" class="nav-link">Manage</a>
-    <a href="/pages/about.html" class="nav-link">About</a>
-    <a href="/pages/community.html" class="nav-link">Community</a>
+    <a href="../pages/home.html" class="nav-link">Home</a>
+    <a href="../pages/coins.html" class="nav-link">Coins Directory</a>
+    <a href="../pages/sell.html" class="nav-link">Sell</a>
+    <a href="../pages/manage.html" class="nav-link">Manage</a>
+    <a href="../pages/about.html" class="nav-link">About</a>
+    <a href="../pages/community.html" class="nav-link">Community</a>
   </div>
 </nav>
 
@@ -86,16 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
           await signOut(auth);
           localStorage.clear();
-          window.location.href = "/index.html";
+          window.location.href = "../index.html";
         } catch (err) {
           console.error("Logout failed:", err);
           alert("Failed to log out. Try again.");
         }
       });
     } else {
-      profileIcon.src = '/assets/UserIcon.png';
+      profileIcon.src = '../assets/UserIcon.png';
       dropdownMenu.innerHTML = `
-        <a href="/pages/login.html" class=" dropdown-item dropdown-item-profile">Login</a>
+        <a href="../pages/login.html" class=" dropdown-item dropdown-item-profile">Login</a>
       `;
     }
   });
