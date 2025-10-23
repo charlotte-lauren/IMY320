@@ -128,7 +128,6 @@ header.container-s {
   flex-direction: column;
 }
 .features-section {
-  color: #F2EFED;
   width: min(1700px, 90%);
   gap: 1.5rem;
   padding: 1rem 5rem 1rem 5rem;
@@ -152,6 +151,9 @@ header.container-s {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.2s ease;
   text-align: center;
+}
+.lighter-text {
+  color: #f2efedc1;
 }
 
 /* ===================== Purpose Section ===================== */
@@ -216,6 +218,9 @@ hr {
   flex-direction: column;
   color: #1A1F2B;
 }
+.testimonials-header h3 {
+  color: #2b5464;
+}
 .testimonial-cards {
   display: flex;
   flex-wrap: wrap;
@@ -226,17 +231,20 @@ hr {
   padding: 2rem 2rem;
   border-radius: 20px;
   flex: 1 1 calc(50% - 1rem);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 20px #305f724c;
 }
 .testimonial-author {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
+.test-profile{
+  border-radius: 999px;
+  height: 2rem;
+}
 
-/* ===================== Login/Register Section ===================== */
+/* ===================== Login/Register Section (begin section) ===================== */
 .loginBackground {
-  /* background: #F2EFED; */
   background: #1A1F2B;
   color: #F2EFED;
   padding: 5rem 3rem 10rem 3rem;

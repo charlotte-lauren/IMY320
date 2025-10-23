@@ -20,6 +20,7 @@ html, body {
   margin: 0 auto;
   background: #F2EFED;
   overflow-y: overlay; 
+  scroll-behavior: smooth;
 }
 
 * {
