@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ - CurioCrow</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="../css/Footer.css">
+  <style>
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #222;
+    }
+
+    .faq-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .faq-item:hover {
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .faq-question {
+      background: #f8f8f8;
+      cursor: pointer;
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      color: #333;
+      position: relative;
+    }
+
+    .faq-question::after {
+      content: '+';
+      position: absolute;
+      right: 1.25rem;
+      font-size: 1.4rem;
+      transition: transform 0.2s ease;
+    }
+
+    .faq-item.active .faq-question::after {
+      content: '-';
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: #fff;
+      color: #444;
+      padding: 0 1.25rem;
+    }
+
+    .faq-item.active .faq-answer {
+      padding: 1rem 1.25rem;
+      max-height: 400px;
+    }
+
+    .note {
+      margin-top: 2rem;
+      background: #f8f8f8;
+      padding: 1rem;
+      border-radius: 6px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main>
+    <h1>Frequently Asked Questions</h1>
+    <div class="faq-container">
+
+      <div class="faq-item">
+        <div class="faq-question">What is CurioCrow?</div>
+        <div class="faq-answer">
+          CurioCrow is a student-built platform for the IMY320 module at the University of Pretoria.  
+          It allows users to explore, catalogue, and manage coin collections in an interactive way,  
+          demonstrating how multimedia design and web technologies can be applied in real-world contexts.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What is IMY320 about?</div>
+        <div class="faq-answer">
+          IMY320 is a multimedia module focusing on the use of technology and design in modern applications.  
+          It explores topics like UX principles, design laws, marketing concepts, and emerging technologies.  
+          The course encourages critical thinking, ethical AI use, and a balance between creativity and technical skill.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Can I add real personal data on this site?</div>
+        <div class="faq-answer">
+          No. This project is for academic purposes only — please avoid entering any personal, sensitive, or confidential information.  
+          The University and developers are not responsible for data loss or leakage resulting from such input.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">How does this project relate to the IMY320 module content?</div>
+        <div class="faq-answer">
+          CurioCrow integrates themes from IMY320 by combining multimedia design, interactivity, and web development.  
+          It demonstrates applied UX design, interface logic, and responsible AI-assisted creation — aligning with the  
+          module’s emphasis on understanding technology’s practical and ethical implications.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">What are some tips for starting a coin collection?</div>
+        <div class="faq-answer">
+          Start with coins that interest you — such as a specific country, theme, or era.  
+          Learn to identify mint marks, materials, and conditions.  
+          Store coins properly in acid-free holders and avoid touching them directly to prevent oxidation.  
+          Join local or online communities to trade and expand your collection safely.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">How should I verify a coin’s authenticity?</div>
+        <div class="faq-answer">
+          Examine the coin’s weight, dimensions, and details against official mint data.  
+          Use a magnifying glass or digital microscope to look for inconsistencies.  
+          When in doubt, consult a certified coin appraiser or numismatist before purchasing or trading.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Who can I contact for help with IMY320?</div>
+        <div class="faq-answer">
+          <strong>Module Coordinator:</strong> Mr. Yan Wong — <em>yan.wong@up.ac.za</em><br>
+          <strong>Lecturer:</strong> Mr. I.D. Bosman — <em>isak.bosman@up.ac.za</em><br>
+          Teaching assistants and departmental contacts are available through ClickUP and the class Discord channel.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note">
+      <strong>Note:</strong> This FAQ and platform are part of a university coursework project for IMY320.  
+      Always check official University of Pretoria communication channels for the latest module updates.
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script>
+    // Load navbar and footer
+    fetch('../components/navbar.html').then(r => r.text()).then(html => {
+      document.getElementById('navbar').innerHTML = html;
+      try { if (typeof setupNavbar === 'function') setupNavbar(); } catch (e) {}
+    });
+    fetch('../components/footer.html').then(r => r.text()).then(html => {
+      document.getElementById('footer').innerHTML = html;
+    });
+
+    // FAQ accordion logic
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const item = question.parentElement;
+        item.classList.toggle('active');
+      });
+    });
+  </script>
+</body>
+</html>

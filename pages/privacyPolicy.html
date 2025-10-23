@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - CurioCrow</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="../css/Footer.css">
+  <style>
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      line-height: 1.6;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    h1, h2 {
+      color: #222;
+    }
+    p {
+      color: #444;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p><strong>Last updated:</strong> October 2025</p>
+
+    <h2>1. Overview</h2>
+    <p>
+      CurioCrow is a student project developed for educational purposes. 
+      This website is not intended for commercial use or the collection of real user data. 
+      The site simulates account creation, login, and collection-related features solely for demonstrating web development concepts.
+    </p>
+
+    <h2>2. Data Collection</h2>
+    <p>
+      While you may be able to enter information such as usernames, collection details, or other text inputs, 
+      <strong>you should not enter any real personal, identifying, or sensitive information</strong>. 
+      Any data submitted is stored temporarily and may be reset or deleted at any time.
+    </p>
+
+    <h2>3. Educational Use Only</h2>
+    <p>
+      This website is part of a university coursework project. 
+      It exists solely for assessment and demonstration purposes, and is not a publicly deployed production service.
+    </p>
+
+    <h2>4. Data Security</h2>
+    <p>
+      While reasonable care has been taken to secure stored data, this project does not implement production-level security practices. 
+      Users should assume that any submitted data could be publicly visible or lost at any time.
+    </p>
+
+    <h2>5. No Liability</h2>
+    <p>
+      Neither the project developers nor the associated university shall be held liable for any data loss, 
+      exposure, or misuse resulting from the use of this site. 
+      By using this site, you acknowledge that you are participating in a student project and accept these limitations.
+    </p>
+
+    <h2>6. Cookies and Tracking</h2>
+    <p>
+      This project may use browser storage or cookies to simulate login sessions or preferences. 
+      No tracking or analytics are performed beyond what is required for basic functionality.
+    </p>
+
+    <h2>7. Contact</h2>
+    <p>
+      For any questions about this project or its privacy practices, please contact the course instructor or development team via the university’s official channels.
+    </p>
+  </main>
+
+  <div id="footer"></div>
+
+  <script>
+    // Load navbar & footer
+    fetch('../components/navbar.html').then(r=>r.text()).then(html=>{
+      document.getElementById('navbar').innerHTML = html;
+      try { if (typeof setupNavbar === 'function') setupNavbar(); } catch(e){}
+    });
+    fetch('../components/footer.html').then(r=>r.text()).then(html=>{
+      document.getElementById('footer').innerHTML = html;
+    });
+  </script>
+</body>
+</html>

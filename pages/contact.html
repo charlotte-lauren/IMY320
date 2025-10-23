@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - CurioCrow</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/Navbar.css">
+  <link rel="stylesheet" href="../css/Footer.css">
+  <style>
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #222;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    label {
+      font-weight: 600;
+      color: #333;
+    }
+    input, textarea {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 100%;
+    }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    button {
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    button:hover {
+      background: #444;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 1rem;
+      background: #f8f8f8;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+
+    /* Popup styles */
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 400px;
+      animation: fadeIn 0.3s ease;
+    }
+    .popup h2 {
+      color: #222;
+      margin-bottom: 0.5rem;
+    }
+    .popup p {
+      color: #555;
+      margin-bottom: 1rem;
+    }
+    .popup button {
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .popup button:hover {
+      background: #444;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main>
+    <h1>Contact Us</h1>
+    <p style="text-align:center;">
+      Have questions about this project or feedback for the course team?  
+      Fill out the form below.
+    </p>
+
+    <form id="contact-form">
+      <div>
+        <label for="coordinator-name">Name</label>
+        <input type="text" id="coordinator-name" name="coordinator-name" placeholder="e.g. Jane Doe">
+      </div>
+
+      <div>
+        <label for="coordinator-email">Email</label>
+        <input type="email" id="coordinator-email" name="coordinator-email" placeholder="e.g. janedoe@university.ac.za">
+      </div>
+
+      <div>
+        <label for="message">Your Message</label>
+        <textarea id="message" name="message" placeholder="Enter your message here..."></textarea>
+      </div>
+
+      <button type="submit">Send Message</button>
+
+      <div class="note">
+        <strong>Note:</strong> This contact form is part of a university coursework project.  
+        Please do not submit any real personal or confidential information.  
+        The University and project developers are not responsible for any data entered here.
+      </div>
+    </form>
+  </main>
+
+  <div id="footer"></div>
+
+  <!-- Popup -->
+  <div class="popup-overlay" id="popup-overlay">
+    <div class="popup">
+      <h2>Message Sent</h2>
+      <p>Thank you! Your message has been sent!.</p>
+      <button id="close-popup">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Load navbar and footer
+    fetch('../components/navbar.html').then(r => r.text()).then(html => {
+      document.getElementById('navbar').innerHTML = html;
+      try { if (typeof setupNavbar === 'function') setupNavbar(); } catch (e) {}
+    });
+    fetch('../components/footer.html').then(r => r.text()).then(html => {
+      document.getElementById('footer').innerHTML = html;
+    });
+
+    // Popup logic
+    const popupOverlay = document.getElementById('popup-overlay');
+    const closePopup = document.getElementById('close-popup');
+
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      popupOverlay.style.display = 'flex';
+      this.reset();
+    });
+
+    closePopup.addEventListener('click', () => {
+      popupOverlay.style.display = 'none';
+    });
+
+    popupOverlay.addEventListener('click', (e) => {
+      if (e.target === popupOverlay) popupOverlay.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
