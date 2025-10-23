@@ -33,7 +33,7 @@
     <!-- User Dropdown -->
     <div class="user-menu">
       <div class="user-dropdown">
-        <img src="assets/UserIcon.png" alt="Profile" class="profile-icon" id="profileIcon">
+        <img src="assets/avatars/avatar1.png" alt="Profile" class="profile-icon" id="profileIcon">
         <div class="dropdown-menu">
           <!-- Content dynamically inserted based on login state -->
         </div>
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dropdownMenu.innerHTML = ''; // clear previous content
 
     if (user) {
-      profileIcon.src = user.photoURL || 'assets/UserIcon.png';
+      profileIcon.src = user.photoURL || 'assets/avatars/avatar1.png';
       dropdownMenu.innerHTML = `
         <a href="IMY320/pages/profile.html" class="dropdown-item dropdown-item-profile">Profile</a>
         <button class="btn dropdown-item" id="logoutBtn">Logout</button>
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     } else {
-      profileIcon.src = 'assets/UserIcon.png';
+      profileIcon.src = 'assets/avatars/avatar1.png';
       dropdownMenu.innerHTML = `
         <a href="pages/login.html" class=" dropdown-item dropdown-item-profile">Login</a>
       `;
