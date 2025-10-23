@@ -151,6 +151,7 @@ header.container-s {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.2s ease;
   text-align: center;
+  background-image: linear-gradient(to bottom, #305F72 30%, #1a1f2b40 100%);
 }
 .lighter-text {
   color: #f2efedc1;
@@ -207,6 +208,7 @@ hr {
   border-radius: 30px;
   width: min(1200px, 90%);
   z-index: 3;
+  box-shadow: 0 10px 20px #1a1f2b3e;
 }
 .testimonials-split {
   display: grid;
