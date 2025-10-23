@@ -53,11 +53,15 @@
       <img src="../assets/coin.png" alt="User" class="profile-avatar" id="profileAvatar">
       <h1 class="profile-username" id="profileUsername">User</h1>
     </div>
-    <button class="profile-btn" id="editProfileBtn">Edit Profile</button>
+    <div class="profile-actions">
+      <button id="editProfileBtn" class="profile-btn">Edit Profile</button>
+      <button id="logoutBtn" class="profile-btn profile-btn-secondary">Logout</button>
+    </div>
   </section>
 
   <!-- Edit profile form -->
   <section class="profile-edit" id="profileEdit" style="display:none;">
+    <h2>Editing Profile</h2>
     <label>Username:
       <input type="text" id="usernameInput">
     </label>
@@ -72,8 +76,8 @@
       </div>
     </label>
     <div class="profile-btns">
-      <button class=" btn btn-secondary" id="cancelEditBtn">Cancel</button>
-      <button class="btn btn-primary" id="saveProfileBtn">Save</button>
+      <button class=" btn secondary" id="cancelEditBtn">Cancel</button>
+      <button class="btn" id="saveProfileBtn">Save</button>
     </div>
   </section>
 
@@ -219,6 +223,7 @@ onAuthStateChanged(auth, async user => {
       }
 
       wishlistGrid.innerHTML = '';
+
       for (const docSnap of wishlistSnap.docs) {
         const wishlistItem = docSnap.data();
         const coinRef = doc(db, "coins", wishlistItem.coinId);
@@ -232,15 +237,22 @@ onAuthStateChanged(auth, async user => {
           <img src="${coin.Link || '../assets/coin.png'}" alt="${coin.Name}" class="wishlist-img">
           <div class="wishlist-info">
             <h3>${coin.Name}</h3>
-            <p>${coin.Country} ${coin.IssuedOn ? '('+coin.IssuedOn+')' : ''}</p>
             <div class="wishlist-price">${coin.FaceValue ? coin.FaceValue+' '+(coin.Currency || 'USD') : 'N/A'}</div>
-            <div class="wishlist-actions">
-              <a href="product.html?id=${docSnap.data().coinId}" class="profile-btn">View</a>
-              <button class="profile-btn profile-btn-secondary">Remove</button>
-            </div>
+            <p>${coin.Country} ${coin.IssuedOn ? '('+coin.IssuedOn+')' : ''}</p>
+
+          </div>
+          <div class="wishlist-actions">
+            <button class="btn secondary">Remove</button>
           </div>
         `;
-        card.querySelector('.profile-btn-secondary').addEventListener('click', async () => {
+
+        card.addEventListener('click', () => {
+          window.location.href = `product.html?id=${docSnap.data().coinId}`;
+        });
+
+        const removeBtn = card.querySelector('.secondary');
+        removeBtn.addEventListener('click', async (event) => {
+          event.stopPropagation(); // stop the card click
           try {
             await deleteDoc(doc(db, "wishlist", docSnap.id));
             showPopup("Item removed from wishlist!");
@@ -250,6 +262,7 @@ onAuthStateChanged(auth, async user => {
             showPopup("Failed to remove item.");
           }
         });
+
         wishlistGrid.appendChild(card);
       }
     } catch (err) {
@@ -287,7 +300,7 @@ onAuthStateChanged(auth, async user => {
               </div>
             `).join("")}
           </div>
-          <a href="order.html?id=${doc.id}" class="profile-btn">View Order</a>
+          <a href="order.html?id=${doc.id}" class="btn tertiary">View Order</a>
         `;
         ordersList.appendChild(orderDiv);
       });
@@ -299,8 +312,15 @@ onAuthStateChanged(auth, async user => {
 });
 
 // ---------------- Edit Profile ----------------
-editProfileBtn.addEventListener('click', () => profileEdit.style.display = 'flex');
-cancelEditBtn.addEventListener('click', () => profileEdit.style.display = 'none');
+editProfileBtn.addEventListener('click', () => {
+  profileEdit.style.display = 'flex';
+  editProfileBtn.style.display = 'none';
+});
+cancelEditBtn.addEventListener('click', () => {
+  profileEdit.style.display = 'none';
+  editProfileBtn.style.display = 'flex';
+});
+
 
 avatarChoices.forEach(img => {
   img.addEventListener('click', () => {
