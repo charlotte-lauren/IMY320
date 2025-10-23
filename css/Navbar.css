@@ -218,12 +218,13 @@ a {
 }
 
 .profile-icon {
-  margin-left: 0;
   display: block;
-  height: auto;
+  height: 45px;
   width: 45px;
   cursor: pointer;
   object-fit: cover;
+  background-color: #F2EFED;
+  border-radius: 999px;
 }
 .profile-icon:hover {
   transform: scale(1.05);

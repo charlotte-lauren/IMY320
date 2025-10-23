@@ -38,8 +38,6 @@
   height: auto;
   border-radius: 999px;
   object-fit: cover;
-  /* border: 3px solid #305F72;  */
-  /* margin-bottom: 1rem; */
 }
 
 .profile-username {
@@ -108,6 +106,7 @@
   object-fit: contain;
   margin-bottom: 1rem;
   border-radius: 999px;
+  mix-blend-mode: darken;
 }
 
 .wishlist-info {
@@ -149,12 +148,9 @@
   margin-top: 0.5rem;
 }
 
-/* #order-list {
-  gap: 10rem;
-  display: flex;
-  flex-direction: column;
-
-} */
+.order-item img {
+  mix-blend-mode: darken;
+}
 
 /* Buttons */
 .profile-btn {

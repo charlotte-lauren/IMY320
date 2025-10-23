@@ -1,5 +1,5 @@
 .product-page {
-  background: #305F72;
+  background: #F2EFED;
   color: #1A1F2B;
   height: auto;
   width: 100%;
@@ -13,7 +13,7 @@
 }
 
 .product-page-section {
-    background: #F2EFED;
+    background: #e7e7e7;
     max-width: 1400px;
     border-radius: 20px;
     padding: 3rem;
@@ -27,17 +27,10 @@
   text-decoration: none;
   color: #333;
   font-size: 1rem;
-  /* padding: 15px 60px;
-    background: transparent;
-  border: 2px solid #F2EFED; */
 }
 
 .back-link:hover {
-  /* background: transparent; */
-  /* border: 2px solid #B87332; */
   color: #B87332;
-  /* padding: 15px 60px; */
-  /* border-radius: 999px; */
 }
 
 .coin-title {
@@ -57,8 +50,8 @@
 .coin-image img {
   max-width: 300px;
   border-radius: 999px;
-  box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
   background-color: #F2EFED;
+  mix-blend-mode: darken;
 }
 
 /* make details a vertical flex container */
@@ -77,6 +70,20 @@
   text-align: left; /* no longer centered */
 }
 
+.price-title {
+  font-size: 1.25rem;
+  color: #1a1f2bad;
+}
+
+.coin-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.coin-description{
+  font-size: 1rem;
+}
+
 .coin-attributes {
   display: flex;
   flex-wrap: wrap;
@@ -87,7 +94,7 @@
 
 .attribute {
   background: transparent;
-  border: 2px solid #1A1F2B;
+  border: 2px solid #305f7240;
   padding: 0.5rem 2rem;
   border-radius: 999px;
   font-size: 0.9rem;

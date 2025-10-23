@@ -146,6 +146,7 @@
   object-fit: contain;
   border-radius: 999px;
   background: #F2EFED;
+  mix-blend-mode: darken;
 }
 
 .coin-text-list h3 {
@@ -160,25 +161,6 @@
   color: #555;
   max-width: 500px;
 }
-
-/* .btn-product-view {
-  background: #b37341;
-  border: none;
-  padding: 10px 25px;
-  color: #F2EFED;
-  font-weight: bold;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-product-view:hover {
-  background: #8c552f;
-} */
-
-/* .btn-product-view {
-    margin-left: 6rem;
-} */
 
 .load-more-wrapper {
   text-align: center;
@@ -201,23 +183,6 @@
 .load-more:hover {
   background: #2a4c59;
 }
-
-/* Responsive layout for small screens */
-/* @media (max-width: 900px) {
-  .catalogue-page {
-    flex-direction: column;
-    padding: 20px;
-  }
-
-  .filters {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .coin-list {
-    width: 100%;
-  }
-} */
 
 @media (max-width: 900px) {
   .catalogue-content {
@@ -255,6 +220,6 @@
 }
 
 .back-to-top:hover {
-  background-color: #555;
+  background-color: #305F72;
 }
 
