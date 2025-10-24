@@ -20,11 +20,17 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    /* width: 0.5rem; */
     color: #666;
   }
   .toggle-password:hover {
     color: #222;
+  }
+  .toggle-password img {
+    width: 30px;
+    height: 30px;
+    opacity: 0.85;
   }
 </style>
 </head>
@@ -51,30 +57,37 @@
     <div class="floating-label">
       <div class="password-wrapper">
         <input type="password" id="password" placeholder="Password">
-        <button type="button" class="toggle-password" id="togglePassword" aria-label="Show or hide password">👁️</button>
-      </div>
-      <label for="password">Password
-        <span class="coin-tooltip" id="passwordCoins" style="display:none;">
-          <span id="coinDisplay">🪙🪙🪙🪙</span>
-          <span class="tooltip-text">
-            Earn coins for: 1 uppercase letter, 1 number, 1 special character, and length &gt; 8
+      <!-- </div> -->
+        <label for="password">Password
+          <span class="coin-tooltip" id="passwordCoins" style="display:none;">
+            <span id="coinDisplay">🪙🪙🪙🪙</span>
+            <span class="tooltip-text">
+              Earn coins for: 1 uppercase letter, 1 number, 1 special character, and length &gt; 8
+            </span>
           </span>
-        </span>
-      </label>
+        </label>
+        <button type="button" class="toggle-password" id="togglePassword" aria-label="Show or hide password">
+          <img src="../assets/visible.png" alt="Toggle Confirm Password Visibility">
+        </button>
+
+      </div>
       <p class="feedback" id="passwordError"></p>
     </div>
 
     <div class="floating-label" id="confirmField" style="display:none;">
       <div class="password-wrapper">
         <input type="password" id="confirmPassword" placeholder="Confirm Password">
-        <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="Show or hide confirm password">👁️</button>
-      </div>
+        
       <label for="confirmPassword">Confirm Password
         <span class="coin-tooltip" id="confirmCoins" style="display:none;">
           <span id="confirmCoinDisplay">🪙🪙🪙🪙</span>
           <span class="tooltip-text">Coins shown only if password matches and earns same rewards</span>
         </span>
       </label>
+      <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="Show or hide confirm password">
+        <img src="../assets/visible.png" alt="Toggle Confirm Password Visibility">
+      </button>
+      </div>
       <p class="feedback" id="confirmError"></p>
     </div>
 
@@ -151,13 +164,29 @@ const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
 togglePassword.addEventListener('click', () => {
   const type = passwordEl.type === 'password' ? 'text' : 'password';
   passwordEl.type = type;
-  togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+
+  const img = togglePassword.querySelector('img');
+  if (type === 'text') {
+    img.src = "../assets/invisible.png";
+    img.alt = "Hide password";
+  } else {
+    img.src = "../assets/visible.png";
+    img.alt = "Show password";
+  }
 });
 
 toggleConfirmPassword.addEventListener('click', () => {
   const type = confirmEl.type === 'password' ? 'text' : 'password';
   confirmEl.type = type;
-  toggleConfirmPassword.textContent = type === 'password' ? '👁️' : '🙈';
+
+  const img = toggleConfirmPassword.querySelector('img');
+  if (type === 'text') {
+    img.src = "../assets/invisible.png";
+    img.alt = "Hide password";
+  } else {
+    img.src = "../assets/visible.png";
+    img.alt = "Show password";
+  }
 });
 
 function getPasswordScore(password) {

@@ -11,9 +11,9 @@
 <style>
   .avatar-options { display: flex; gap: 0.5rem 1rem; margin-top: 1rem; margin-bottom: 1rem; flex-wrap: wrap; flex-direction: row;  align-items: center; justify-content: center;}
   .avatar-choice { width: calc(5rem + 1vw); height: calc(5rem + 1vw); border-radius: 999px; cursor: pointer; border: 2px solid transparent; object-fit: cover; transition: border 0.2s; }
-  .avatar-choice.selected { filter: drop-shadow(0px 5px 10px #b873328a); }
+  .avatar-choice.selected { filter: drop-shadow(0px 0px 10px #b87332b0); }
   .avatar-choice:hover { transform: scale(1.05); transition: transform 0.2s ease-in-out; }
-  .orders { margin-top: 2rem; }
+  .orders { margin-top: 3rem; }
   .order-items { margin-top: 0.5rem; }
   .order-item { display: flex; align-items: center; margin-bottom: 0.5rem; }
   .order-item img { width: 50px; height: 50px; object-fit: contain; margin-right: 0.75rem; border-radius: 999px; }
@@ -54,8 +54,8 @@
       <h1 class="profile-username" id="profileUsername">User</h1>
     </div>
     <div class="profile-actions">
-      <button id="editProfileBtn" class="profile-btn">Edit Profile</button>
-      <button id="logoutBtn" class="profile-btn profile-btn-secondary">Logout</button>
+      <button id="editProfileBtn" class="btn tertiary">Edit Profile</button>
+      <button id="logoutBtn" class="btn secondary btn-logout">Logout</button>
     </div>
   </section>
 
@@ -76,7 +76,7 @@
       </div>
     </label>
     <div class="profile-btns">
-      <button class=" btn secondary" id="cancelEditBtn">Cancel</button>
+      <!-- <button class=" btn secondary" id="cancelEditBtn">Cancel</button> -->
       <button class="btn" id="saveProfileBtn">Save</button>
     </div>
   </section>
@@ -192,7 +192,7 @@ const editProfileBtn = document.getElementById('editProfileBtn');
 const profileEdit = document.getElementById('profileEdit');
 const usernameInput = document.getElementById('usernameInput');
 const saveProfileBtn = document.getElementById('saveProfileBtn');
-const cancelEditBtn = document.getElementById('cancelEditBtn');
+// const cancelEditBtn = document.getElementById('cancelEditBtn');
 const avatarChoices = document.querySelectorAll('.avatar-choice');
 const ordersList = document.getElementById('ordersList');
 
@@ -294,7 +294,7 @@ onAuthStateChanged(auth, async user => {
               <div class="order-item">
                 <img src="${item.img || '../assets/coin.png'}" alt="${item.Name}">
                 <div>
-                  <strong>${item.Name}</strong> × ${item.quantity || 1}<br>
+                  <strong>${item.Name}</strong> <span class="quantity-color">× ${item.quantity || 1}<span><br>
                   ${item.FaceValue} ${item.Currency || ""}
                 </div>
               </div>
@@ -313,12 +313,13 @@ onAuthStateChanged(auth, async user => {
 
 // ---------------- Edit Profile ----------------
 editProfileBtn.addEventListener('click', () => {
-  profileEdit.style.display = 'flex';
-  editProfileBtn.style.display = 'none';
-});
-cancelEditBtn.addEventListener('click', () => {
-  profileEdit.style.display = 'none';
-  editProfileBtn.style.display = 'flex';
+  if (editProfileBtn.textContent === "Edit Profile") {
+    editProfileBtn.textContent = "Cancel";
+    profileEdit.style.display = 'flex';
+  } else {
+    editProfileBtn.textContent = "Edit Profile";
+    profileEdit.style.display = 'none';
+  }
 });
 
 
@@ -338,6 +339,7 @@ saveProfileBtn.addEventListener('click', async () => {
     profileUsername.textContent = usernameInput.value;
     profileAvatar.src = photoURL;
     profileEdit.style.display = 'none';
+    editProfileBtn.textContent = "Edit Profile";
     showPopup("Profile updated!"); // <- popup instead of alert
   } catch (err) {
     console.error(err);

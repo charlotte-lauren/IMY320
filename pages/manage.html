@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/Navbar.css">
   <link rel="stylesheet" href="../css/Footer.css">
+  <link rel="stylesheet" href="../css/SellerPage.css">
+  <link rel="stylesheet" href="../css/CoinsDirectory.css">
 
   <style>
     /* Basic layout */
@@ -15,11 +17,16 @@
     .coin-row-list {
       display:flex;
       justify-content:space-between;
-      background:#f8f8f8;
       padding:1rem;
       border-radius:10px;
       align-items:center;
       gap:1rem;
+      flex-wrap: wrap;
+    }
+    .coin-row-list:hover{
+      box-shadow: 0px 3px 10px #43758930;
+      transform: scale(1);
+      cursor:auto;
     }
 
     .coin-info {
@@ -33,8 +40,9 @@
       height:96px;
       object-fit:cover;
       border-radius:8px;
-      border:1px solid #ddd;
-      background:#fff;
+      border:1px solid #F2EFED;
+      background:#F2EFED;
+      mix-blend-mode: darken;
     }
     .coin-text {
       display:flex;
@@ -42,7 +50,7 @@
       gap:6px;
     }
 
-    .manage-actions { display:flex; gap:.5rem; align-items:center; }
+    .manage-actions { display:flex; gap:.5rem; align-items:center; flex-wrap: wrap; }
     .manage-actions button { padding:.4rem .7rem; cursor:pointer; }
 
     /* Modal */
@@ -57,23 +65,39 @@
     }
     .modal.show { display:flex; }
     .modal-content {
-      background:#fff;
+      background:#F2EFED;
       padding:1.25rem;
-      border-radius:10px;
-      width:420px;
+      border-radius:12px;
+      width:500px;
       max-height:90vh;
       overflow:auto;
       box-shadow:0 8px 30px rgba(0,0,0,0.15);
+      border: none;
+      border-top: 8px solid #B87332;
     }
     .modal-content input, .modal-content textarea {
       width:100%;
-      padding:.5rem;
+      padding:1rem;
       margin-bottom:.6rem;
-      border:1px solid #ddd;
-      border-radius:6px;
+      border:1px solid #7DA0AE;
+      border-radius:20px;
       box-sizing:border-box;
+      background: #F2EFED;
     }
-    .modal-actions { display:flex; justify-content:flex-end; gap:.6rem; margin-top:.5rem; }
+    .modal-content input:focus, .modal-content textarea:focus {
+      outline:none;
+      border-color:#B87332;
+      box-shadow:0 0 5px rgba(48,95,114,0.4);
+    }
+    .modal-actions { 
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem;
+      flex-wrap: nowrap;
+      /* align-content: center; */
+      justify-content: center; 
+    }
 
     /* Confirm modal small adjustments */
     #confirmModal .modal-content { width:360px; text-align:center; }
@@ -81,7 +105,7 @@
     /* Popup */
     .popup {
       position:fixed; top:20px; right:20px;
-      background:#fff; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.12);
+      background:#F2EFED; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.12);
       padding:.9rem 1.1rem; font-weight:500; z-index:2000;
       opacity:0; transform:translateY(-10px); transition:opacity .25s, transform .25s;
       display:flex; align-items:center; gap:.6rem;
@@ -103,7 +127,7 @@
   <!-- Navbar -->
   <div id="navbar"></div>
 
-  <main class="catalogue-page" style="padding:1rem;">
+  <main class="catalogue-page" style="padding:1rem; max-width: 80%; margin: 0 auto;">
     <div class="catalogue-header"><h1>Manage Coins</h1></div>
     <div id="manageList" class="manage-list">Loading...</div>
   </main>
@@ -113,7 +137,7 @@
   <!-- Edit Modal -->
   <div class="modal" id="editModal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="editTitle">
-      <h3 id="editTitle">Edit Coin</h3>
+      <h3 id="editTitle" style="color: #B87332;">Edit Coin</h3>
 
       <input type="text" id="editName" placeholder="Name">
       <input type="text" id="editCountry" placeholder="Country">
@@ -126,8 +150,8 @@
       <input type="text" id="editLink" placeholder="Image Link">
       <input type="text" id="editIssuedOn" placeholder="Issued On (year)">
       <div class="modal-actions">
-        <button id="saveEditBtn">Save</button>
-        <button id="closeModal">Cancel</button>
+        <button class="btn secondary" id="closeModal">Cancel</button>
+        <button class="btn" id="saveEditBtn">Save</button>
       </div>
     </div>
   </div>
@@ -135,11 +159,11 @@
   <!-- Confirm Modal -->
   <div class="modal" id="confirmModal" aria-hidden="true">
     <div class="modal-content">
-      <h3>Confirm Action</h3>
+      <h3 style="color: #B87332; font-weight: bold; margin-bottom: 1.5rem;">Confirm Action</h3>
       <p id="confirmMessage">Are you sure?</p>
-      <div style="display:flex;justify-content:center;margin-top:8px;gap:.5rem;">
-        <button id="confirmYes">Yes</button>
-        <button id="confirmNo">No</button>
+      <div style="display:flex;justify-content:center;margin:3rem 2rem 1rem 2rem;gap:1rem;">
+        <button class="btn secondary" id="confirmYes">Yes</button>
+        <button class="btn" id="confirmNo">No</button>
       </div>
     </div>
   </div>
@@ -251,15 +275,17 @@
               <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(coin.Name || 'coin')}" onerror="this.src='../assets/coin.png'" />
               <div class="coin-text">
                 <h3>${escapeHtml(coin.Name || 'Untitled')}</h3>
-                <div style="color:#666;font-size:.95rem">${escapeHtml(coin.Country || '')} ${coin.FaceValue ? ' - ' + escapeHtml(String(coin.FaceValue)) + ' ' + escapeHtml(coin.Currency || '') : ''}</div>
-                <div style="font-size:.9rem;color:#444">${escapeHtml(coin.Series || '')} ${coin.Shape ? ' • ' + escapeHtml(coin.Shape) : ''}</div>
-                <div style="font-size:.85rem;color:#444">Metals: ${escapeHtml(metals)}</div>
+                <div >${escapeHtml(coin.Country || '')} ${coin.FaceValue ? ' - <b style="color:#B87332;">' + escapeHtml(String(coin.FaceValue)) + '</b> ' : ''}</div>
+                <div class="attribute-list"> 
+                  <div><span class="attribute-text">${escapeHtml(coin.Series || '')} ${coin.Shape ? '</span> &nbsp <span class="attribute-text">' + escapeHtml(coin.Shape) : '</span>'}</div>
+                  <div><span class="attribute-text"><b>Metals:</b> ${escapeHtml(metals)}</span></div>
+                </div>
                 <div style="margin-top:.3rem;color:#333">${escapeHtml(coin.Description || '')}</div>
               </div>
             </div>
             <div class="manage-actions">
-              <button class="btn-edit" data-id="${id}">Edit</button>
-              <button class="btn-delete" data-id="${id}">Delete</button>
+              <button class="btn tertiary btn-edit" data-id="${id}">Edit</button>
+              <button class="btn secondary btn-delete" data-id="${id}">Delete</button>
             </div>
           `;
           listEl.appendChild(row);

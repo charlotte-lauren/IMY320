@@ -147,22 +147,82 @@
 
     // ---------------- Seller Page Render ----------------
     function renderPage(user) {
+      // contentEl.innerHTML = `
+      //   <div class="seller-inputs">
+      //     <h2 style="font-size:24px;">Add a Coin</h2>
+      //     <h3 style="font-size:18px; color: #305F72;">Basic Info</h3>
+      //     <input placeholder="Name" id="coinName">
+      //     <input placeholder="Country" id="coinCountry">
+      //     <input placeholder="Description" id="coinDescription">
+      //     <input placeholder="Issued On" id="coinIssuedOn">
+      //     <br>
+      //     <h3 style="font-size:18px; color: #305F72;">Currency & Cost</h3>
+      //     <input placeholder="FaceValue" id="coinFaceValue">
+      //     <input placeholder="Currency" id="coinCurrency">
+      //     <input placeholder="Series" id="coinSeries">
+      //     <br>
+      //     <h3 style="font-size:18px; color: #305F72;">Appearance</h3>
+      //     <input placeholder="Shape" id="coinShape">
+      //     <input placeholder="Metal Composition (separate metals with commas)" id="coinMetal">
+      //     <input placeholder="Link" id="coinLink">
+      //     <br>
+      //     <button class="btn" id="addCoinBtn" style="margin: 1rem 0 0 auto;">Add Coin</button>
+      //   </div?
+      // `;
       contentEl.innerHTML = `
         <div class="seller-inputs">
-          <h2>Add a Coin</h2>
-          <input placeholder="Name" id="coinName">
-          <input placeholder="Country" id="coinCountry">
-          <input placeholder="Description" id="coinDescription">
-          <input placeholder="FaceValue" id="coinFaceValue">
-          <input placeholder="Currency" id="coinCurrency">
-          <input placeholder="Series" id="coinSeries">
-          <input placeholder="Shape" id="coinShape">
-          <input placeholder="Metal Composition (separate metals with commas)" id="coinMetal">
-          <input placeholder="Link" id="coinLink">
-          <input placeholder="Issued On" id="coinIssuedOn">
-          <button class="seller-btn" id="addCoinBtn">Add Coin</button>
-        </div?
+          <h2 style="font-size:24px;">Add a Coin</h2>
+
+          <h3 style="font-size:18px; color: #305F72; margin-bottom: 1.5rem;">Basic Info</h3>
+          <div class="floating-label">
+            <input id="coinName" type="text" required>
+            <label for="coinName">Name</label>
+          </div>
+          <div class="floating-label">
+            <input id="coinCountry" type="text" required>
+            <label for="coinCountry">Country</label>
+          </div>
+          <div class="floating-label">
+            <input id="coinDescription" type="text" required>
+            <label for="coinDescription">Description</label>
+          </div>
+          <div class="floating-label">
+            <input id="coinIssuedOn" type="text" required>
+            <label for="coinIssuedOn">Issued On</label>
+          </div>
+
+          <h3 style="font-size:18px; color: #305F72; margin-bottom: 1.5rem;">Currency & Cost</h3>
+          <div class="floating-label">
+            <input id="coinFaceValue" type="text" required>
+            <label for="coinFaceValue">Face Value</label>
+          </div>
+          <div class="floating-label">
+            <input id="coinCurrency" type="text" required>
+            <label for="coinCurrency">Currency</label>
+          </div>
+          <div class="floating-label">
+            <input id="coinSeries" type="text" required>
+            <label for="coinSeries">Series</label>
+          </div>
+
+          <h3 style="font-size:18px; color: #305F72; margin-bottom: 1.5rem;">Appearance</h3>
+          <div class="floating-label">
+            <input id="coinShape" type="text" required>
+            <label for="coinShape">Shape</label>
+          </div>
+          <div class="floating-label">
+            <input id="coinMetal" type="text" required>
+            <label for="coinMetal">Metal Composition (separate with commas)</label>
+          </div>
+          <div class="floating-label">
+            <input id="coinLink" type="text" required>
+            <label for="coinLink">Link</label>
+          </div>
+
+          <button class="btn" id="addCoinBtn" style="margin: 1rem 0 0 auto;">Add Coin</button>
+        </div>
       `;
+
 
       const form = {
         Name: "",

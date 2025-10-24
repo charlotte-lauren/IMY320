@@ -1,7 +1,8 @@
 /* Seller Page Styling with Brand Colours */
 
 .seller-page {
-  max-width: 100%;
+  max-width: 70%;
+  min-width: 450px;
   margin: 0 auto;
   padding: 2rem;
   font-family: Arial, sans-serif;
@@ -48,33 +49,7 @@
   outline: none;
 } */
 
-/* Buttons */
-.seller-btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 999px;
-  background-color: #305F72; /* secondary */
-  color: #F2EFED; /* neutral text */
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-top: 1rem;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  width: fit-content;
-}
 
-.seller-btn:hover {
-  background-color: #1A1F2B; /* primary hover */
-  transform: scale(1.03);
-}
-
-.seller-btn-accent {
-  background-color: #B87332; /* accent */
-  color: #F2EFED;
-}
-
-.seller-btn-accent:hover {
-  background-color: #7DA0AE; /* background on hover */
-}
 
 /* Message styling */
 .seller-message {
@@ -86,21 +61,21 @@
 }
 
   .seller-inputs input {
-    width: 80%;
+    width: 100%;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     background-color: transparent;
     border: 2px solid #1A1F2B;
-        color: #1A1F2B;
+    color: #1A1F2B;
     font-size: 1rem;
-  padding: 0.75rem 1rem;
-  border-radius: 999px;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
   }
   .seller-inputs input:focus {
-      box-shadow: 0 0 0 2px #B87332; /* subtle orange border glow */
-  border: 2px solid #B87332;
-  outline: none;
+    box-shadow: 0 0 0 2px #B87332;
+    border: 2px solid #B87332;
+    outline: none;
   }
 
   .seller-inputs {
@@ -110,4 +85,69 @@
     align-items: flex-start;
     align-content: center;
     flex-wrap: wrap;
+    width: 80%;
+  } 
+
+  .floating-label {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    width: 100%;
   }
+
+
+
+    /* Floating label styles */
+  /* .floating-label {
+    position: relative;
+    margin-bottom: 15px;
+  }
+
+  .floating-label input {
+    width: 80%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    background-color: transparent;
+    border: 2px solid #1A1F2B;
+    color: #1A1F2B;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+
+    text-shadow: 000;
+    transition: text-shadow 0.3s ease;
+  }
+
+  .floating-label input::placeholder {
+    color: transparent;
+  }
+
+  .floating-label label {
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    color: #C8D9E2;
+    font-size: 1rem;
+    transition: all 0.2s ease-out;
+    padding: 0 4px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .floating-label input:focus + label,
+  .floating-label input:not(:placeholder-shown) + label {
+    top: -12px;
+    left: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1a1f2bb8;
+  }
+
+  .floating-label input:focus {
+    box-shadow: 0 0 0 2px #B87332;
+    border: 2px solid #B87332;
+    outline: none;
+  } */

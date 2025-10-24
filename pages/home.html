@@ -163,8 +163,8 @@ async function loadFeaturedCoins() {
           <img src="${coin.Link || '../assets/coin.png'}" alt="${coin.Name}" class="coin-img">
           <div class="coin-info">
             <h3>${coin.Name}</h3>
-            <p>${coin.Country || ''} ${coin.FaceValue || ''} ${coin.Currency || ''}</p>
-            <div class="coin-price">${metals}</div>
+            <p>${metals}</p>
+            <div class="coin-price">${coin.Country || ''} ${coin.FaceValue || ''} ${coin.Currency || ''}</div>
           </div>
         </a>
       `;

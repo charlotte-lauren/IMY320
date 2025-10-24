@@ -212,27 +212,41 @@
 
       coinListEl.innerHTML = '';
       coinsToRender.forEach((coin, index) => {
-        const metals = coin.MetalComposition ? coin.MetalComposition.join(', ') : '';
-        const docId = docIdsToRender[index];
-        coinListEl.innerHTML += `
-          <div class="coin-row-list">
-            <div class="coin-info-list">
-              <img src="${coin.Link || '../assets/coin.png'}" alt="${coin.Name}" class="coin-img-list">
-              <div class="coin-text-list">
-                <h3>${coin.Name}</h3>
-                <p>${coin.Country} - ${coin.FaceValue} ${coin.Currency}</p>
-                <p>Series: ${coin.Series || ''}, Shape: ${coin.Shape || ''}</p>
-                <p>Metal: ${metals}</p>
-                <p>${coin.Description || ''}</p>
-              </div>
-            </div>
-            <a href="product.html?id=${docId}" class=" btn btn-product-view">View</a>
+      const metals = coin.MetalComposition ? coin.MetalComposition.join(', ') : '';
+      const docId = docIdsToRender[index];
+
+      // Create the card container
+      const coinCard = document.createElement('div');
+      coinCard.className = 'coin-row-list';
+
+      // Set up the HTML content
+      coinCard.innerHTML = `
+        <div class="coin-info-list">
+          <img src="${coin.Link || '../assets/coin.png'}" alt="${coin.Name}" class="coin-img-list">
+          <div class="coin-text-list">
+            <h3>${coin.Name}</h3>
+            <p style="font-size: 1rem;">${coin.Country} - <b style="color: #B87332;">${coin.FaceValue}</b></p>
+            <p class="attribute-list">
+              <span class="attribute-text"><b>Series:</b> ${coin.Series || ''}</span>
+              <span class="attribute-text"><b>Shape:</b> ${coin.Shape || ''}</span>
+              <span class="attribute-text"><b>Metal:</b> ${metals}</span>
+            </p>
           </div>
-        `;
+        </div>
+        
+      `;
+      // <button class="btn add-to-wishlist">♡ &nbsp; Add to Wishlist</button>
+
+      coinCard.addEventListener('click', () => {
+        window.location.href = `product.html?id=${docId}`;
       });
 
+      // Append the card
+      coinListEl.appendChild(coinCard);
+    });
+
       displayedCount += pageSize;
-      loadMoreBtn.style.display = displayedCount < filteredCoins.length ? 'block' : 'none';
+      loadMoreBtn.style.display = displayedCount < filteredCoins.length ? 'flex' : 'none';
     }
 
     loadMoreBtn.addEventListener('click', () => {

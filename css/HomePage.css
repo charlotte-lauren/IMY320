@@ -8,7 +8,7 @@
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    background: #f5f5f5;
+    background: #F2EFED;
     color: #222;
 }
 
@@ -78,36 +78,42 @@ section.featured h2 {
 
 
 .carousel {
-  display: flex;
-  scroll-behavior: smooth;
-  flex: 1;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+    display: flex;
+    scroll-behavior: smooth;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    flex-direction: row;
+    /* align-content: center;
+    justify-content: center; */
 }
 
 .coin-card {
-    background: #f5f5f5;
-    border-radius: 20px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    width: calc(10rem + 5vw);
     display: flex;
-    align-items: center;
+    background: #e7e7e7;
+    border-radius: 10px;
+    padding: 15px 20px;
     flex-direction: column;
-    justify-content: center;
-    text-align: left;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    /* width: 100%; */
+    max-width: 250px;
+    box-shadow: 0px 3px 5px #43758922;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .coin-card:hover {
-    transform: scale(1.01);
+    box-shadow: 0px 3px 5px #43758943;
+  transform: scale(1.01);
+  cursor: pointer;
 }
 
 .coin-img {
     width: calc(13rem + 1vw);
     padding-left: 1rem;
     mix-blend-mode: darken;
+    margin: auto 0;
 }
 
 .coin-info {

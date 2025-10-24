@@ -1,29 +1,33 @@
 .catalogue-header h1 {
-  color: #99c3d3;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  margin-top: 4rem;
+  color: #305F72; /* secondary */
 }
 
 .catalogue-page {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 30px;
-  background-color: #305F72;
-  height: auto;
-  font-family: Arial, sans-serif;
+      display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #F2EFED;
+    color: #1A1F2B;
 }
 
 .catalogue-content {
-  display: flex;
-  gap: 2rem;                 /* space between sidebar and list */
-  width: 100%;
-  max-width: auto;
-  justify-content: center;
-  align-items: flex-start;
-  padding-bottom: 5rem;
-  padding-top: 5rem;
-  margin: 0 auto;
-  background: #F2EFED;
+display: flex;
+    width: 100%;
+    max-width: auto;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding-bottom: 5rem;
+    padding-top: 5rem;
+    /* margin: auto 0; */
+    background: #F2EFED;
+    flex-wrap: nowrap;
+    flex-direction: row;
 }
 
 .catalogue-content h2 {
@@ -34,20 +38,28 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
+    margin-right: 8rem;
 }
 
 /* Sidebar Filters */
 
  .filters {
-  flex: 0 0 300px;           /* make sidebar wider (300px) */
-  background: #e7e7e7;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-
-  position: sticky;
-  top: 20px;
-  align-self: flex-start;
+display: flex;
+    flex: 0 0 300px;
+    background: #e7e7e7;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 3px 10px #43758930;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+    margin-left: 8rem;
+    flex-direction: column;
+    /* align-content: flex-start; */
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
 }
 
 .filter-list {
@@ -115,28 +127,44 @@
 
 /* Coin list column */
 
- .coin-list {
-  flex: 1 1 auto;            /* take up remaining space */
+.coin-list {
+  display: flex;
   background: #F2EFED;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   border-radius: 20px;
-  min-width: 0;              /* ensures proper flex shrink */
+  gap: 1.5rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .coin-row-list {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   background: #e7e7e7;
   border-radius: 10px;
   padding: 15px 20px;
-  /* margin-bottom: 15px; */
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 3px 10px #43758930;
+  /* flex-direction: row; */
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.coin-row-list:hover {
+  box-shadow: 0px 3px 10px #43758947;
+  transform: scale(1.01);
+  cursor: pointer;
 }
 
 .coin-info-list {
   display: flex;
   gap: 15px;
+  flex-wrap: nowrap;
+  flex-direction: row;
   align-items: center;
 }
 
@@ -149,6 +177,15 @@
   mix-blend-mode: darken;
 }
 
+.coin-text-list{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .coin-text-list h3 {
   margin: 0;
   font-weight: bold;
@@ -158,8 +195,6 @@
 .coin-text-list p {
   margin: 5px 0 0;
   font-size: 0.9rem;
-  color: #555;
-  max-width: 500px;
 }
 
 .load-more-wrapper {
@@ -191,15 +226,42 @@
   }
 
   .filters {
-    width: 100%;
-    position: relative;  /* remove sticky on mobile */
-    top: 0;
-    margin-bottom: 20px;
-  }
+    /* width: 100%; */
+    display: flex;
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+        flex-wrap: nowrap;
+        /* align-content: flex-start; */
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+                margin-left: 1rem;
+        margin-right: 1rem;
+}
 
   .coin-list {
     width: 100%;
   }
+}
+
+.attribute-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1rem 0;
+}
+
+.attribute-text {
+  background: transparent;
+  border: 2px solid #305f7240;
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+}
+
+.span.attribute-text {
+  color: #1A1F2B;
 }
 
 /*for back to top button*/
@@ -223,3 +285,6 @@
   background-color: #305F72;
 }
 
+.add-to-wishlist {
+  margin: 0 0 0 auto;
+}

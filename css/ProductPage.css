@@ -14,11 +14,13 @@
 
 .product-page-section {
     background: #e7e7e7;
-    max-width: 1400px;
+    /* max-width: 1400px; */
+    width: clamp(90%, 85%, 1400px);
     border-radius: 20px;
     padding: 3rem;
     margin: 4rem auto;
     position: relative;
+    box-shadow: 0px 3px 10px #43758930;
 }
 
 .back-link {

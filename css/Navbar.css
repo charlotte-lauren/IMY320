@@ -223,13 +223,16 @@ a {
   width: 45px;
   cursor: pointer;
   object-fit: cover;
-  background-color: #F2EFED;
+  /* background-color: #F2EFED; */
   border-radius: 999px;
 }
 .profile-icon:hover {
   transform: scale(1.05);
   transition: transform 0.2s ease-in-out;
 }
+/* .profile-icon img{
+  mix-blend-mode: darken;
+} */
 
 /* ---------------- Misc ---------------- */
 .logo-name {

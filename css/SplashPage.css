@@ -40,18 +40,7 @@
   z-index: 2;
 }
 header.container-s {
-  /* position: relative;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  column-gap: 1.5rem;
-  height: 90vh;
-  margin: 0 auto;
-  margin-top: -50px;
-  padding: 0rem 6rem;
-  flex-direction: row;
-  overflow: hidden; */
-      position: relative;
+    position: relative;
     display: flex;
     align-items: center;
     text-align: center;

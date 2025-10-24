@@ -33,6 +33,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
+    margin: 1rem 0;
   }
 
   .pipeline-step {
@@ -74,12 +75,12 @@
 <div id="navbar"></div>
 
 <div class="order-page">
-  <div class="header-content">
+  <!-- <div class="header-content">
     <h1>Order Details</h1>
-  </div>
+  </div> -->
   
   <div class="order-pipeline">
-    <h2>Order Pipeline</h2>
+    <h1>Order Pipeline</h1>
     <div class="pipeline">
       <div class="pipeline-step completed">
         <div class="circle"></div>
@@ -210,8 +211,8 @@ async function loadOrder() {
     <div class="order-item">
       <img src="${item.img || '../assets/coin.png'}" alt="${item.Name}">
       <div>
-        <strong>${item.Name}</strong> × ${item.quantity || 1}<br>
-        ${item.FaceValue} ${item.Currency || ""}
+        <strong>${item.Name}</strong> <span class="quantity-text"> × ${item.quantity || 1}</span><br>
+        <span class="cost-text">${item.FaceValue} ${item.Currency || ""}</span>
       </div>
     </div>
   `).join("");

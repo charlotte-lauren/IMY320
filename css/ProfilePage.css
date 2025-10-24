@@ -86,7 +86,7 @@
 .wishlist-card {
   background-color: #F2EFED; /* neutral card background */
   border-radius: 10px;
-  box-shadow: 0px 5px 10px #7da0ae1b;
+  box-shadow: 0px 5px 10px #7da0ae30;
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
@@ -100,7 +100,7 @@
 
 .wishlist-card:hover {
   transform: scale(1.03);
-  box-shadow: 0px 5px 10px #7da0ae30;
+  box-shadow: 0px 5px 10px #7da0ae4f;
 }
 
 .wishlist-img {
@@ -136,7 +136,7 @@
 
 .order-card {
     background: #e7e7e7;
-    box-shadow: 0px 5px 10px #7da0ae1b;
+    box-shadow: 0px 3px 10px #43758930;
     border-radius: 10px;
     padding: 15px 20px;
     margin-bottom: 1rem;
@@ -156,34 +156,9 @@
 }
 
 /* Buttons */
-.profile-btn {
-  padding: 15px 20px;
-  width: fit-content;
-  height: 100%;
-  border-radius: 999px;
-  background-color: #305F72; /* secondary */
-  color: #F2EFED; /* neutral text */
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin: 0.25rem;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  display: inline-block;
-}
 
-.profile-btn:hover {
-  background-color: #1A1F2B; /* dark primary on hover */
-  transform: scale(1.05);
-}
-
-.profile-btn-secondary {
-  background-color: #B87332; /* accent */
-  color: #F2EFED; /* neutral text */
-}
-
-.profile-btn-secondary:hover {
-  background-color: #7DA0AE; /* background colour on hover */
+.btn-logout:hover {
+  background-color: #B87332; 
 }
 
 .profile-edit {
@@ -199,11 +174,9 @@
     border-radius: 10px;
     box-shadow: 0px 5px 10px #7da0ae1b;
     padding: 15px 20px;
-    /* margin-bottom: 1rem; */
 }
 
 .profile-edit h2 {
-  /* margin-top: 2rem; */
   font-size: 1.4rem;
   color: #305F72; /* accent highlight */
 }
@@ -212,4 +185,18 @@
   font-size: 1rem;
   color: #1A1F2B;
   font-weight: bold;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quantity-color {
+  color: #B87332;
 }
