@@ -24,32 +24,24 @@
   color: #B87332; /* accent highlight */
 }
 
+.seller-page h3 {
+  margin-top: 3rem;
+  /* font-size: 1.2rem; */
+  color: #305F72; /* secondary */
+}
+
 .seller-page p {
   font-size: 1rem;
   margin-bottom: 1rem;
   color: #305F72; /* secondary */
 }
 
-/* Inputs */
-/* .seller-page input {
-  display: block;
-  width: 100%;
-  padding: 0.6rem;
-  margin: 0.5rem 0;
-  border: 1px solid #305F72;
-  border-radius: 6px;
-  background-color: #fff;
-  font-size: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+.seller-page h4 {
+  margin-top: 1rem;
+  font-weight: lighter;
+  font-size: 1.1rem;
+  color: #305F72;
 }
-
-.seller-page input:focus {
-  border-color: #B87332;
-  box-shadow: 0 0 4px rgba(184, 115, 50, 0.5);
-  outline: none;
-} */
-
-
 
 /* Message styling */
 .seller-message {
@@ -85,7 +77,7 @@
     align-items: flex-start;
     align-content: center;
     flex-wrap: wrap;
-    width: 80%;
+    width: 70%;
   } 
 
   .floating-label {
@@ -96,7 +88,9 @@
     width: 100%;
   }
 
-
+.floating-label label {
+  margin-left: 1.3rem;
+}
 
     /* Floating label styles */
   /* .floating-label {

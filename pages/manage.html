@@ -17,10 +17,10 @@
     .coin-row-list {
       display:flex;
       justify-content:space-between;
-      padding:1rem;
+      padding:2rem;
       border-radius:10px;
-      align-items:center;
-      gap:1rem;
+      align-items:flex-end;
+      gap:2rem;
       flex-wrap: wrap;
     }
     .coin-row-list:hover{
@@ -73,21 +73,21 @@
       overflow:auto;
       box-shadow:0 8px 30px rgba(0,0,0,0.15);
       border: none;
-      border-top: 8px solid #B87332;
+      border-top: 10px solid #B87332;
     }
     .modal-content input, .modal-content textarea {
       width:100%;
       padding:1rem;
       margin-bottom:.6rem;
       border:1px solid #7DA0AE;
-      border-radius:20px;
+      border-radius:30px;
       box-sizing:border-box;
       background: #F2EFED;
     }
     .modal-content input:focus, .modal-content textarea:focus {
-      outline:none;
-      border-color:#B87332;
-      box-shadow:0 0 5px rgba(48,95,114,0.4);
+      box-shadow: 0 0 5px 3px #eda15b6a; 
+      border: 1px solid #B87332;
+      outline: none;
     }
     .modal-actions { 
       display: flex;
@@ -170,6 +170,8 @@
 
   <!-- Popup container (to keep DOM tidy popups appended to body) -->
   <div id="popupContainer" aria-hidden="true"></div>
+
+  <button class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">↑ Top</button>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
@@ -284,8 +286,8 @@
               </div>
             </div>
             <div class="manage-actions">
-              <button class="btn tertiary btn-edit" data-id="${id}">Edit</button>
               <button class="btn secondary btn-delete" data-id="${id}">Delete</button>
+              <button class="btn tertiary btn-edit" data-id="${id}">Edit</button>
             </div>
           `;
           listEl.appendChild(row);

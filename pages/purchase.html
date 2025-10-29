@@ -118,6 +118,7 @@ function setupNavbar() {
 const cartGrid = document.getElementById('cartGrid');
 const usernameEl = document.getElementById('username');
 const checkoutBtn = document.getElementById('checkoutBtn');
+const contentEl = document.getElementById("content");
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -129,7 +130,13 @@ function renderCart() {
   cart = JSON.parse(localStorage.getItem('cart')) || [];
   cartGrid.innerHTML = '';
   if (cart.length === 0) {
-    cartGrid.innerHTML = '<p style="text-align:center;">Your cart is empty.</p>';
+    cartGrid.innerHTML = `
+      <div class="err-container">
+        <img src="../assets/empty-cart.png" alt="Empty cart image" class="error-image">
+        <h3 class="err-msg">Your cart is empty!</h3>
+        <p class="err-sub"> Let's find some treasures to add. </p>
+        <a href="../pages/coins.html" class="btn err-btn">← Explore Coins</a>
+      </div>`;
     checkoutBtn.style.display = 'none';
     return;
   }
@@ -172,22 +179,27 @@ checkoutBtn.addEventListener('click', () => {
 // Show cart only if logged in
 onAuthStateChanged(auth, user => {
   if (!user) {
-    // document.getElementById('navbar').innerHTML = html;
-    // setupNavbar();
-    document.body.innerHTML = `
-    <div class="cart-not-logged-in">
-      <p class="cart-grid-section not-logged-in" style="text-align:center;">Please log in to view your cart.</p> 
-      <a href="../pages/home.html" class="btn back-link">← Back to Home</a>
-    </div>`;
-      // notLoggedIn.innerHTML = `<p class="not-logged-in">Please log in to view your cart.</p>`;
-    // document.getElementById('footer').innerHTML = html;
+    // document.body.innerHTML = `
+    //  <div class="err-container">
+    //     <img src="../assets/log-in.png" alt="Log in please image" class="error-image">
+    //     <h3 class="err-msg">Log in to view this page</h3>
+    //     <p class="err-sub"> Please log in to view your cart and make purchases. </p>
+    //     <a href="../pages/login.html" class="btn err-btn">Log in</a>
+    //   </div>`;
+    cartGrid.innerHTML = `<div class="err-container">
+              <img src="../assets/log-in.png" alt="Log in please image" class="error-image">
+              <h3 class="err-msg">Log in to view this page</h3>
+              <h4 class="err-sub"> Please log in to view your cart page. </h4>
+              <a href="../pages/login.html" class="btn err-btn">Log in</a>
+            </div>`;
+      
     return;
   }
+usernameEl.textContent = `${user.displayName || 'User'}'s Cart`;
+    localStorage.setItem('user', JSON.stringify({ username: user.displayName, img: user.photoURL }));
 
-  usernameEl.textContent = `${user.displayName || 'User'}'s Cart`;
-  localStorage.setItem('user', JSON.stringify({ username: user.displayName, img: user.photoURL }));
-
-  renderCart();
+    renderCart();
+  
 });
 </script>
 </body>

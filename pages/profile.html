@@ -201,7 +201,12 @@ let selectedAvatar = null;
 
 onAuthStateChanged(auth, async user => {
   if (!user) {
-    document.body.innerHTML = '<p class="not-logged-in" style="text-align:center; margin-top:50px;">Please log in to view your profile.</p>';
+    document.body.innerHTML = `<div class="err-container">
+              <img src="../assets/log-in.png" alt="Log in please image" class="error-image">
+              <h3 class="err-msg">Log in to view this page</h3>
+              <h4 class="err-sub"> Please log in to view your profile page. </h4>
+              <a href="../pages/login.html" class="btn err-btn">Log in</a>
+            </div>`;
     return;
   }
 
@@ -218,7 +223,10 @@ onAuthStateChanged(auth, async user => {
       const wishlistSnap = await getDocs(wishlistQuery);
 
       if (wishlistSnap.empty) {
-        wishlistGrid.innerHTML = '<p class="not-logged-in" style="text-align:center;">Your wishlist is empty.</p>';
+        wishlistGrid.innerHTML = `<div class="err-container-small">
+              <img src="../assets/empty-cart.png" alt="Log in please image" class="error-image-small">
+              <h3 class="err-msg-small">Your wishlist is empty</h3>
+            </div>`;
         return;
       }
 
@@ -279,7 +287,10 @@ onAuthStateChanged(auth, async user => {
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
-      ordersList.innerHTML = `<p class="not-logged-in">You have no orders yet.</p>`;
+      ordersList.innerHTML = `<div class="err-container-small">
+              <img src="../assets/empty-cart.png" alt="Log in please image" class="error-image-small">
+              <h3 class="err-msg-small">You have no orders yet</h3>
+            </div>`;
     } else {
       ordersList.innerHTML = "";
       snapshot.forEach(doc => {

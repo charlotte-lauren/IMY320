@@ -72,6 +72,7 @@ html, body {
   border-radius: 999px;
   background: #F2EFED;
   margin-top: 10px;
+  mix-blend-mode: darken;
 }
 
 .cart-words {

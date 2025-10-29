@@ -87,18 +87,17 @@
 
 .about-section {
   position: relative;
-  padding: 100px 20px;
+  padding: 80px 20px;
   background-color: #F2EFED;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 60px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  justify-items: center;
+  gap: 4rem;
 }
 
 .card {
-  max-width: 800px;
-  padding: 30px 40px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  max-width: 1000px;
+  box-shadow: 0px 4px 10px #43758947;
   border-radius: 12px;
   position: relative;
   z-index: 1;
@@ -108,100 +107,50 @@
   background: #F2EFED;
   text-align: justify;
   color: #1A1F2B;
-  margin-left: 20rem;
+  margin-right: 10px;
   padding-right: 50px;
 }
 
 .mission-card h2 {
-    margin-left: 5rem;
+    margin-left: 3rem;
 }
 
 .mission-card p {
-    margin-left: 5rem;
+    margin-left: 3rem;
+    margin-bottom: 2rem;
 }
 
 .crows-card {
   background: #1A1F2B;
   color: #f2efeddc;
   text-align: justify;
-  margin-right: 20rem;
   padding-left: 50px;
 }
 
 .crows-card h2 {
-    margin-right: 5rem;
+    margin-right: 3rem;
 }
 
 .crows-card p {
-    margin-right: 5rem;
+    margin-right: 3rem;
+    margin-bottom: 2rem;
+
 }
 
 /* Crow image overlay */
 .crow-img {
   position: absolute;
   bottom: -20px;
-  left: 2px;
+  left: -40px;
   width: 100px;
   z-index: 2;
-}
-
-/* Feathers */
-.feathers {
-  position: absolute;
-  width: 50px;
-  opacity: 0.9;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.feather1 {
-  right: 700px;
-  top: 720px;
-  transform: rotate(0deg);
-  z-index: 1;
-}
-
-.feather2 {
-  right: 450px;
-  top: 800px;
-  transform: rotate(-15deg);
-}
-
-.feather3 {
-  right: 300px;
-  top: 900px;
-  transform: rotate(25deg);
-}
-
-.feather2-2-2 { /* 2nd Bottom feathers */
-  left: 200px;
-  top: 2200px;
-  transform: scaleX(-1) rotate(65deg);
-}
-
-.feather3-3-3 { /* 2nd Bottom feathers */
-  left: 250px;
-  top: 2000px;
-  transform:  rotate(65deg);
-}
-
-.feather2-2 { /* Bottom feathers */
-  right: 350px;
-  bottom: -1800px;
-  transform:  rotate(-15deg);
-}
-
-.feather3-3 { /* Bottom feathers */
-  right: 250px;
-  bottom: -1950px;
-  transform:  rotate(25deg);
 }
 
 
 /************************* BELIEFS AND WHAT TO DO SECTIONS *************************/
 
 .about-sections {
-  padding: 4rem 2rem;
+  padding: 1rem 2rem 2rem 2rem;
   font-family: 'Segoe UI', sans-serif;
   background-color: #F2EFED;
 }
@@ -223,7 +172,7 @@
 .belief-card {
   background: #F2EFED;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 4px 10px #43758947;
   padding: 1.5rem;
   max-width: 300px;
 
@@ -349,6 +298,7 @@
   gap: 2rem;              /* spacing between h3 and p */
   text-align: left;       /* keep left alignment */
   z-index: 20;
+  box-shadow: 0px 4px 10px #43758947;
 }
 
 .do-card h3 {

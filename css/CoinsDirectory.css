@@ -44,8 +44,8 @@ display: flex;
 
 /* Sidebar Filters */
 
- .filters {
-display: flex;
+.filters {
+    display: flex;
     flex: 0 0 300px;
     background: #e7e7e7;
     padding: 20px;
@@ -85,12 +85,15 @@ display: flex;
 
 .dropdown-item-filter {
   padding: 6px 20px;
-  background: #305F72;
-  border: 1px solid #ccc;
+  background: #7DA0AE;
+  /* background: #e7e7e7; */
+  /* border: 1px solid #305F72; */
+  border: none;
   border-radius: 999px;
   cursor: pointer;
   font-size: 0.9rem;
   transition: background 0.2s, color 0.2s;
+  /* color: #1A1F2B; */
   color: white;
   margin: 5px;
 }
